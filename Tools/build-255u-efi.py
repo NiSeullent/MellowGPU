@@ -3,7 +3,7 @@
 import argparse, copy, hashlib, json, os, plistlib, re, shutil, stat, struct, subprocess, tarfile, tempfile, urllib.request, zipfile
 from pathlib import Path, PurePosixPath
 from efi_boot_profiles import build_profiles
-from product_identity import BUNDLE, LEGACY_BUNDLE
+from product_identity import BUNDLE, LEGACY_BUNDLE, VERSION, DEVELOPMENT_LABEL
 ROOT=Path(__file__).resolve().parents[1]
 FONT_SUFFIXES={'.ttf','.otf','.woff','.woff2','.pfb','.pfm','.fon','.fnt'}
 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -70,7 +70,7 @@ def configuration(sample,oc):
         info=plistlib.loads((oc/'Kexts'/rel/'Contents/Info.plist').read_bytes())
         exe=info.get('CFBundleExecutable')
         p['Kernel']['Add'].append({'Arch':'x86_64','BundlePath':rel,
-          'Comment':'MellowGPU 0.5.0-dev diagnostic only; native Metal missing' if rel=='MellowGPU.kext' else info['CFBundleIdentifier'],
+          'Comment':f'MellowGPU {DEVELOPMENT_LABEL} diagnostic only; native Metal missing' if rel=='MellowGPU.kext' else info['CFBundleIdentifier'],
           'Enabled':True,'ExecutablePath':'Contents/MacOS/'+exe if exe else '',
           'MaxKernel':'24.99.99','MinKernel':'24.0.0','PlistPath':'Contents/Info.plist'})
     p['Misc']['Boot'].update(HideAuxiliary=True,LauncherOption='Disabled',PickerMode='Builtin',
@@ -190,7 +190,7 @@ def main():
     # Preserve the historical source document. Adapt the generated delivery's
     # active product references, rather than shipping instructions for old bytes.
     delivery_readme=(ROOT/'EFI-255U/README-FIRST.ko.md').read_text()
-    delivery_readme=delivery_readme.replace(LEGACY_BUNDLE,BUNDLE).replace('Mellow 0.4.4','MellowGPU 0.5.0-dev')
+    delivery_readme=delivery_readme.replace(LEGACY_BUNDLE,BUNDLE).replace('Mellow 0.4.4','MellowGPU '+DEVELOPMENT_LABEL)
     (stage/'README-FIRST.ko.md').write_text(delivery_readme)
     treecopy(ROOT/'EFI-255U/ACPI',sources/'ACPI')
     with open(sources/'Mellow-source.tar.gz','wb') as f:
@@ -203,12 +203,12 @@ def main():
     (verification/'uefi-pe-images.json').write_text(json.dumps(pe,indent=2)+'\n')
     status={'schema':'mellow.efi-delivery/1','status':'PARTIAL_EXPERIMENTAL_NOT_FULL_METAL',
       'target':'SAMSUNG NT751XHD-KR735 / Core Ultra 7 255U / physical 8086:7D41',
-      'os_target':'macOS Sequoia / Darwin 24','source_repository':'https://github.com/NiSeullent/Mellow',
+      'os_target':'macOS Sequoia / Darwin 24','source_repository':'https://github.com/NiSeullent/MellowGPU',
       'source_branch':os.environ.get('GITHUB_REF_NAME') or subprocess.check_output(
           ['git','branch','--show-current'],cwd=ROOT,text=True).strip() or 'detached',
       'source_commit':source_commit,
       'ci_url':os.environ.get('GITHUB_SERVER_URL','https://github.com')+'/'+os.environ.get('GITHUB_REPOSITORY','NiSeullent/Mellow')+'/actions/runs/'+os.environ.get('GITHUB_RUN_ID','local'),
-      'mellow_version':'0.5.0','product':'MellowGPU','development_label':'0.5.0-dev','opencore_version':'1.0.7',
+      'mellow_version':VERSION,'product':'MellowGPU','development_label':DEVELOPMENT_LABEL,'opencore_version':'1.0.7',
       'target_boot_verified':False,'target_kernel_load_verified':False,'native_gpu_submission_implemented':False,
       'apple_metal_abi_implemented':False,'full_metal_acceleration_implemented':False,'windowserver_acceleration_verified':False,
       'real_kernel_binary_built':True,'read_only_physical_probe_implemented':True,

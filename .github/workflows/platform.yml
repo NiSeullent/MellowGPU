@@ -23,6 +23,9 @@ jobs:
         run: |
           python3 Tools/run-gpu-core-tests.py --cxx g++ --sanitize --out build/gpu-core
           python3 Tools/run-metal3-profile-tests.py --cxx g++ --sanitize --out build/metal3-profile
+          python3 Tools/run-control-tests.py --cxx g++ --cc gcc --sanitize --out build/control-protocol
+      - name: Actual Clang Metal declaration and availability regressions
+        run: python3 tests/metal_api_inventory_tests.py
       - name: Backport source intake and negative tests
         run: python3 -m unittest discover -s tests -p test_mellow_port.py -v
       - name: Execute ported Linux Xe algorithms and verify provenance
@@ -62,6 +65,7 @@ jobs:
             build/platform-tests/
             build/gpu-core/
             build/metal3-profile/
+            build/control-protocol/
             ${{ runner.temp }}/mellow-ported-xe/
             build/opencl-runtime-build/
             build/opencl-regressions/

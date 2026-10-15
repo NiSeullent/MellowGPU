@@ -9,6 +9,25 @@
     "applications", "games", "lifecycle_recovery", "performance"
   ],
   "api_inventory_complete": false,
+  "api_declaration_inventories": [
+    {
+      "path": "porting/metal-api-sdk15.5-macos15.8.1.json",
+      "sha256": "ad32e1881614b4dd506dad41000a5e94a49244d4539e32d8dee745e49ecc172d",
+      "role": "older-SDK declaration evidence; required-API review incomplete"
+    },
+    {
+      "path": "porting/metal-api-sdk26.5-macos15.8.1.json",
+      "sha256": "c76e93ccd4cea44e493f83b0afc8cc92e9f186472e70984abb362cf0bcadb399",
+      "role": "newer-SDK comparison for target macOS 15.8.1; Metal4 is separate"
+    }
+  ],
+  "native_control": {
+    "specification": "docs/MELLOWGPU-NATIVE-CONTROL.md",
+    "mode": "cpu-storage-only",
+    "gpu_virtual_memory_implemented": false,
+    "gpu_submission_implemented": false,
+    "physical_runtime_verified": false
+  },
   "hardware_attestation_implemented": false,
   "qualified_devices": [],
   "cpu_rasterization_qualifies": false,
@@ -24,5 +43,5 @@
     "https://developer.apple.com/documentation/metal/mtlgpufamily/metal3",
     "https://developer.apple.com/metal/resources/"
   ],
-  "status": "development-contracts; full native implementation and hardware qualification pending"
+  "status": "native-control development; full GPU implementation and system qualification pending"
 }

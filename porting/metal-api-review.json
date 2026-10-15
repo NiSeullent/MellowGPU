@@ -1,0 +1,89 @@
+{
+  "authority": "No inventory/observation/report field grants runtime capability or promotes a device; porting/metal3-profile.json remains independently unqualified.",
+  "hardware_qualified": false,
+  "implementation_coverage_complete": false,
+  "inventories": [
+    {
+      "classifications": {
+        "availability_unresolved": 1,
+        "target_api_candidate": 2404,
+        "unavailable_on_macos": 27,
+        "unspecified_macos_availability_candidate": 172
+      },
+      "compiler_dependency_files": 30,
+      "compiler_effective_target": "x86_64-apple-macosx15.8.1",
+      "compiler_frontend_sha256": "d2e4bf622758eee1bf7267c060497fb2c41e098d37b0fca8be73898dc7e14eda",
+      "compiler_invocation_sha256": "30d78f965fb5927cd4ab7bef587178d54b137930dd25fce9eaf1b833bfca6b02",
+      "declarations": 2604,
+      "metal_headers": 60,
+      "path": "porting/metal-api-sdk15.5-macos15.8.1.json",
+      "sdk_dependency_files": 800,
+      "sdk_older_than_target": true,
+      "sha256": "ad32e1881614b4dd506dad41000a5e94a49244d4539e32d8dee745e49ecc172d"
+    },
+    {
+      "classifications": {
+        "availability_unresolved": 1,
+        "metal4_namespace_excluded": 552,
+        "newer_than_target": 194,
+        "target_api_candidate": 2405,
+        "unavailable_on_macos": 27,
+        "unspecified_macos_availability_candidate": 185
+      },
+      "compiler_dependency_files": 30,
+      "compiler_effective_target": "x86_64-apple-macosx15.8.1",
+      "compiler_frontend_sha256": "d2e4bf622758eee1bf7267c060497fb2c41e098d37b0fca8be73898dc7e14eda",
+      "compiler_invocation_sha256": "30d78f965fb5927cd4ab7bef587178d54b137930dd25fce9eaf1b833bfca6b02",
+      "declarations": 3364,
+      "metal_headers": 96,
+      "path": "porting/metal-api-sdk26.5-macos15.8.1.json",
+      "sdk_dependency_files": 839,
+      "sdk_older_than_target": false,
+      "sha256": "c76e93ccd4cea44e493f83b0afc8cc92e9f186472e70984abb362cf0bcadb399"
+    }
+  ],
+  "missing_reviews": [
+    "Exact mandatory API set and conditional hardware features/limits",
+    "Complete MSL semantics and shader compiler conformance",
+    "QuartzCore/CAMetalLayer and native IOSurface/fence contracts",
+    "Private WindowServer/IOAccelerator/display ABI",
+    "Exact native vendor/device/OS tuple and application/game/lifecycle/performance qualification"
+  ],
+  "observed_source_compile_failures": [
+    {
+      "compiler_exit_code": 1,
+      "diagnostic": "use of undeclared identifier MTLMaxRenderPassSampleBuffers",
+      "failure_preserved": true,
+      "line": 294,
+      "sdk_versions": [
+        "15.5",
+        "26.5"
+      ],
+      "source": "Userspace/AppleMetal/MellowAppleRenderMetal.mm",
+      "source_sha256": "e5ef2d98b5a0923d98d1deb1c82fff5ecd901137e0b61e7e7ca0f3ad922c3aa1",
+      "syntax_only": true
+    }
+  ],
+  "qualified_devices": [],
+  "required_inventory_complete": false,
+  "schema": "mellowgpu.metal-api-review/1",
+  "source_observations": {
+    "observed_facades": [
+      "compute"
+    ],
+    "observed_method_bodies": 56,
+    "path": "porting/metal-api-source-observations.json",
+    "sha256": "e68be91dc9d9c70e7f4436c55e533fcca77fcb307cbd7678443f0b8135523ba6",
+    "unobserved_facades": [
+      "render"
+    ],
+    "verified_implementation_count": 0
+  },
+  "status": "declaration-evidence-unreviewed",
+  "target": {
+    "architecture": "x86_64",
+    "os": "macOS",
+    "programming_model": "Metal3",
+    "version": "15.8.1"
+  }
+}

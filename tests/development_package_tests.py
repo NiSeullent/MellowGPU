@@ -23,7 +23,7 @@ class DevelopmentPackages(unittest.TestCase):
   cls.b=load('dev_build',ROOT/'Tools/build-mellowgpu-development.py')
  def setUp(self):
   self.tmp=tempfile.TemporaryDirectory(prefix='mellowgpu-package-fixture-');self.base=Path(self.tmp.name);self.repo=self.base/'source';self.repo.mkdir()
-  for name in ('.gitignore','Tools/product_identity.py','Tools/validate-macho.py','Tools/cross-build-native.sh','Tools/mellow_development.py','Tools/package-mellowgpu-development.py','Tools/build-mellowgpu-development.py','Mellow/Info.plist','Mellow.xcodeproj/project.pbxproj','docs/MELLOWGPU-SPEC.md','docs/MELLOWGPU-IMPLEMENTATION.md','docs/MELLOWGPU-LIFECYCLE.md','docs/MELLOWGPU-0.5.0-dev.md','porting/metal3-profile.json','porting/upstreams.lock.json','LICENSE','NOTICE'):
+  for name in ('.gitignore','Tools/product_identity.py','Tools/validate-macho.py','Tools/cross-build-native.sh','Tools/mellow_development.py','Tools/package-mellowgpu-development.py','Tools/build-mellowgpu-development.py','Mellow/Info.plist','Mellow.xcodeproj/project.pbxproj','docs/MELLOWGPU-SPEC.md','docs/MELLOWGPU-IMPLEMENTATION.md','docs/MELLOWGPU-LIFECYCLE.md','docs/MELLOWGPU-'+self.p.DEVELOPMENT_LABEL+'.md','docs/MELLOWGPU-NATIVE-CONTROL.md','docs/MELLOWGPU-METAL-API.md','docs/MELLOWGPU-CANDIDATES.md','porting/metal-api-review.json','porting/metal-api-sdk15.5-macos15.8.1.json','porting/metal-api-sdk26.5-macos15.8.1.json','porting/metal-api-source-observations.json','porting/metal3-profile.json','porting/upstreams.lock.json','LICENSE','NOTICE'):
    dest=self.repo/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/name,dest)
   shutil.copytree(ROOT/'LICENSES',self.repo/'LICENSES')
   self.git('init','-q');self.git('config','user.name','Development packaging test');self.git('config','user.email','fixture@example.invalid');self.git('add','.');self.git('commit','-qm','Actual source metadata fixture, not a native source build')
@@ -44,7 +44,7 @@ class DevelopmentPackages(unittest.TestCase):
   for line in (root/'SHA256SUMS').read_text().splitlines():
    h,p=line.split('  ',1);self.assertEqual(h,self.p.D.sha(root/p))
   self.assertEqual(r['archive_sha256'],self.p.D.sha(Path(r['archive'])))
-  with zipfile.ZipFile(r['archive'])as z:self.assertIn('MellowGPU-0.5.0-dev/MellowGPU.kext/Contents/MacOS/MellowGPU',z.namelist())
+  with zipfile.ZipFile(r['archive'])as z:self.assertIn('MellowGPU-'+self.p.DEVELOPMENT_LABEL+'/MellowGPU.kext/Contents/MacOS/MellowGPU',z.namelist())
   self.assertTrue((root/'Sources/MellowGPU-source.tar.gz').is_file())
  def test_dirty_git_and_source_receipt_mismatch_rejected_before_output(self):
   (self.repo/'NOTICE').write_text('changed')
@@ -52,6 +52,14 @@ class DevelopmentPackages(unittest.TestCase):
   self.assertFalse((self.base/'release').exists())
   self.git('checkout','--','NOTICE');self.receipt['source_sha256'].pop('NOTICE');self.write_receipt()
   with self.assertRaisesRegex(ValueError,'source'):self.package()
+ def test_package_carries_native_and_api_inventory_scope_with_exact_bytes(self):
+  r=self.package();root=self.base/'release/package'
+  for name in ('docs/MELLOWGPU-NATIVE-CONTROL.md','docs/MELLOWGPU-METAL-API.md','docs/MELLOWGPU-CANDIDATES.md','porting/metal-api-review.json','porting/metal-api-sdk15.5-macos15.8.1.json','porting/metal-api-sdk26.5-macos15.8.1.json','porting/metal-api-source-observations.json'):
+   with self.subTest(document=name):
+    self.assertTrue((root/name).is_file(), 'Missing native control / inventory scope: '+name)
+    self.assertEqual((root/name).read_bytes(),(self.repo/name).read_bytes())
+    with zipfile.ZipFile(r['archive']) as archive:
+     self.assertEqual(archive.read('MellowGPU-'+self.p.DEVELOPMENT_LABEL+'/'+name),(self.repo/name).read_bytes())
  def test_old_identity_and_symlink_bundle_rejected(self):
   linked=self.base/'MellowGPU.kext';linked.symlink_to(self.bundle,target_is_directory=True)
   with self.assertRaises(ValueError):self.p.package(self.repo,linked,self.report,self.receipt_path,self.base/'linkout')

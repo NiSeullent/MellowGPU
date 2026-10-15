@@ -25,6 +25,8 @@ jobs:
           python3 tests/product_migration_tests.py
           python3 tests/efi_boot_profiles_tests.py
           python3 Tools/run-host-tests.py --cxx clang++ --out build/host-tests
+          python3 Tools/run-native-control-tests.py --cxx clang++ --sanitize --out build/native-control-tests
+          python3 Tools/run-probe-control-tests.py --cxx clang++ --sanitize --out build/control-probe-tests
           python3 tests/metal_session_tests.py
           python3 tests/acceptance_cli_tests.py
           sh -n Tools/collect-boot-evidence.sh
@@ -43,6 +45,9 @@ jobs:
       - name: Compile public IOKit diagnostic client
         run: |
           xcrun clang -std=c11 -Wall -Wextra -Werror Userspace/tahoe_diag_client.c -framework IOKit -framework CoreFoundation -o build/tahoe-diag-client
+      - name: Compile universal public IOKit control client
+        run: |
+          xcrun clang++ -std=c++17 -Wall -Wextra -Werror -arch x86_64 -arch arm64 -mmacosx-version-min=13.0 Userspace/mellowgpu-control.cpp -framework IOKit -framework CoreFoundation -o build/mellowgpu-control
       - name: Package native artifacts
         run: |
           python3 Tools/package-mellowgpu-development.py \
@@ -55,13 +60,16 @@ jobs:
         with:
           name: MellowGPU-native-development
           path: |
-            build/development-package/MellowGPU-0.5.0-dev.zip
-            build/development-package/MellowGPU-0.5.0-dev.zip.sha256
+            build/development-package/MellowGPU-*.zip
+            build/development-package/MellowGPU-*.zip.sha256
             build/development-package/package-result.json
             build/development-native/*.stdout
             build/development-native/*.stderr
             build/development-native/*.json
             build/metal-probe
             build/tahoe-diag-client
+            build/mellowgpu-control
+            build/native-control-tests/native-control-tests.json
+            build/control-probe-tests/probe-control-tests.json
             build/host-tests/host-tests.json
           if-no-files-found: error

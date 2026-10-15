@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D1A625064D414700000000C3 /* MellowGPUDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1A625064D414700000000C1 /* MellowGPUDevice.cpp */; };
 		1EDD20260930C00000000001 /* FirmwareImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EDD20260930C00000000002 /* FirmwareImage.cpp */; };
 		1EDD20260930B00000000001 /* XeGuCRegionOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EDD20260930B00000000002 /* XeGuCRegionOwner.cpp */; };
 		28D26C4F9D28BAEF8DF7A6E0 /* MemoryOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 801DB68AC6BCDFC892A7536D /* MemoryOwner.cpp */; };
@@ -75,6 +76,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D1A625064D414700000000C1 /* MellowGPUDevice.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MellowGPUDevice.cpp; sourceTree = "<group>"; };
+		D1A625064D414700000000C2 /* MellowGPUDevice.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MellowGPUDevice.hpp; sourceTree = "<group>"; };
 		1EDD20260930C00000000002 /* FirmwareImage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FirmwareImage.cpp; path = Drivers/PortedNvidiaGsp/FirmwareImage.cpp; sourceTree = SOURCE_ROOT; };
 		1EDD20260930C00000000003 /* FirmwareImage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = FirmwareImage.hpp; path = Drivers/PortedNvidiaGsp/FirmwareImage.hpp; sourceTree = SOURCE_ROOT; };
 		1EDD20260930B00000000002 /* XeGuCRegionOwner.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = XeGuCRegionOwner.cpp; path = Mellow/XeGuCRegionOwner.cpp; sourceTree = SOURCE_ROOT; };
@@ -244,6 +247,8 @@
 		1C748C291C21952C0024EED2 /* Mellow */ = {
 			isa = PBXGroup;
 			children = (
+				D1A625064D414700000000C1 /* MellowGPUDevice.cpp */,
+				D1A625064D414700000000C2 /* MellowGPUDevice.hpp */,
 				D1A625064D414700000000A1 /* TahoeDiagnostic.cpp */,
 				D1A625064D414700000000A2 /* TahoeDiagnosticProtocol.cpp */,
 				C42F5B82067D421096F10002 /* PortedXeBindings.cpp */,
@@ -481,6 +486,7 @@
 				B55F50E0BD153F65527C0C30 /* NvidiaMmioIOKit.cpp in Sources */,
 				1EDD20260930A00000000001 /* Radix3.cpp in Sources */,
 				1EDD20260930C00000000001 /* FirmwareImage.cpp in Sources */,
+				D1A625064D414700000000C3 /* MellowGPUDevice.cpp in Sources */,
 				D1A625064D41470000000001 /* TahoeDiagnostic.cpp in Sources */,
 				D1A625064D41470000000002 /* TahoeDiagnosticProtocol.cpp in Sources */,
 				C42F5B82067D421096F10001 /* PortedXeBindings.cpp in Sources */,
@@ -674,7 +680,7 @@
 				MODULE_NAME = com.NiSeullent.MellowGPU;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 0.5.0;
+				MODULE_VERSION = 0.5.1;
 				OTHER_CFLAGS = (
 					"-mno-mmx",
 					"-mno-sse",
@@ -729,7 +735,7 @@
 				MODULE_NAME = com.NiSeullent.MellowGPU;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 0.5.0;
+				MODULE_VERSION = 0.5.1;
 				OTHER_CFLAGS = (
 					"-mno-mmx",
 					"-mno-sse",
@@ -843,7 +849,7 @@
 				MODULE_NAME = com.NiSeullent.MellowGPU;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 0.5.0;
+				MODULE_VERSION = 0.5.1;
 				OTHER_CFLAGS = (
 					"-mno-mmx",
 					"-mno-sse",

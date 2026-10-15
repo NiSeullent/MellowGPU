@@ -42,7 +42,7 @@ class PackageControls(unittest.TestCase):
             loaded.add(info['CFBundleIdentifier'])
         self.assertIn('com.NiSeullent.MellowGPU',loaded)
         info=plistlib.loads((oc/'Kexts/MellowGPU.kext/Contents/Info.plist').read_bytes())
-        self.assertEqual(info['CFBundleVersion'],'0.5.0')
+        self.assertEqual(info['CFBundleVersion'],'0.5.1')
         self.assertEqual(info['IOKitPersonalities']['MellowTahoeDiagnostic']['IOPCIPrimaryMatch'].lower(),'0x7d418086')
 
     def test_acpi_uid_and_headers(self):

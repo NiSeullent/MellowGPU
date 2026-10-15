@@ -26,6 +26,10 @@ PluginConfiguration ADDPR(config) {
 	KernelVersion::Ventura,
 	KernelVersion::Tahoe,
 	[]() {
+		if (checkKernelArgument("-mellowgpudev")) {
+			SYSLOG("mellow", "passive MellowGPU control mode; legacy graphics patch callbacks are not registered");
+			return;
+		}
 		if (checkKernelArgument("-mellowdiag")) {
 			SYSLOG("mellow", "diagnostic IOService selected; legacy Apple graphics patch callbacks are not registered");
 			return;

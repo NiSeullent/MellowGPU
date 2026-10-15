@@ -16,7 +16,12 @@ import mellow_development as D
 from product_identity import BUNDLE, DEVELOPMENT_LABEL
 
 DOCUMENTS = ('docs/MELLOWGPU-SPEC.md', 'docs/MELLOWGPU-IMPLEMENTATION.md',
-             'docs/MELLOWGPU-LIFECYCLE.md', 'docs/MELLOWGPU-0.5.0-dev.md',
+             'docs/MELLOWGPU-LIFECYCLE.md', 'docs/MELLOWGPU-' + DEVELOPMENT_LABEL + '.md',
+             'docs/MELLOWGPU-NATIVE-CONTROL.md', 'docs/MELLOWGPU-METAL-API.md',
+             'docs/MELLOWGPU-CANDIDATES.md', 'porting/metal-api-review.json',
+             'porting/metal-api-sdk15.5-macos15.8.1.json',
+             'porting/metal-api-sdk26.5-macos15.8.1.json',
+             'porting/metal-api-source-observations.json',
              'porting/metal3-profile.json', 'porting/upstreams.lock.json', 'LICENSE', 'NOTICE')
 
 

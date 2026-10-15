@@ -9,13 +9,13 @@ class ProductMigrationTests(unittest.TestCase):
  def test_info_and_every_active_xcode_configuration(self):
   p=plistlib.loads((ROOT/'Mellow/Info.plist').read_bytes())
   self.assertEqual((p['CFBundleIdentifier'],p['CFBundleExecutable'],p['CFBundleName']),('com.NiSeullent.MellowGPU','MellowGPU','MellowGPU'))
-  self.assertEqual(p['CFBundleVersion'],'0.5.0');self.assertEqual(p['CFBundleShortVersionString'],'0.5.0');self.assertEqual(p['MellowGPUDevelopmentLabel'],'0.5.0-dev')
+  self.assertEqual(p['CFBundleVersion'],'0.5.1');self.assertEqual(p['CFBundleShortVersionString'],'0.5.1');self.assertEqual(p['MellowGPUDevelopmentLabel'],'0.5.1-dev')
   self.assertTrue(all(x['CFBundleIdentifier'] in ('com.NiSeullent.MellowGPU','$(PRODUCT_BUNDLE_IDENTIFIER)')for x in p['IOKitPersonalities'].values()))
   proj=(ROOT/'Mellow.xcodeproj/project.pbxproj').read_text()
   self.assertEqual(re.findall(r'PRODUCT_NAME = ([^;]+);',proj),['MellowGPU']*3)
   self.assertEqual(re.findall(r'PRODUCT_BUNDLE_IDENTIFIER = ([^;]+);',proj),['com.NiSeullent.MellowGPU']*3)
   self.assertEqual(re.findall(r'MODULE_NAME = ([^;]+);',proj),['com.NiSeullent.MellowGPU']*3)
-  self.assertEqual(re.findall(r'MODULE_VERSION = ([^;]+);',proj),['0.5.0']*3)
+  self.assertEqual(re.findall(r'MODULE_VERSION = ([^;]+);',proj),['0.5.1']*3)
   self.assertNotIn('Mellow.kext',proj)
   # Keep the internal target/source-folder stable for legacy include paths.
   self.assertIn('name = Mellow;',proj);self.assertIn('path = Mellow;',proj)
@@ -34,7 +34,7 @@ class ProductMigrationTests(unittest.TestCase):
  def test_full_product_metadata_and_public_qualification(self):
   m=load('product_identity','Tools/product_identity.py');p=plistlib.loads((ROOT/'Mellow/Info.plist').read_bytes())
   m.validate_product_info(p)
-  for key,bad in [('CFBundleName','Mellow'),('CFBundleShortVersionString','0.4.4'),('MellowGPUDevelopmentLabel','0.5.0-qualified')]:
+  for key,bad in [('CFBundleName','Mellow'),('CFBundleShortVersionString','0.4.4'),('MellowGPUDevelopmentLabel','0.5.1-qualified')]:
    with self.subTest(key=key),self.assertRaises(ValueError):m.validate_product_info({**p,key:bad})
   for personality in p['IOKitPersonalities'].values():
    self.assertEqual(personality['MellowGPUQualification'],'unqualified')

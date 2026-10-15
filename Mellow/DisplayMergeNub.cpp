@@ -36,6 +36,7 @@ static bool haveCreatedRef = false;
 bool
 DisplayMergeNub::start(IOService *provider)
 {
+    if (checkKernelArgument("-mellowgpudev")) return false;
     return IOService::start(provider);
 }
 
@@ -53,6 +54,7 @@ IOService *
 DisplayMergeNub::probe(IOService *provider, SInt32 *score)
 {
 #pragma unused (score)
+    if (checkKernelArgument("-mellowgpudev")) return nullptr;
     // IOKit personalities may probe independently of the Lilu startup callback.
     // Do not let the optional panel merge bypass physical hardware admission.
     if (!provider || !checkKernelArgument("-mellowdisplaymerge") ||

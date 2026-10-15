@@ -111,6 +111,11 @@ The first implementation exposes these lifetime/admission invariants in a host
 testable core. Its model callbacks deliberately do not touch hardware. Native
 backends must implement and qualify the same contracts before device publication.
 
+[The native control boundary](MELLOWGPU-NATIVE-CONTROL.md) connects the common
+operation lifetime to an actual IOKit service and private task-specific CPU
+storage. GPU VM, queues, fences and display remain separate required native
+owners; CPU storage admission cannot authorize them.
+
 ## Metal 3 and system conformance
 
 The normative sources are the pinned Apple Metal programming-model/family
@@ -138,6 +143,11 @@ cannot be called full Metal 3. Hardware evidence is produced by trusted native
 test runners and independently reviewed against raw output. The core policy
 engine only checks correlation and completeness; it is not an attestation source.
 
+[The SDK declaration inventory](MELLOWGPU-METAL-API.md) records actual Clang API
+and availability observations, header/compiler digests and unresolved requirement
+reviews. Declaration presence and a historical facade's method names never
+grant implementation coverage or qualify a hardware profile.
+
 ## Upstream and specification update pipeline
 
 `porting/upstreams.lock.json` records component role, canonical remote, full commit,
@@ -158,6 +168,11 @@ verification and candidate discovery through existing intake. Automated build an
 candidate reporting can run in CI. Production promotion remains unavailable until
 native hardware runners and their acceptance records exist; no automatic update
 may mark untested hardware supported or install a new system driver.
+
+[Candidate materialization](MELLOWGPU-CANDIDATES.md) additionally captures
+verified source/patch/configuration bytes and applies an exact text-patch subset
+in a fresh private tree. Its result is explicitly unapproved and unbuildable
+until complete dependency/license, native build and hardware gates are supplied.
 
 ## Packaging, migration and release rules
 

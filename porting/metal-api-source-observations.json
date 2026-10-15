@@ -1,0 +1,834 @@
+{
+  "compiler": {
+    "effective_target": "x86_64-apple-macosx15.8.1",
+    "frontend": {
+      "name": "clang",
+      "sha256": "d2e4bf622758eee1bf7267c060497fb2c41e098d37b0fca8be73898dc7e14eda",
+      "version": "Apple clang version 21.0.0 (clang-2100.1.1.101)"
+    },
+    "invocation": {
+      "name": "clang",
+      "sha256": "30d78f965fb5927cd4ab7bef587178d54b137930dd25fce9eaf1b833bfca6b02",
+      "version": "Apple clang version 21.0.0 (clang-2100.1.1.101)"
+    },
+    "language": "objective-c++",
+    "requested_target": "x86_64-apple-macos15.8.1",
+    "scope": "Reported compiler selection and exact binary bytes; no process/hardware attestation",
+    "selection_evidence": "driver -print-prog-name=clang and single -### -cc1 command agree"
+  },
+  "generator": {
+    "path": "Tools/metal-api-inventory.py",
+    "sha256": "9586423e22f7e6c052ea6785af7c0c9d8f19c717a6cd3ef042e2fc090246124e"
+  },
+  "hardware_qualified": false,
+  "inventory_sha256": "ad32e1881614b4dd506dad41000a5e94a49244d4539e32d8dee745e49ecc172d",
+  "methods": [
+    {
+      "class": "MMABuffer",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLBuffer",
+      "selector": "contents",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 232,
+        "offset": 9700,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMABuffer",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLBuffer",
+      "selector": "cpuCacheMode",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 234,
+        "offset": 9813,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMABuffer",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLBuffer",
+      "selector": "device",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 230,
+        "offset": 9574,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMABuffer",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLBuffer",
+      "selector": "download:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 241,
+        "offset": 10133,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMABuffer",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLBuffer",
+      "selector": "length",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 231,
+        "offset": 9631,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMABuffer",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLBuffer",
+      "selector": "resourceOptions",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 235,
+        "offset": 9885,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMABuffer",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLBuffer",
+      "selector": "storageMode",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 233,
+        "offset": 9750,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMABuffer",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLBuffer",
+      "selector": "upload:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 236,
+        "offset": 9964,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "addCompletedHandler:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 347,
+        "offset": 15890,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "blitCommandEncoder",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 340,
+        "offset": 15532,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "canEncode",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 300,
+        "offset": 12887,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "canEndEncoding",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 301,
+        "offset": 12991,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "commandQueue",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 292,
+        "offset": 12424,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "commit",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 352,
+        "offset": 16146,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "computeCommandEncoder",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 319,
+        "offset": 14314,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "computeCommandEncoderWithDispatchType:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 330,
+        "offset": 14957,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "copyExecutionEvidence",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 304,
+        "offset": 13285,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "device",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 291,
+        "offset": 12360,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "doesNotRecognizeSelector:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 343,
+        "offset": 15692,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "encoderEnded",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 302,
+        "offset": 13083,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "error",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 295,
+        "offset": 12647,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "initWithQueue:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 283,
+        "offset": 12072,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "recordFailure:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 296,
+        "offset": 12737,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "renderCommandEncoderWithDescriptor:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 336,
+        "offset": 15271,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "retainedReferences",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 293,
+        "offset": 12499,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "status",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 294,
+        "offset": 12542,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "trackBuffer:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 303,
+        "offset": 13175,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMACommand",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLCommandBuffer",
+      "selector": "waitUntilCompleted",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 413,
+        "offset": 19347,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMADevice",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLDevice",
+      "selector": "maxBufferLength",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 167,
+        "offset": 5935,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMADevice",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLDevice",
+      "selector": "name",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 166,
+        "offset": 5832,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMADevice",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLDevice",
+      "selector": "newBufferWithBytes:length:options:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 177,
+        "offset": 6533,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMADevice",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLDevice",
+      "selector": "newBufferWithLength:options:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 174,
+        "offset": 6361,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMADevice",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLDevice",
+      "selector": "newCommandQueue",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 170,
+        "offset": 6187,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMADevice",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLDevice",
+      "selector": "newComputePipelineStateWithFunction:error:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 211,
+        "offset": 8607,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMADevice",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLDevice",
+      "selector": "newLibraryWithSource:options:error:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 190,
+        "offset": 7441,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMADevice",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLDevice",
+      "selector": "supportsFamily:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 168,
+        "offset": 6032,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMADevice",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLDevice",
+      "selector": "supportsFeatureSet:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 169,
+        "offset": 6105,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAEncoder",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLComputeCommandEncoder",
+      "selector": "dealloc",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 424,
+        "offset": 19872,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAEncoder",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLComputeCommandEncoder",
+      "selector": "device",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 423,
+        "offset": 19801,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAEncoder",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLComputeCommandEncoder",
+      "selector": "dispatchThreads:threadsPerThreadgroup:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 447,
+        "offset": 21140,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAEncoder",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLComputeCommandEncoder",
+      "selector": "doesNotRecognizeSelector:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 462,
+        "offset": 21998,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAEncoder",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLComputeCommandEncoder",
+      "selector": "endEncoding",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 456,
+        "offset": 21722,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAEncoder",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLComputeCommandEncoder",
+      "selector": "setBuffer:offset:atIndex:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 438,
+        "offset": 20555,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAEncoder",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLComputeCommandEncoder",
+      "selector": "setComputePipelineState:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 430,
+        "offset": 20064,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAFunction",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLFunction",
+      "selector": "device",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 264,
+        "offset": 11227,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAFunction",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLFunction",
+      "selector": "functionType",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 266,
+        "offset": 11339,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAFunction",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLFunction",
+      "selector": "name",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 265,
+        "offset": 11284,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMALibrary",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLLibrary",
+      "selector": "device",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 251,
+        "offset": 10509,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMALibrary",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLLibrary",
+      "selector": "functionNames",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 252,
+        "offset": 10566,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMALibrary",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLLibrary",
+      "selector": "newFunctionWithName:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 253,
+        "offset": 10645,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMALibrary",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLLibrary",
+      "selector": "newFunctionWithName:constantValues:error:",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 258,
+        "offset": 10908,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAPipeline",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLComputePipelineState",
+      "selector": "device",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 269,
+        "offset": 11438,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAPipeline",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLComputePipelineState",
+      "selector": "maxTotalThreadsPerThreadgroup",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 272,
+        "offset": 11656,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAPipeline",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLComputePipelineState",
+      "selector": "threadExecutionWidth",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 273,
+        "offset": 11714,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAQueue",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": true,
+      "sdk_role": "MTLCommandQueue",
+      "selector": "commandBuffer",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 279,
+        "offset": 11927,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    },
+    {
+      "class": "MMAQueue",
+      "hardware_verified": false,
+      "instance": true,
+      "matches_direct_sdk_method_declaration": false,
+      "sdk_role": "MTLCommandQueue",
+      "selector": "device",
+      "semantic_implementation_verified": false,
+      "source": {
+        "line": 278,
+        "offset": 11870,
+        "path": "Userspace/AppleMetal/MellowAppleMetal.mm"
+      }
+    }
+  ],
+  "observed_facades": [
+    "compute"
+  ],
+  "observed_method_body_count": 56,
+  "required_inventory_complete": false,
+  "schema": "mellowgpu.metal-source-observations/1",
+  "scope": "Explicit historical facade role aliases; direct method bodies only. Unsupported/error-return bodies also count. No inherited-selector, signature, semantics, complete-API or GPU qualification inference.",
+  "sdk_settings_sha256": "30bf3c8ef32f46d43f68eb91a85eded3e1763edc752a6fd71633eecac4909b28",
+  "source_files": {
+    "Runtime/MetalObjects.cpp": "d7b8a2c14885802ff9deb92b926d557f7fcfa420cb7515628f1a2f96a036074e",
+    "Runtime/MetalObjects.hpp": "67d5f09110408c45fc29b9249850a5542097aff1d5f9128b11b937ae94611c8f",
+    "Runtime/RenderObjects.cpp": "29b1bc88630885e892ab8b7a897d5ee1c231e3a88bb86dedccf919420cc8f00a",
+    "Runtime/RenderObjects.hpp": "1e561098fbcf3ba41889e018d9a998b8b380cfda5d6e8e8172ca6c60682667f6",
+    "Userspace/AppleMetal/MellowAppleMetal.h": "39fc048a1a4d6662ad80513b3530ba504fa9d727b72f9e327164ab7e705247ed",
+    "Userspace/AppleMetal/MellowAppleMetal.mm": "bd56a28c7ceeab4e58637040afeeceb7fa5372ea9041ed05fab7d515730e84b4",
+    "Userspace/AppleMetal/MellowAppleRenderMetal.h": "9ad342022016e7e834feec10278fa7c69e3816f8cc2675e0d104b0a1a07aedf3",
+    "Userspace/AppleMetal/MellowAppleRenderMetal.mm": "e5ef2d98b5a0923d98d1deb1c82fff5ecd901137e0b61e7e7ca0f3ad922c3aa1"
+  },
+  "target_version": "15.8.1",
+  "unobserved_facades": [
+    "render"
+  ],
+  "verified_implementation_count": 0
+}

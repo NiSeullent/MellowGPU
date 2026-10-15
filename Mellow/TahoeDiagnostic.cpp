@@ -12,6 +12,7 @@ OSDefineMetaClassAndStructors(MellowTahoeDiagnostic, IOService)
 OSDefineMetaClassAndStructors(MellowTahoeDiagnosticClient, IOUserClient)
 
 static bool admitted(IOPCIDevice *pci) {
+    if (checkKernelArgument("-mellowgpudev")) return false;
     const MellowTarget::BootPolicy policy {static_cast<unsigned>(getKernelVersion()),
         checkKernelArgument("-mellowdiag"), checkKernelArgument("-mellowoff"),
         checkKernelArgument("-mellowtglwithgfx"), checkKernelArgument("-mellownativexe")};
