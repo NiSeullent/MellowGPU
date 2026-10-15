@@ -16,6 +16,11 @@ from unittest.mock import patch
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOL = ROOT / 'Tools/metal-api-inventory.py'
 
+# Exercise the same Apple Objective-C ABI as production inventory capture.
+# A Linux host's default GNU runtime is not a Metal target; upstream Clang 18
+# crashes in its JSON method-name dumper for these protocol declarations.
+FIXTURE_ARGUMENTS = ['-target', 'x86_64-apple-macos15.8.1']
+
 HEADER = r'''
 #define API_AVAILABLE(...) __attribute__((availability(macos,introduced=10.11)))
 @interface NSObject @end
@@ -65,7 +70,7 @@ class MetalInventory(unittest.TestCase):
         self.root = pathlib.Path(self.temp.name).resolve()
         self.header = self.root / 'MTLFixture.h'
         self.header.write_text(HEADER)
-        self.ast = self.m.clang_ast(self.clang, self.header, [])
+        self.ast = self.m.clang_ast(self.clang, self.header, FIXTURE_ARGUMENTS)
         self.records = self.m.extract_declarations(self.ast, self.root, '15.0')
 
     def tearDown(self):
@@ -100,7 +105,7 @@ class MetalInventory(unittest.TestCase):
 
     def test_availability_macro_expansion_uses_actual_source_not_json_omitted_values(self):
         self.header.write_text(HEADER + '\nAPI_AVAILABLE(macos(10.11))\n@interface MTLExtra : NSObject @end\n')
-        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, []), self.root, '15.0')
+        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, FIXTURE_ARGUMENTS), self.root, '15.0')
         extra = next(r for r in records if r['name'] == 'MTLExtra')
         # Fixture macro semantic version and spelled argument agree; source is pinned.
         self.assertEqual(extra['availability']['macos']['introduced'], '10.11')
@@ -108,19 +113,19 @@ class MetalInventory(unittest.TestCase):
 
     def test_unknown_availability_never_becomes_required(self):
         self.header.write_text(HEADER + '\n#define OPAQUE __attribute__((availability(macos,introduced=26.0)))\nOPAQUE\n@interface MTLOpaque : NSObject @end\n')
-        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, []), self.root, '15.0')
+        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, FIXTURE_ARGUMENTS), self.root, '15.0')
         opaque = next(r for r in records if r['name'] == 'MTLOpaque')
         self.assertEqual(opaque['target_classification'], 'availability_unresolved')
         self.assertEqual(opaque['requirement'], 'unreviewed')
         self.header.write_text(HEADER + '\nAPI_AVAILABLE(macos(OPAQUE_VERSION))\n@interface MTLVersionMacro : NSObject @end\n')
-        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, []), self.root, '15.0')
+        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, FIXTURE_ARGUMENTS), self.root, '15.0')
         self.assertEqual(next(r for r in records if r['name']=='MTLVersionMacro')['target_classification'], 'availability_unresolved')
 
     def test_macro_argument_locations_do_not_inherit_an_unrelated_header(self):
         other = self.root / 'MTLOther.h'
         other.write_text('// padding\n' * 100 + '\n#define ENUM(T,N) enum N:T N; enum N:T\ntypedef ENUM(int, MTLIndirect) { MTLIndirectA=1 };\n')
         self.header.write_text(HEADER + '\n#include "MTLOther.h"\n')
-        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, []), self.root, '15.0')
+        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, FIXTURE_ARGUMENTS), self.root, '15.0')
         item = next(r for r in records if r['kind'] == 'TypedefDecl' and r['name'] == 'MTLIndirect')
         self.assertEqual(item['source']['path'], 'MTLOther.h')
 
@@ -146,7 +151,7 @@ class MetalInventory(unittest.TestCase):
     def test_failed_clang_never_emits_a_partial_inventory(self):
         self.header.write_text('@protocol MTLBroken this is invalid')
         with self.assertRaisesRegex(ValueError, 'Clang'):
-            self.m.clang_ast(self.clang, self.header, [])
+            self.m.clang_ast(self.clang, self.header, FIXTURE_ARGUMENTS)
 
     def test_inventory_cannot_self_promote_to_complete_or_implemented(self):
         report = self.m.inventory_report(self.records, '15.0')
@@ -168,7 +173,7 @@ class MetalInventory(unittest.TestCase):
 
     def test_real_source_method_bodies_remain_unreviewed_even_when_names_match(self):
         self.header.write_text(HEADER + '\n@interface MMADevice : NSObject\n- (void)commit;\n@end\n@implementation MMADevice\n- (void)commit {}\n- (void)unsupported { /* never implementation proof */ }\n@end\n')
-        ast = self.m.clang_ast(self.clang, self.header, [], name_filter='MMA')
+        ast = self.m.clang_ast(self.clang, self.header, FIXTURE_ARGUMENTS, name_filter='MMA')
         observed = self.m.source_method_observations(ast, self.root, {'MMADevice': 'MTLBase'})
         self.assertEqual({r['selector'] for r in observed}, {'commit', 'unsupported'})
         self.assertTrue(all(r['semantic_implementation_verified'] is False for r in observed))
@@ -177,7 +182,7 @@ class MetalInventory(unittest.TestCase):
 
     def test_unfiltered_ast_preserves_categories_extensions_and_non_mtl_names(self):
         self.header.write_text(HEADER + '\n@interface MTLExtra : NSObject\n@property(readonly) int count;\n@end\n@interface MTLExtra()\n@property(readwrite) int count;\n@end\n@interface NSObject (DeviceCertification)\n- (void)certify;\n@end\nextern int NSDeviceCertification;\n')
-        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, [], name_filter=None), self.root, '15.0')
+        records = self.m.extract_declarations(self.m.clang_ast(self.clang, self.header, FIXTURE_ARGUMENTS, name_filter=None), self.root, '15.0')
         self.assertTrue(any(r['name']=='NSDeviceCertification' for r in records))
         self.assertEqual(next(r for r in records if r['owner']=='MTLExtra()' and r['name']=='count')['property_attributes']['readwrite'], True)
         self.assertTrue(any(r['owner']=='NSObject(DeviceCertification)' and r['name']=='certify' for r in records))
@@ -185,7 +190,7 @@ class MetalInventory(unittest.TestCase):
     def test_actual_preprocessor_dependencies_pin_macro_only_support_headers(self):
         support = self.root / 'Support.h'; support.write_text('#define HELPER_VERSION 15\n')
         self.header.write_text('#include "Support.h"\n' + HEADER)
-        dependencies = self.m.dependency_manifest(self.clang, self.header, [], self.root)
+        dependencies = self.m.dependency_manifest(self.clang, self.header, FIXTURE_ARGUMENTS, self.root)
         self.assertEqual(dependencies['sdk']['Support.h']['sha256'], self.m.sha(support))
         self.assertNotIn('MTLFixture.h', dependencies['sdk'])
         self.assertTrue(all(not pathlib.Path(name).is_absolute() for name in dependencies['sdk']))
