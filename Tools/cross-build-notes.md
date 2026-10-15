@@ -1,6 +1,10 @@
 # Reproducible cross build
 
 This builds the **actual Mellow Xcode target** as a thin x86_64 research kext.
+The internal target retains its name; the current emitted product is
+`MellowGPU.kext`. These Windows cross-build notes describe the earlier toolchain
+experiment. For the native release path, use the clean-source build and package
+commands in [README](../README.md).
 It does not establish that Tahoe can resolve its imported KPI/Lilu symbols,
 load it, attach a GPU accelerator, or execute Metal. No load or installation
 commands are included.
@@ -13,13 +17,13 @@ The extracted cctools-port linker uses the existing WSL C++/UUID runtime and a
 local TAPI library. Its optional LLVM LTO library is unnecessary because no LTO
 objects are produced.
 
-From the workspace directory in PowerShell:
+From the repository root in PowerShell:
 
 ```powershell
-& './outputs/Mellow-7D41-integration/Tools/cross-build-toolchain.ps1' -ToolchainDirectory './work/mellow-build'
-python './outputs/Mellow-7D41-integration/Tools/cross-build.py' --llvm-bin './work/mellow-build/llvm-20.1.8/bin' --output './work/mellow-build/Integration-Release' --configuration Release --darwin-linker './work/mellow-build/ld64-prefix/bin/x86_64-apple-darwin13.4.0-ld' --wsl-distro Ubuntu-24.04
-python './outputs/Mellow-7D41-integration/Tools/validate-macho.py' './work/mellow-build/Integration-Release/Mellow.kext' --output './work/mellow-build/Integration-Release/macho-validation.json'
-python './outputs/Mellow-7D41-integration/tests/build_macho_validation.py' './work/mellow-build/Integration-Release/Mellow.kext/Contents/MacOS/Mellow'
+& './Tools/cross-build-toolchain.ps1' -ToolchainDirectory './work/mellow-build'
+python './Tools/cross-build.py' --llvm-bin './work/mellow-build/llvm-20.1.8/bin' --output './work/mellow-build/Integration-Release' --configuration Release --darwin-linker './work/mellow-build/ld64-prefix/bin/x86_64-apple-darwin13.4.0-ld' --wsl-distro Ubuntu-24.04
+python './Tools/validate-macho.py' './work/mellow-build/Integration-Release/MellowGPU.kext' --output './work/mellow-build/Integration-Release/macho-validation.json'
+python './tests/build_macho_validation.py' './work/mellow-build/Integration-Release/MellowGPU.kext/Contents/MacOS/MellowGPU'
 ```
 
 The compiler source list is extracted from `PBXSourcesBuildPhase`, rather than
@@ -36,7 +40,8 @@ both `__mod_init_func` and `__mod_term_func`. LLVM 20 requires
 destructor convention; no destructors or driver functionality are replaced
 with stubs. The original upstream Xcode project's SIMD/vectorization options
 are intentionally not copied into this cross configuration, to retain kernel
-code generation defaults. Native Xcode parity has not been tested.
+code generation defaults. Parity between these historical Windows toolchain
+results and the current native Xcode output has not been established.
 
 `ld64.lld` is **not** a substitute for Apple's linker here. It accepts the
 command but warns that `-kext` and `-static` are unimplemented, and can return
@@ -52,7 +57,9 @@ optimization folds those calls without disabling the SDK's bounds checks.
 Only the Release artifact is a candidate for subsequent native validation.
 
 `cross-build-native.sh Release` performs a native Xcode build on macOS and
-uses the same structural validator. This native path has not been run here.
+uses the same structural validator. MellowGPU's native x86_64 path has been
+executed on the ARM development Mac; the release build receipt records the
+exact source and toolchain for each published artifact.
 It produces an unsigned artifact and does not load it or rebuild a kernel
 collection. A structural pass is a necessary format check, not a claim of
 loadability, compatibility, display output, or GPU acceleration.

@@ -180,7 +180,7 @@ def main():
     flags = ["-target", "x86_64-apple-macos13", "-std=c++17", "-mkernel", "-fapple-kext",
              "-nostdinc", "-isystem", str(includes), "-I", str(root / "MacKernelSDK/Headers"),
              "-I", str(root / "Lilu.kext/Contents/Resources"),
-             "-DKERNEL", "-DKERNEL_PRIVATE", "-DPRODUCT_NAME=Mellow", f"-DMODULE_VERSION={version_number}",
+             "-DKERNEL", "-DKERNEL_PRIVATE", "-DPRODUCT_NAME=MellowGPU", f"-DMODULE_VERSION={version_number}",
              "-fno-exceptions", "-fno-rtti", "-fno-builtin", "-fno-common",
              "-fno-asynchronous-unwind-tables", "-fvisibility=hidden",
              "-fno-register-global-dtors-with-atexit", "-fno-use-cxa-atexit",
@@ -226,11 +226,11 @@ def main():
 #include <mach/kmod.h>
 extern kern_return_t _start(kmod_info_t *, void *);
 extern kern_return_t _stop(kmod_info_t *, void *);
-extern kern_return_t Mellow_kern_start(kmod_info_t *, void *);
-extern kern_return_t Mellow_kern_stop(kmod_info_t *, void *);
+extern kern_return_t MellowGPU_kern_start(kmod_info_t *, void *);
+extern kern_return_t MellowGPU_kern_stop(kmod_info_t *, void *);
 KMOD_EXPLICIT_DECL(%s, "%s", _start, _stop)
-__private_extern__ kmod_start_func_t *_realmain = Mellow_kern_start;
-__private_extern__ kmod_stop_func_t *_antimain = Mellow_kern_stop;
+__private_extern__ kmod_start_func_t *_realmain = MellowGPU_kern_start;
+__private_extern__ kmod_stop_func_t *_antimain = MellowGPU_kern_stop;
 __private_extern__ int _kext_apple_cc = __APPLE_CC__;
 ''' % (bundle_id, version_number), encoding="utf-8")
         metadata_object = dest / "module_info.o"
@@ -241,7 +241,7 @@ __private_extern__ int _kext_apple_cc = __APPLE_CC__;
         objects.append(metadata_object)
         # Ask for genuine kext semantics. Do not replace this with -bundle, and
         # do not patch the Mach-O filetype after linking an ordinary executable.
-        binary = dest / "Mellow.link-attempt"
+        binary = dest / "MellowGPU.link-attempt"
         if args.darwin_linker:
             linker = args.darwin_linker.resolve()
         linkflags = ["-arch", "x86_64", "-kext", "-static", "-undefined", "dynamic_lookup"]
@@ -266,11 +266,11 @@ __private_extern__ int _kext_apple_cc = __APPLE_CC__;
                 report["macho_validation"] = validation
                 report["kext_linked"] = validation["structural_validation_passed"]
                 if report["kext_linked"]:
-                    bundle = dest / "Mellow.kext"
+                    bundle = dest / "MellowGPU.kext"
                     (bundle / "Contents/MacOS").mkdir(parents=True, exist_ok=True)
-                    shutil.copyfile(binary, bundle / "Contents/MacOS/Mellow")
+                    shutil.copyfile(binary, bundle / "Contents/MacOS/MellowGPU")
                     expanded = expand_plist(info, {"PRODUCT_BUNDLE_IDENTIFIER": bundle_id,
-                                                  "PRODUCT_NAME:rfc1034identifier": "Mellow", "PRODUCT_NAME": "Mellow"})
+                                                  "PRODUCT_NAME:rfc1034identifier": "MellowGPU", "PRODUCT_NAME": "MellowGPU"})
                     if "$(" in json.dumps(expanded):
                         raise RuntimeError("Unexpanded Xcode variable in plist")
                     (bundle / "Contents/Info.plist").write_bytes(plistlib.dumps(expanded))

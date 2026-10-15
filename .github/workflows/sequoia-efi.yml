@@ -16,7 +16,7 @@ jobs:
           bash Tools/cross-build-native.sh Release
           mkdir -p build/255u-native
           bundle=$(python3 -c 'import json,pathlib; a=json.load(open("build/native-Release/build-settings.json")); s=next(x["buildSettings"] for x in a if x.get("target")=="Mellow"); print(pathlib.Path(s["TARGET_BUILD_DIR"])/s["FULL_PRODUCT_NAME"])')
-          cp -R "$bundle" build/255u-native/Mellow.kext
+          cp -R "$bundle" build/255u-native/MellowGPU.kext
           cp build/native-Release/macho-validation.json build/255u-native/
           xcrun clang -std=c11 -Wall -Wextra -Werror Userspace/sequoia_probe.c -framework IOKit -framework CoreFoundation -o build/255u-native/sequoia-probe
           xcrun clang -std=c11 -Wall -Wextra -Werror Userspace/tahoe_diag_client.c -framework IOKit -framework CoreFoundation -o build/255u-native/tahoe-diag-client
@@ -26,7 +26,7 @@ jobs:
           sw_vers > build/255u-native/build-host-version.txt
       - name: Reject generated SIMD instructions in the kernel executable
         run: |
-          xcrun llvm-objdump --disassemble build/255u-native/Mellow.kext/Contents/MacOS/Mellow > build/255u-native/kernel-disassembly.txt
+          xcrun llvm-objdump --disassemble build/255u-native/MellowGPU.kext/Contents/MacOS/MellowGPU > build/255u-native/kernel-disassembly.txt
           python3 - <<'PY'
           import json,re,pathlib
           p=pathlib.Path('build/255u-native/kernel-disassembly.txt')

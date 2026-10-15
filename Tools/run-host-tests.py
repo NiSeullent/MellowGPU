@@ -28,6 +28,7 @@ def main():
         ('tests/HardwareAccessTests.cpp', [], []),
         ('tests/modelTests.cpp', [], []),
         ('tests/patcher_policy_tests.cpp', [], []),
+        ('tests/full_system_qualification_tests.cpp', [], []),
         ('tests/xe_guc_tests.cpp', ['Mellow/XeGuCTransport.cpp'], [root / 'Mellow']),
         ('tests/xe_guc_region_owner_tests.cpp',
          ['Mellow/XeGuCRegionOwner.cpp', 'Mellow/XeGgtt.cpp', 'Drivers/PortedXe/XePageTable.cpp',

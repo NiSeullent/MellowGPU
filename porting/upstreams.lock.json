@@ -1,0 +1,289 @@
+{
+  "components": [
+    {
+      "abi": {
+        "checks": [],
+        "family": "nullmoth-v2.0.2-reference",
+        "headers": []
+      },
+      "commit": "d96eaca3f47e748ce5b1f5fa3913a85e48f1f5fb",
+      "configuration": [],
+      "consumers": [
+        "docs/MELLOWGPU-SPEC.md"
+      ],
+      "files": [
+        {
+          "git_blob": "f2575a258d86240add7334ca0d5c6fc961ea9a60",
+          "kind": "notice",
+          "path": "LICENSE",
+          "sha256": "1b5c7a92697863d38fd2779af76732acfb8f521b758781eab057ad966701b0b7",
+          "size_bytes": 4647,
+          "source_uri": "https://github.com/nullmoth/nvidia-macos-driver/blob/d96eaca3f47e748ce5b1f5fa3913a85e48f1f5fb/LICENSE",
+          "spdx": "LicenseRef-PolyForm-Noncommercial-1.0.0"
+        },
+        {
+          "git_blob": "0f80732aaa0f51a3928835503aaa2168b46de3f9",
+          "kind": "specification",
+          "path": "gpu-port/README.md",
+          "sha256": "b999a335eabb62c8b5394660aa8e3cc16bebb8483aace53abf9a16991addff42",
+          "size_bytes": 8913,
+          "source_uri": "https://github.com/nullmoth/nvidia-macos-driver/blob/d96eaca3f47e748ce5b1f5fa3913a85e48f1f5fb/gpu-port/README.md",
+          "spdx": "LicenseRef-Upstream-Notice"
+        }
+      ],
+      "id": "nullmoth-reference",
+      "license_review": {
+        "evidence_sha256": null,
+        "status": "unreviewed"
+      },
+      "patches": [],
+      "profile": "reference-only",
+      "remote": "https://github.com/nullmoth/nvidia-macos-driver",
+      "role": "reference-only",
+      "tracking_ref": "refs/heads/main"
+    },
+    {
+      "abi": {
+        "checks": [],
+        "family": "n48n-private-reference",
+        "headers": [
+          "src/navi48-bringup/src/Navi48NativeABI.h"
+        ]
+      },
+      "commit": "d1f7bad8408a0a2c016b067c477422975a59de44",
+      "configuration": [],
+      "consumers": [
+        "docs/MELLOWGPU-SPEC.md"
+      ],
+      "files": [
+        {
+          "git_blob": "38591a90d0b801a959a13c71fdfd554bab50533c",
+          "kind": "notice",
+          "path": "LICENSE",
+          "sha256": "ec3822b70df32a509380bcf9a5884384f54a8a622780fca4c5340e31bbe77d79",
+          "size_bytes": 1082,
+          "source_uri": "https://github.com/Almosst-DEV/Cobalt64/blob/d1f7bad8408a0a2c016b067c477422975a59de44/LICENSE",
+          "spdx": "MIT"
+        },
+        {
+          "git_blob": "028dcd775f0e013edc18fcb99d4a64ed7557a95d",
+          "kind": "specification",
+          "path": "README.md",
+          "sha256": "b47ba580fe38885f36367e61634b2e694ceddb5fb64060e13329eb338397d576",
+          "size_bytes": 5506,
+          "source_uri": "https://github.com/Almosst-DEV/Cobalt64/blob/d1f7bad8408a0a2c016b067c477422975a59de44/README.md",
+          "spdx": "MIT"
+        },
+        {
+          "git_blob": "6b835383a605b345187e69e1bd25a29dd59d7cdb",
+          "kind": "source",
+          "path": "src/navi48-bringup/src/Navi48NativeABI.h",
+          "sha256": "be272ec1dc42d0bb5f7bf285884a8dadf5f9b0748787ae9f89b9e3ec7d1deb0d",
+          "size_bytes": 66040,
+          "source_uri": "https://github.com/Almosst-DEV/Cobalt64/blob/d1f7bad8408a0a2c016b067c477422975a59de44/src/navi48-bringup/src/Navi48NativeABI.h",
+          "spdx": "MIT"
+        }
+      ],
+      "id": "cobalt64-reference",
+      "license_review": {
+        "evidence_sha256": null,
+        "status": "unreviewed"
+      },
+      "patches": [],
+      "profile": "reference-only",
+      "remote": "https://github.com/Almosst-DEV/Cobalt64",
+      "role": "reference-only",
+      "tracking_ref": "refs/heads/main"
+    },
+    {
+      "abi": {
+        "checks": [],
+        "family": "linux-xe-ggtt",
+        "headers": [
+          "drivers/gpu/drm/xe/regs/xe_gtt_defs.h"
+        ]
+      },
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "configuration": [],
+      "consumers": [
+        "porting/backend-recipes.json"
+      ],
+      "files": [
+        {
+          "git_blob": "d6bc19ef277be4fb9b47ad3f827598d254c89283",
+          "kind": "source",
+          "path": "drivers/gpu/drm/xe/regs/xe_gtt_defs.h",
+          "sha256": "eccce0f3010e0986377cf9270fdf92a6c85c6d860f52dfe8cf81b7763b4649cc",
+          "size_bytes": 1082,
+          "source_uri": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/xe/regs/xe_gtt_defs.h",
+          "spdx": "MIT"
+        }
+      ],
+      "id": "linux-xe",
+      "license_review": {
+        "evidence_sha256": null,
+        "status": "unreviewed"
+      },
+      "patches": [],
+      "profile": "darwin-permissive",
+      "remote": "https://github.com/torvalds/linux",
+      "role": "build-dependency",
+      "tracking_ref": "refs/heads/master"
+    },
+    {
+      "abi": {
+        "checks": [],
+        "family": "linux-nouveau-nvk",
+        "headers": []
+      },
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "configuration": [],
+      "consumers": [
+        "porting/backend-recipes.json"
+      ],
+      "files": [
+        {
+          "git_blob": "96c8a5b299999cf78df4092dca01467af6430426",
+          "kind": "source",
+          "license_notice_sha256": "cdaf37f61650a8e2ad05698cc5e62c87b7cc09a39ca7200b80d55ff0d62b1544",
+          "path": "drivers/gpu/drm/nouveau/nvkm/engine/device/base.c",
+          "sha256": "d9b9eac94f3ab08ca2940907b8d42397438f0cb3b404345c493536886d00e7b5",
+          "size_bytes": 130605,
+          "source_uri": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/nouveau/nvkm/engine/device/base.c",
+          "spdx": "MIT"
+        }
+      ],
+      "id": "linux-nouveau",
+      "license_review": {
+        "evidence_sha256": null,
+        "status": "unreviewed"
+      },
+      "patches": [],
+      "profile": "darwin-permissive",
+      "remote": "https://github.com/torvalds/linux",
+      "role": "build-dependency",
+      "tracking_ref": "refs/heads/master"
+    },
+    {
+      "abi": {
+        "checks": [],
+        "family": "mesa-anv-drm-source-subset",
+        "headers": []
+      },
+      "commit": "f5cb8ee032adabef599ae892ec4e42d796b84da9",
+      "configuration": [],
+      "consumers": [
+        "porting/backend-recipes.json"
+      ],
+      "files": [
+        {
+          "git_blob": "1651d44e1950864e6586555f88f7c31403c7514e",
+          "kind": "source",
+          "license_notice_sha256": "510392486a17a81e8bf38a6bc4ffe6833609419d630b6d4a0ce65f206371b6d7",
+          "path": "src/intel/vulkan/anv_device.c",
+          "sha256": "d252be2085aefdadf5fa454dec8453f8c8eef461fd89c8d458af7cc2eff1e2e8",
+          "size_bytes": 102008,
+          "source_uri": "https://gitlab.freedesktop.org/mesa/mesa/-/blob/f5cb8ee032adabef599ae892ec4e42d796b84da9/src/intel/vulkan/anv_device.c",
+          "spdx": "MIT"
+        }
+      ],
+      "id": "mesa-vulkan",
+      "license_review": {
+        "evidence_sha256": null,
+        "status": "unreviewed"
+      },
+      "patches": [],
+      "profile": "darwin-permissive",
+      "remote": "https://gitlab.freedesktop.org/mesa/mesa",
+      "role": "build-dependency",
+      "tracking_ref": "refs/heads/main"
+    },
+    {
+      "abi": {
+        "checks": [],
+        "family": "linux-drm-userspace-transport",
+        "headers": []
+      },
+      "commit": "b97cbde15c5c3abfe44d78e8f57139e50f612fec",
+      "configuration": [],
+      "consumers": [
+        "porting/backend-recipes.json"
+      ],
+      "files": [
+        {
+          "git_blob": "07dec49f4e281028db9e635c2b21779b899f3d93",
+          "kind": "source",
+          "path": "xf86drm.c",
+          "sha256": "ad1ba6cf51127e196b67b96314ffdc3d6a4cb36bcf3e961965331b714cd7e706",
+          "size_bytes": 135486,
+          "source_uri": "https://gitlab.freedesktop.org/mesa/libdrm/-/blob/b97cbde15c5c3abfe44d78e8f57139e50f612fec/xf86drm.c",
+          "spdx": "MIT"
+        }
+      ],
+      "id": "libdrm",
+      "license_review": {
+        "evidence_sha256": null,
+        "status": "unreviewed"
+      },
+      "patches": [],
+      "profile": "darwin-permissive",
+      "remote": "https://gitlab.freedesktop.org/mesa/libdrm",
+      "role": "build-dependency",
+      "tracking_ref": "refs/heads/main"
+    },
+    {
+      "abi": {
+        "checks": [],
+        "family": "nvidia-rm-610.57.04-research-only",
+        "headers": []
+      },
+      "commit": "e4a5faa2567f28c8eabe0ebb6422b6d0abcf37eb",
+      "configuration": [],
+      "consumers": [
+        "porting/backend-recipes.json"
+      ],
+      "files": [
+        {
+          "git_blob": "04a5c64bd2b0eacaacaed78cd20ba11095a69bb0",
+          "kind": "source",
+          "path": "kernel-open/nvidia/nv.c",
+          "sha256": "25e8c02041fc42455ea95c3b601a40defa587ab94511c890fc2e0dd2b41fb36c",
+          "size_bytes": 168614,
+          "source_uri": "https://github.com/NVIDIA/open-gpu-kernel-modules/blob/e4a5faa2567f28c8eabe0ebb6422b6d0abcf37eb/kernel-open/nvidia/nv.c",
+          "spdx": "MIT"
+        }
+      ],
+      "id": "nvidia-open-rm",
+      "license_review": {
+        "evidence_sha256": null,
+        "status": "unreviewed"
+      },
+      "patches": [],
+      "profile": "darwin-permissive",
+      "remote": "https://github.com/NVIDIA/open-gpu-kernel-modules",
+      "role": "build-dependency",
+      "tracking_ref": "refs/heads/main"
+    }
+  ],
+  "schema_version": 1,
+  "specifications": [
+    {
+      "consumers": [
+        "docs/MELLOWGPU-SPEC.md"
+      ],
+      "id": "apple-metal3-programming-model",
+      "revision": "content-observed-2026-10-16",
+      "sha256": "aacd65ddd8380c528ed58bb89f707a02f1bdfd2c42a48a5d3936cc9f098108dc",
+      "uri": "https://developer.apple.com/tutorials/data/documentation/metal/mtlgpufamily/metal3.json"
+    },
+    {
+      "consumers": [
+        "docs/MELLOWGPU-SPEC.md"
+      ],
+      "id": "apple-metal-feature-tables",
+      "revision": "content-observed-2026-10-16",
+      "sha256": "9f31df15dd6827545702c5a0845f6e36e1889878cd0e534123bd70211e5c00a8",
+      "uri": "https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf"
+    }
+  ]
+}

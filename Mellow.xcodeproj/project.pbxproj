@@ -98,7 +98,7 @@
 		D1A625064D414700000000A2 /* TahoeDiagnosticProtocol.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TahoeDiagnosticProtocol.cpp; sourceTree = "<group>"; };
 		D1A625064D414700000000A1 /* TahoeDiagnostic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TahoeDiagnostic.cpp; sourceTree = "<group>"; };
 		C42F5B82067D421096F10002 /* PortedXeBindings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PortedXeBindings.cpp; sourceTree = "<group>"; };
-		1C748C271C21952C0024EED2 /* Mellow.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Mellow.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C748C271C21952C0024EED2 /* MellowGPU.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MellowGPU.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C748C2E1C21952C0024EED2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2E1301D42CD9026F00CFD021 /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = MacKernelSDK/Library/x86_64/libkmod.a; sourceTree = "<group>"; };
 		2E1CC3E02BA5DBD9004EC8F6 /* DisplayMergeNub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayMergeNub.h; sourceTree = "<group>"; };
@@ -227,7 +227,7 @@
 		1C748C281C21952C0024EED2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1C748C271C21952C0024EED2 /* Mellow.kext */,
+				1C748C271C21952C0024EED2 /* MellowGPU.kext */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -394,7 +394,7 @@
 			);
 			name = Mellow;
 			productName = Mellow;
-			productReference = 1C748C271C21952C0024EED2 /* Mellow.kext */;
+			productReference = 1C748C271C21952C0024EED2 /* MellowGPU.kext */;
 			productType = "com.apple.product-type.kernel-extension";
 		};
 /* End PBXNativeTarget section */
@@ -671,10 +671,10 @@
 					"$(PROJECT_DIR)/MacKernelSDK/Library/x86_64",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MODULE_NAME = com.NiSeullent.Mellow;
+				MODULE_NAME = com.NiSeullent.MellowGPU;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 0.4.4;
+				MODULE_VERSION = 0.5.0;
 				OTHER_CFLAGS = (
 					"-mno-mmx",
 					"-mno-sse",
@@ -692,8 +692,8 @@
 					"$(inherited)",
 				);
 				OTHER_LDFLAGS = "-static";
-				PRODUCT_BUNDLE_IDENTIFIER = com.NiSeullent.Mellow;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NiSeullent.MellowGPU;
+				PRODUCT_NAME = MellowGPU;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = kext;
@@ -726,10 +726,10 @@
 				);
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MODULE_NAME = com.NiSeullent.Mellow;
+				MODULE_NAME = com.NiSeullent.MellowGPU;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 0.4.4;
+				MODULE_VERSION = 0.5.0;
 				OTHER_CFLAGS = (
 					"-mno-mmx",
 					"-mno-sse",
@@ -747,8 +747,8 @@
 					"$(inherited)",
 				);
 				OTHER_LDFLAGS = "-static";
-				PRODUCT_BUNDLE_IDENTIFIER = com.NiSeullent.Mellow;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NiSeullent.MellowGPU;
+				PRODUCT_NAME = MellowGPU;
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = kext;
@@ -840,10 +840,10 @@
 					"$(PROJECT_DIR)/MacKernelSDK/Library/x86_64",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MODULE_NAME = com.NiSeullent.Mellow;
+				MODULE_NAME = com.NiSeullent.MellowGPU;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 0.4.4;
+				MODULE_VERSION = 0.5.0;
 				OTHER_CFLAGS = (
 					"-mno-mmx",
 					"-mno-sse",
@@ -863,8 +863,8 @@
 					"$(inherited)",
 				);
 				OTHER_LDFLAGS = "-static";
-				PRODUCT_BUNDLE_IDENTIFIER = com.NiSeullent.Mellow;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NiSeullent.MellowGPU;
+				PRODUCT_NAME = MellowGPU;
 				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = kext;
 			};

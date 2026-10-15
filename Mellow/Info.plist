@@ -5,27 +5,31 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
-	<string>Mellow</string>
+	<string>MellowGPU</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.NiSeullent.Mellow</string>
+	<string>com.NiSeullent.MellowGPU</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Mellow</string>
+	<string>MellowGPU</string>
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.4.4</string>
+	<string>0.5.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.4.4</string>
+	<string>0.5.0</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>MellowTahoeDiagnostic</key>
 		<dict>
+			<key>MellowGPUQualification</key>
+			<string>unqualified</string>
+			<key>MellowGPUQualificationProfileVersion</key>
+			<integer>1</integer>
 			<key>CFBundleIdentifier</key>
-			<string>com.NiSeullent.Mellow</string>
+			<string>com.NiSeullent.MellowGPU</string>
 			<key>IOClass</key>
 			<string>MellowTahoeDiagnostic</string>
 			<key>IOProviderClass</key>
@@ -41,8 +45,12 @@
 		</dict>
 		<key>DisplayAppleIDInjection</key>
 		<dict>
+			<key>MellowGPUQualification</key>
+			<string>unqualified</string>
+			<key>MellowGPUQualificationProfileVersion</key>
+			<integer>1</integer>
 			<key>CFBundleIdentifier</key>
-			<string>com.NiSeullent.Mellow</string>
+			<string>com.NiSeullent.MellowGPU</string>
 			<key>DisplayProductID</key>
 			<integer>18841</integer>
 			<key>DisplayVendorID</key>
@@ -57,8 +65,12 @@
 				<string>AppleBacklightDisplay</string>
 			</dict>
 		</dict>
-		<key>com.NiSeullent.Mellow</key>
+		<key>com.NiSeullent.MellowGPU</key>
 		<dict>
+			<key>MellowGPUQualification</key>
+			<string>unqualified</string>
+			<key>MellowGPUQualificationProfileVersion</key>
+			<integer>1</integer>
 			<key>CFBundleIdentifier</key>
 			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			<key>IOClass</key>
@@ -116,6 +128,8 @@
 	</dict>
 	<key>OSBundleRequired</key>
 	<string>Safe Boot</string>
+	<key>MellowGPUDevelopmentLabel</key>
+	<string>0.5.0-dev</string>
 	<key>MellowDevelopmentBuild</key>
 	<true/>
 	<key>MellowValidationStatus</key>

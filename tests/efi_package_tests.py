@@ -40,9 +40,9 @@ class PackageControls(unittest.TestCase):
                 if not dep.startswith('com.apple.'): self.assertIn(dep,loaded)
             self.assertNotIn(info['CFBundleIdentifier'],loaded)
             loaded.add(info['CFBundleIdentifier'])
-        self.assertIn('com.NiSeullent.Mellow',loaded)
-        info=plistlib.loads((oc/'Kexts/Mellow.kext/Contents/Info.plist').read_bytes())
-        self.assertEqual(info['CFBundleVersion'],'0.4.4')
+        self.assertIn('com.NiSeullent.MellowGPU',loaded)
+        info=plistlib.loads((oc/'Kexts/MellowGPU.kext/Contents/Info.plist').read_bytes())
+        self.assertEqual(info['CFBundleVersion'],'0.5.0')
         self.assertEqual(info['IOKitPersonalities']['MellowTahoeDiagnostic']['IOPCIPrimaryMatch'].lower(),'0x7d418086')
 
     def test_acpi_uid_and_headers(self):
@@ -82,7 +82,7 @@ class PackageControls(unittest.TestCase):
             config.write_bytes(plistlib.dumps(cfg))
             with self.assertRaises(ValueError): V.validate(root)
             config.write_bytes(original)
-            binary=root/'EFI/OC/Kexts/Mellow.kext/Contents/MacOS/Mellow'
+            binary=root/'EFI/OC/Kexts/MellowGPU.kext/Contents/MacOS/MellowGPU'
             data=bytearray(binary.read_bytes());data[-1]^=1;binary.write_bytes(data)
             with self.assertRaises(ValueError): V.validate(root)
 

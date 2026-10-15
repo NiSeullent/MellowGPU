@@ -14,7 +14,7 @@ spec.loader.exec_module(validator)
 
 def main():
     if len(sys.argv) != 2:
-        raise SystemExit("Usage: build_macho_validation.py path/to/actual/Mellow.kext/Contents/MacOS/Mellow")
+        raise SystemExit("Usage: build_macho_validation.py path/to/actual/MellowGPU.kext/Contents/MacOS/MellowGPU")
     original = Path(sys.argv[1]).read_bytes()
     passed = 0
     with tempfile.TemporaryDirectory(prefix="mellow-validator-") as temporary:

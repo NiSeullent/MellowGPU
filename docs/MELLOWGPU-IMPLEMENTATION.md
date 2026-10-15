@@ -34,11 +34,11 @@ must agree after rename. Development packaging must disclose its actual scope.
 Files: active Xcode product, Info.plist, cross-build/EFI/packaging tools and their
 tests; existing native/EFI workflows. Owner: framebuffer_review.
 
-- [ ] Add rename regression tests and observe the old product fail.
-- [ ] Build `MellowGPU.kext` / `MellowGPU` / `com.NiSeullent.MellowGPU` consistently.
-- [ ] Preserve historical evidence and source interfaces; reject simultaneous
+- [x] Add rename regression tests and observe the old product fail.
+- [x] Build `MellowGPU.kext` / `MellowGPU` / `com.NiSeullent.MellowGPU` consistently.
+- [x] Preserve historical evidence and source interfaces; reject simultaneous
   old/new loading in active migration tools.
-- [ ] Execute native cross-build and Mach-O/product validation.
+- [x] Execute native cross-build and Mach-O/product validation.
 
 ## Task 2: Shared native lifecycle
 
@@ -49,10 +49,10 @@ Owner: driver_research.
 Interface: fixed-slot typed lease tokens; stop/reset/device-loss close admission;
 two-phase native drain plan; separate adapter observation of real quiescence.
 
-- [ ] Test old/absent behavior, stale/double tokens, unknown work, reset, teardown,
+- [x] Test old/absent behavior, stale/double tokens, unknown work, reset, teardown,
   capacity and reentrant plan completion.
-- [ ] Implement freestanding C++17 code, without native callbacks under a lock.
-- [ ] Execute actual C++ tests with ASan/UBSan and document native adapter duties.
+- [x] Implement freestanding C++17 code, without native callbacks under a lock.
+- [x] Execute actual C++ tests with ASan/UBSan and document native adapter duties.
 
 ## Task 3: Full Metal 3 support-profile policy
 
@@ -64,10 +64,10 @@ Interface: assess internal qualification records against an exact compatibility
 digest and device generation. Required API inventory, native resources/sync,
 WindowServer/scanout, apps, games, recovery and performance gates all apply.
 
-- [ ] Test missing gates, software evidence, CPU transfers, incomplete inventory,
+- [x] Test missing gates, software evidence, CPU transfers, incomplete inventory,
   wrong ABI pair, stale tuple/epoch, reused records and successful policy fixtures.
-- [ ] Implement explicit rejection statuses; never call the policy an attestation.
-- [ ] Keep real device support empty; execute host tests with sanitizers.
+- [x] Implement explicit rejection statuses; never call the policy an attestation.
+- [x] Keep real device support empty; execute host tests with sanitizers.
 
 ## Task 4: Immutable upstream integration
 
@@ -75,17 +75,22 @@ Files: `Tools/mellow-upstream.py`, `Tools/mellow_port/upstreams.py`,
 `tests/test_mellow_upstreams.py`, `porting/upstreams.lock.json`,
 `.github/workflows/upstreams.yml`. Owner: local_context.
 
-- [ ] Write actual temporary-Git tests for revision/blob/content mismatch,
+- [x] Write actual temporary-Git tests for revision/blob/content mismatch,
   traversal, dirty worktrees, role changes, malformed metadata and ABI drift.
-- [ ] Implement strict lock validation, membership verification and candidate
+- [x] Implement strict lock validation, membership verification and candidate
   discovery using existing intake; never execute fetched scripts.
-- [ ] Pin primary references/dependencies/specs and preserve component licenses.
-- [ ] Run offline tests and live read-only discovery; retain candidate reports.
+- [x] Pin primary references/dependencies/specs and preserve component licenses.
+- [x] Run offline tests and live read-only discovery; retain candidate reports.
 
 ## Task 5: Integration and publication
 
 Files: README, attribution addition, remake CI, release notes and package manifest.
 Owner: parent.
+
+The clean-source native build and development packager are implemented with
+regression tests. Publication receipts and release asset checksums record the
+exact released commit; they are generated after the source commit, rather than
+stamping a previous binary with a new revision.
 
 - [ ] Independently review agent changes and run appropriate existing host,
   platform, intake, new contract tests and native bundle checks.

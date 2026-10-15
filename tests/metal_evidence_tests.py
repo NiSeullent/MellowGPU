@@ -124,7 +124,7 @@ class MachOInventoryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         binary = Path(os.environ.get("MELLOW_KEXT_BINARY",
-                      str(ROOT / "build/Release/Mellow.kext/Contents/MacOS/Mellow")))
+                      str(ROOT / "build/Release/MellowGPU.kext/Contents/MacOS/MellowGPU")))
         cls.data = binary.read_bytes()
 
     def test_real_crossbuilt_kext_inventory_not_abi_pass(self):
@@ -229,7 +229,7 @@ if __name__ == "__main__":
     if args.report:
         inputs = [Path(__file__), ROOT / "Tools/metal-run.py", ROOT / "Tools/abi-inventory.py",
                   ROOT / "Tools/metal-offline-compile.py", ROOT / "compiler-evidence/mellow_evidence_mtl.bin",
-                  ROOT / "build/Release/Mellow.kext/Contents/MacOS/Mellow"]
+                  ROOT / "build/Release/MellowGPU.kext/Contents/MacOS/MellowGPU"]
         report = {"passed": result.wasSuccessful(), "test_methods": result.testsRun, "subcases": result.subcases,
                   "gpu_execution_tested": False, "native_swift_compilation_tested": False,
                   "scope": "host-side parser/evidence rejection tests, including actual offline Intel and Mach-O containers",

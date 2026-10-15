@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1C748C261C21952C0024EED2"
-               BuildableName = "Mellow.kext"
+               BuildableName = "MellowGPU.kext"
                BlueprintName = "Mellow"
                ReferencedContainer = "container:Mellow.xcodeproj">
             </BuildableReference>
@@ -50,7 +50,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1C748C261C21952C0024EED2"
-            BuildableName = "Mellow.kext"
+            BuildableName = "MellowGPU.kext"
             BlueprintName = "Mellow"
             ReferencedContainer = "container:Mellow.xcodeproj">
          </BuildableReference>

@@ -1,0 +1,54 @@
+name: MellowGPU pinned upstream intake
+
+on:
+  push:
+    paths:
+      - Tools/mellow-upstream.py
+      - Tools/mellow_port/**
+      - porting/upstreams.lock.json
+      - tests/test_mellow_upstreams.py
+      - .github/workflows/upstreams.yml
+  pull_request:
+    paths:
+      - Tools/mellow-upstream.py
+      - Tools/mellow_port/**
+      - porting/upstreams.lock.json
+      - tests/test_mellow_upstreams.py
+      - .github/workflows/upstreams.yml
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-intake:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, primary ref observed 2026-10-16
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Execute real temporary-Git and existing intake regressions
+        run: |
+          python3 -m unittest discover -s tests -p 'test_mellow_upstreams.py' -v
+          python3 -m unittest discover -s tests -p 'test_mellow_port.py' -v
+      - name: Validate immutable lock and write current gap report
+        run: |
+          python3 Tools/mellow-upstream.py validate
+          mkdir -p "$RUNNER_TEMP/mellow-upstream"
+          python3 Tools/mellow-upstream.py report --output "$RUNNER_TEMP/mellow-upstream/locked-inputs.json"
+      - name: Discover source and specification candidates
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: python3 Tools/mellow-upstream.py discover --output "$RUNNER_TEMP/mellow-upstream/candidates.json"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: mellowgpu-upstream-review-only
+          path: ${{ runner.temp }}/mellow-upstream/
+          if-no-files-found: error
+          retention-days: 14

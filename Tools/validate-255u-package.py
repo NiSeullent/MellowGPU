@@ -7,6 +7,10 @@ import plistlib
 import re
 import struct
 from pathlib import Path, PurePosixPath
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from product_identity import BUNDLE, BUNDLE_ID, LEGACY_BUNDLE, validate_configured_product
+
 
 FONT_SUFFIXES = {'.ttf', '.otf', '.woff', '.woff2', '.pfb', '.pfm', '.pf2', '.fon', '.fnt'}
 UNVERIFIED = (
@@ -118,6 +122,8 @@ def validate(root, verify_sha=False):
         if status.get(key) is not False:
             raise ValueError('Unexpected hardware/Metal success claim: ' + key)
     for path in root.rglob('*'):
+        if path.name == LEGACY_BUNDLE:
+            raise ValueError('Legacy Mellow bundle cannot be included in active MellowGPU package')
         if path.is_symlink() or path.suffix.lower() in FONT_SUFFIXES:
             raise ValueError('Unexpected package file: ' + str(path))
     profiles = []
@@ -130,10 +136,12 @@ def validate(root, verify_sha=False):
             if len(data) < 36 or data[:4] != b'SSDT' or struct.unpack_from('<I', data, 4)[0] != len(data) or sum(data) % 256:
                 raise ValueError('Invalid generated SSDT: ' + table.name)
         loaded = set()
+        configured_products = []
         for entry in config['Kernel']['Add']:
             bundle = relative_path(oc / 'Kexts', entry['BundlePath'], directory=True)
             plist = relative_path(bundle, entry['PlistPath'])
             info = plistlib.loads(plist.read_bytes())
+            configured_products.append((entry['BundlePath'], info))
             executable = info.get('CFBundleExecutable')
             if executable:
                 expected = 'Contents/MacOS/' + executable
@@ -155,6 +163,7 @@ def validate(root, verify_sha=False):
                     if not dependency.startswith('com.apple.') and dependency not in loaded:
                         raise ValueError('Unresolved or out-of-order dependency: ' + dependency)
                 loaded.add(identifier)
+        validate_configured_product(configured_products)
         for entry in config['UEFI']['Drivers']:
             pe_x64(relative_path(oc / 'Drivers', entry['Path']))
         for entry in config['Misc']['Tools']:
@@ -165,7 +174,7 @@ def validate(root, verify_sha=False):
     for required in (root / 'EFI/BOOT/BOOTx64.efi', oc / 'OpenCore.efi'):
         pe_x64(required)
     built = json.loads((root / 'Verification/macho-validation.json').read_text())
-    mellow_binary = oc / 'Kexts/Mellow.kext/Contents/MacOS/Mellow'
+    mellow_binary = oc / 'Kexts/MellowGPU.kext/Contents/MacOS/MellowGPU'
     if not built.get('structural_validation_passed') or built['sha256'] != sha(mellow_binary):
         raise ValueError('Mellow executable does not match its native build receipt')
     for name in ('sequoia-probe', 'tahoe-diag-client', 'metal-probe'):

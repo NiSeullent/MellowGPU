@@ -1,19 +1,24 @@
 """Derive controlled boot profiles from a fully assembled OpenCore configuration."""
 
 import copy
-
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from product_identity import BUNDLE, LEGACY_BUNDLE
 
 APPLE_BOOT_GUID = '7C436110-AB2A-4BBB-A880-FE41995C9F82'
-MELLOW_BUNDLE = 'Mellow.kext'
+MELLOW_BUNDLE = BUNDLE
 
 
 def _disable_mellow(config):
     """Return a profile that changes only Mellow loading and its boot argument."""
     profile = copy.deepcopy(config)
+    if any(entry['BundlePath'] == LEGACY_BUNDLE for entry in profile['Kernel']['Add']):
+        raise ValueError('Replace legacy Mellow before configuring MellowGPU')
     entries = [entry for entry in profile['Kernel']['Add']
                if entry['BundlePath'] == MELLOW_BUNDLE]
     if len(entries) != 1 or entries[0]['Enabled'] is not True:
-        raise ValueError('Expected exactly one enabled Mellow.kext entry')
+        raise ValueError('Expected exactly one enabled MellowGPU.kext entry')
     arguments = profile['NVRAM']['Add'][APPLE_BOOT_GUID]['boot-args'].split()
     if arguments.count('-mellowdiag') != 1 or '-mellowoff' in arguments:
         raise ValueError('Expected one diagnostic boot argument and no disable argument')

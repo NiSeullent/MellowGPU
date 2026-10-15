@@ -39,7 +39,7 @@ class BootProfileTests(unittest.TestCase):
                 'SetupVirtualMap': True}},
             'Kernel': {'Add': [
                 {'BundlePath': 'Lilu.kext', 'Enabled': True},
-                {'BundlePath': 'Mellow.kext', 'Enabled': True}],
+                {'BundlePath': 'MellowGPU.kext', 'Enabled': True}],
                 'Emulate': {'Cpuid1Data': b'\xea\x06\x09\x00'}},
             'NVRAM': {'Add': {self.guid: {
                 'boot-args': '-v keepsyms=1 debug=0x100 -mellowdiag'}}},
@@ -82,7 +82,7 @@ class BootProfileTests(unittest.TestCase):
                 config = copy.deepcopy(self.default)
                 if malformed == 'duplicate':
                     config['Kernel']['Add'].append(
-                        {'BundlePath': 'Mellow.kext', 'Enabled': True})
+                        {'BundlePath': 'MellowGPU.kext', 'Enabled': True})
                 elif malformed == 'disabled':
                     config['Kernel']['Add'][1]['Enabled'] = False
                 elif malformed == 'missing-argument':

@@ -5,7 +5,10 @@ import hashlib
 import json
 import plistlib
 import struct
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from product_identity import BUNDLE_ID, VERSION, validate_product_info
 
 MH_MAGIC_64 = 0xFEEDFACF
 CPU_X86_64 = 0x01000007
@@ -102,7 +105,7 @@ def inspect_binary(path):
                             report["kmod_identifier"] = data[pos + 16:pos + 80].split(b"\0", 1)[0].decode()
                             report["kmod_version"] = data[pos + 80:pos + 144].split(b"\0", 1)[0].decode()
                             break
-        for required in ("_kmod_info", "_Mellow_kern_start", "_Mellow_kern_stop"):
+        for required in ("_kmod_info", "_MellowGPU_kern_start", "_MellowGPU_kern_stop"):
             if required not in report["defined_symbols"]:
                 report["errors"].append("Missing module definition " + required)
         for user_symbol in ("_main", "dyld_stub_binder", "_dyld_stub_binder", "___cxa_atexit", "_atexit",
@@ -112,13 +115,15 @@ def inspect_binary(path):
     for section in ("__mod_init_func", "__mod_term_func"):
         if not any(s["name"] == section and s["size"] > 0 for s in report["sections"]):
             report["errors"].append("Mellow static lifecycle section missing: " + section)
+    if report.get("kmod_identifier") != BUNDLE_ID or report.get("kmod_version") != VERSION:
+        report["errors"].append("KMOD identity is not the current MellowGPU development product")
     report["structural_validation_passed"] = not report["errors"]
     return report
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("input", type=Path, help="Mellow.kext bundle or thin Mach-O executable")
+    parser.add_argument("input", type=Path, help="MellowGPU.kext bundle or thin Mach-O executable")
     parser.add_argument("--output", type=Path, help="Write detailed JSON including full import inventory")
     args = parser.parse_args()
     source = args.input.resolve()
@@ -132,6 +137,10 @@ def main():
         source = source / "Contents/MacOS" / executable
     report = inspect_binary(source)
     if plist is not None:
+        try:
+            validate_product_info(plist)
+        except ValueError as error:
+            report["errors"].append(str(error))
         report["bundle_identifier"] = plist.get("CFBundleIdentifier")
         report["bundle_version"] = plist.get("CFBundleVersion")
         report["bundle_dependencies"] = plist.get("OSBundleLibraries", {})

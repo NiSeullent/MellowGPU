@@ -3,6 +3,7 @@
 import argparse, copy, hashlib, json, os, plistlib, re, shutil, stat, struct, subprocess, tarfile, tempfile, urllib.request, zipfile
 from pathlib import Path, PurePosixPath
 from efi_boot_profiles import build_profiles
+from product_identity import BUNDLE, LEGACY_BUNDLE
 ROOT=Path(__file__).resolve().parents[1]
 FONT_SUFFIXES={'.ttf','.otf','.woff','.woff2','.pfb','.pfm','.fon','.fnt'}
 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -64,12 +65,12 @@ def configuration(sample,oc):
     p['Kernel']['Scheme'].update(KernelArch='x86_64',KernelCache='Auto')
     order=['Lilu.kext','VirtualSMC.kext','SMCBatteryManager.kext','NVMeFix.kext',
            'VoodooPS2Controller.kext','VoodooPS2Controller.kext/Contents/PlugIns/VoodooPS2Keyboard.kext',
-           'RealtekRTL8111.kext','Mellow.kext']
+           'RealtekRTL8111.kext','MellowGPU.kext']
     for rel in order:
         info=plistlib.loads((oc/'Kexts'/rel/'Contents/Info.plist').read_bytes())
         exe=info.get('CFBundleExecutable')
         p['Kernel']['Add'].append({'Arch':'x86_64','BundlePath':rel,
-          'Comment':'Mellow 0.4.4 diagnostic only; native Metal missing' if rel=='Mellow.kext' else info['CFBundleIdentifier'],
+          'Comment':'MellowGPU 0.5.0-dev diagnostic only; native Metal missing' if rel=='MellowGPU.kext' else info['CFBundleIdentifier'],
           'Enabled':True,'ExecutablePath':'Contents/MacOS/'+exe if exe else '',
           'MaxKernel':'24.99.99','MinKernel':'24.0.0','PlistPath':'Contents/Info.plist'})
     p['Misc']['Boot'].update(HideAuxiliary=True,LauncherOption='Disabled',PickerMode='Builtin',
@@ -143,7 +144,7 @@ def main():
         plugins=oc/'Kexts/VoodooPS2Controller.kext/Contents/PlugIns'
         for child in plugins.iterdir():
             if child.name!='VoodooPS2Keyboard.kext': shutil.rmtree(child)
-        treecopy(native/'Mellow.kext',oc/'Kexts/Mellow.kext')
+        treecopy(native/'MellowGPU.kext',oc/'Kexts/MellowGPU.kext')
         # Preserve original guarded personalities and the exact built Info.plist.
         # Preserve the exact built Info.plist; no post-link identity or Mach-O patching occurs.
         acpi_reports=[]
@@ -176,7 +177,7 @@ def main():
     treecopy(ROOT/'LICENSES',licenses/'Mellow-component-licenses')
     for name in ('sequoia-probe','tahoe-diag-client','metal-probe'):
         shutil.copy2(native/name,tools/name); (tools/name).chmod(0o755)
-    for name in ('personalize-255u.py','validate-255u-package.py','metal-run.py','metal-probe.swift','collect-255u-logs.sh'):
+    for name in ('personalize-255u.py','product_identity.py','validate-255u-package.py','metal-run.py','metal-probe.swift','collect-255u-logs.sh'):
         shutil.copy2(ROOT/'Tools'/name,tools/name)
     for name in ('macho-validation.json','kernel-simd-audit.json','source-commit.txt','xcode-version.txt','build-host-version.txt','cgl-attempt-exit-code.txt','VALIDATION-SCOPE.txt'):
         if (native/name).exists(): shutil.copy2(native/name,verification/name)
@@ -186,7 +187,11 @@ def main():
             target=verification/name; target.mkdir()
             for file in folder.glob('*.json'): shutil.copy2(file,target/file.name)
     shutil.copy2(ROOT/'EFI-255U/hardware.json',stage/'hardware.json'); shutil.copy2(ROOT/'EFI-255U/dependencies.lock.json',stage/'dependencies.lock.json')
-    shutil.copy2(ROOT/'EFI-255U/README-FIRST.ko.md',stage/'README-FIRST.ko.md')
+    # Preserve the historical source document. Adapt the generated delivery's
+    # active product references, rather than shipping instructions for old bytes.
+    delivery_readme=(ROOT/'EFI-255U/README-FIRST.ko.md').read_text()
+    delivery_readme=delivery_readme.replace(LEGACY_BUNDLE,BUNDLE).replace('Mellow 0.4.4','MellowGPU 0.5.0-dev')
+    (stage/'README-FIRST.ko.md').write_text(delivery_readme)
     treecopy(ROOT/'EFI-255U/ACPI',sources/'ACPI')
     with open(sources/'Mellow-source.tar.gz','wb') as f:
         subprocess.run(['git','archive','--format=tar.gz','--prefix=Mellow/',source_commit],cwd=ROOT,stdout=f,check=True)
@@ -203,7 +208,7 @@ def main():
           ['git','branch','--show-current'],cwd=ROOT,text=True).strip() or 'detached',
       'source_commit':source_commit,
       'ci_url':os.environ.get('GITHUB_SERVER_URL','https://github.com')+'/'+os.environ.get('GITHUB_REPOSITORY','NiSeullent/Mellow')+'/actions/runs/'+os.environ.get('GITHUB_RUN_ID','local'),
-      'mellow_version':'0.4.4','opencore_version':'1.0.7',
+      'mellow_version':'0.5.0','product':'MellowGPU','development_label':'0.5.0-dev','opencore_version':'1.0.7',
       'target_boot_verified':False,'target_kernel_load_verified':False,'native_gpu_submission_implemented':False,
       'apple_metal_abi_implemented':False,'full_metal_acceleration_implemented':False,'windowserver_acceleration_verified':False,
       'real_kernel_binary_built':True,'read_only_physical_probe_implemented':True,

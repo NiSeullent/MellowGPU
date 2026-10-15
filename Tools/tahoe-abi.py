@@ -376,7 +376,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--extracted-system", type=Path, required=True, help="Extracted 'macOS Base System' directory")
     parser.add_argument("--lilu", type=Path, required=True, help="Actual Lilu.kext bundle")
-    parser.add_argument("--mellow", type=Path, required=True, help="Actual built Mellow.kext bundle")
+    parser.add_argument("--mellow", type=Path, required=True, help="Actual built MellowGPU.kext bundle")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)

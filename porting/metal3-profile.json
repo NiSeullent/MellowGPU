@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "profile": "mellowgpu-metal3-system-v1",
+  "specification": "docs/MELLOWGPU-SPEC.md",
+  "required_programming_model": "Metal3",
+  "required_gates": [
+    "metal3_api_inventory", "shader_semantics", "native_resources",
+    "native_synchronization", "windowserver", "native_scanout",
+    "applications", "games", "lifecycle_recovery", "performance"
+  ],
+  "api_inventory_complete": false,
+  "hardware_attestation_implemented": false,
+  "qualified_devices": [],
+  "cpu_rasterization_qualifies": false,
+  "cpu_pixel_transfers_qualify": false,
+  "policy_unit_tests_are_hardware_evidence": false,
+  "vendor_routes": {
+    "intel": ["i915/ANV", "xe/ANV"],
+    "amd": ["amdgpu/RADV"],
+    "nvidia": ["nouveau/NVK"]
+  },
+  "nvidia_open_rm": "Separate ABI research; no matching production userspace adapter yet",
+  "normative_sources": [
+    "https://developer.apple.com/documentation/metal/mtlgpufamily/metal3",
+    "https://developer.apple.com/metal/resources/"
+  ],
+  "status": "development-contracts; full native implementation and hardware qualification pending"
+}

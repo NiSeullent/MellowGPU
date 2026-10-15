@@ -1,6 +1,17 @@
 Mellow Attribution Notice
 =========================
 
+MellowGPU remake development, 2026-10-16
+--------------------------------------
+The active product is renamed MellowGPU. The original Mellow history, source,
+licenses and hardware-evidence limits are preserved. New development adds
+vendor-neutral native lifetime contracts, complete Metal 3/system support-profile
+policy and immutable upstream-update verification. NullMoth and Cobalt64 are
+architectural references; their code is not copied or relicensed by this change.
+Build and synthetic contract tests do not establish full Metal 3, WindowServer,
+application/game or physical display acceleration. Existing root and per-file
+licenses continue to control their respective material.
+
 Platform 0.3.0 / kext 0.4.3 development additions, 2026-09-06
 ----------------------------------------------------------
 Adds explicit portable C++ compute objects, original MSL/AIR subset translation,

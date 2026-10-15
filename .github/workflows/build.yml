@@ -1,4 +1,4 @@
-name: Build and validate Mellow
+name: Build and validate MellowGPU
 
 on:
   push:
@@ -22,17 +22,21 @@ jobs:
           plutil -lint Mellow/Info.plist
       - name: Host policy and Metal evidence tests
         run: |
+          python3 tests/product_migration_tests.py
+          python3 tests/efi_boot_profiles_tests.py
           python3 Tools/run-host-tests.py --cxx clang++ --out build/host-tests
           python3 tests/metal_session_tests.py
           python3 tests/acceptance_cli_tests.py
           sh -n Tools/collect-boot-evidence.sh
       - name: Build actual kext with Xcode
         run: |
-          bash Tools/cross-build-native.sh Release
+          python3 Tools/build-mellowgpu-development.py --out build/development-native
       - name: Test evidence parser against the newly built kext
         run: |
-          bundle=$(python3 -c 'import json,pathlib; a=json.load(open("build/native-Release/build-settings.json")); s=next(x["buildSettings"] for x in a if x.get("target")=="Mellow"); print(pathlib.Path(s["TARGET_BUILD_DIR"])/s["FULL_PRODUCT_NAME"])')
-          MELLOW_KEXT_BINARY="$bundle/Contents/MacOS/Mellow" python3 tests/metal_evidence_tests.py
+          bundle=build/development-native/artifact/MellowGPU.kext
+          MELLOW_KEXT_BINARY="$bundle/Contents/MacOS/MellowGPU" python3 tests/metal_evidence_tests.py
+          python3 tests/build_macho_validation.py "$bundle/Contents/MacOS/MellowGPU"
+          python3 tests/development_package_tests.py --bundle "$bundle"
       - name: Compile Intel Metal probe
         run: |
           xcrun swiftc -swift-version 5 -O -target x86_64-apple-macos13.0 Tools/metal-probe.swift -o build/metal-probe -framework Metal -framework IOKit -framework CryptoKit
@@ -41,21 +45,23 @@ jobs:
           xcrun clang -std=c11 -Wall -Wextra -Werror Userspace/tahoe_diag_client.c -framework IOKit -framework CoreFoundation -o build/tahoe-diag-client
       - name: Package native artifacts
         run: |
-          mkdir -p build/package
-          bundle=$(python3 -c 'import json,pathlib; a=json.load(open("build/native-Release/build-settings.json")); s=next(x["buildSettings"] for x in a if x.get("target")=="Mellow"); print(pathlib.Path(s["TARGET_BUILD_DIR"])/s["FULL_PRODUCT_NAME"])')
-          cp -R "$bundle" build/package/Mellow.kext
-          cp build/metal-probe build/package/
-          cp build/tahoe-diag-client build/package/
-          cp build/native-Release/macho-validation.json build/package/
-          printf '%s\n' 'Native build and host tests only. GPU execution on 8086:7D41, Tahoe installation, and Metal acceleration are NOT verified by CI.' > build/package/VALIDATION-SCOPE.txt
-          (cd build/package && zip -r ../Mellow-native-development.zip .)
+          python3 Tools/package-mellowgpu-development.py \
+            --bundle build/development-native/artifact/MellowGPU.kext \
+            --structural-report build/development-native/structural-report.json \
+            --build-evidence build/development-native/build-result.json \
+            --out build/development-package
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Mellow-native-development
+          name: MellowGPU-native-development
           path: |
-            build/Mellow-native-development.zip
-            build/native-Release/*.log
-            build/native-Release/*.json
+            build/development-package/MellowGPU-0.5.0-dev.zip
+            build/development-package/MellowGPU-0.5.0-dev.zip.sha256
+            build/development-package/package-result.json
+            build/development-native/*.stdout
+            build/development-native/*.stderr
+            build/development-native/*.json
+            build/metal-probe
+            build/tahoe-diag-client
             build/host-tests/host-tests.json
           if-no-files-found: error

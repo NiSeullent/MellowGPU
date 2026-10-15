@@ -9,6 +9,7 @@
 #include "HDMI.hpp"
 #include "kern_patcherplus.hpp"
 #include "RuntimeReadiness.hpp"
+#include "FullSystemQualification.hpp"
 #include <Headers/kern_api.hpp>
 #include <Headers/kern_devinfo.hpp>
 
@@ -243,13 +244,17 @@ void MellowCore::processPatcher(KernelPatcher &patcher) {
 	if (checkKernelArgument("-mellowtahoe")) nativeEvidence |= MellowRuntime::BootOptIn;
 	if (!checkKernelArgument("-igfxvesa")) nativeEvidence |= MellowRuntime::VesaDisabled;
 	const auto nativeReadiness = MellowRuntime::evaluate(nativeEvidence);
+	const auto qualification = MellowGPUQualification::evaluate(nativeReadiness);
+	identityPublished = iGPU->setProperty("MellowGPUQualification", qualification.name) && identityPublished;
+	identityPublished = iGPU->setProperty("MellowGPUQualificationProfileVersion",
+		static_cast<uint64_t>(qualification.profileVersion), 32) && identityPublished;
 	identityPublished = iGPU->setProperty("MellowNativeXeVerifiedMask", nativeReadiness.verified, 64) && identityPublished;
 	identityPublished = iGPU->setProperty("MellowNativeXeMissingMask", nativeReadiness.missing, 64) && identityPublished;
 	identityPublished = iGPU->setProperty("MellowNativeXeStage", MellowRuntime::stageName(nativeReadiness.stage)) && identityPublished;
 	identityPublished = iGPU->setProperty("MellowNativeXeBackendIntegrated",
 		static_cast<uint64_t>(MellowRuntime::BackendOwnerIntegrated), 8) && identityPublished;
 	identityPublished = iGPU->setProperty("MellowNativeXeMetalReady",
-		static_cast<uint64_t>(nativeReadiness.mayAdvertiseMetal), 8) && identityPublished;
+		static_cast<uint64_t>(qualification.mayAdvertiseMetal), 8) && identityPublished;
 	if (!identityPublished)
 		SYSLOG("mellow", "physical identity diagnostic publication incomplete; correlate with PCI startup log");
 	SYSLOG("mellow", "native Xe backend evidence stage=%s verified=0x%llx missing=0x%llx first-missing=%s NativeMetalReady=%d",
@@ -257,7 +262,7 @@ void MellowCore::processPatcher(KernelPatcher &patcher) {
 		static_cast<unsigned long long>(nativeReadiness.verified),
 		static_cast<unsigned long long>(nativeReadiness.missing),
 		MellowRuntime::evidenceName(MellowRuntime::firstMissing(nativeReadiness.missing)),
-		nativeReadiness.mayAdvertiseMetal);
+		qualification.mayAdvertiseMetal);
 
 	ultraActive = true;
 	isRealTGL = false;
