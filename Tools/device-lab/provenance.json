@@ -1,0 +1,46 @@
+{
+  "schema": "mellowgpu.glk-device-lab/2",
+  "component": "Tools/device-lab",
+  "summary": "Public-API Metal 3 benchmark (compute/render/blit), GUI framebuffer/WindowServer presentation probe, repeat-test orchestrator, portable/native-x86 build tool and transactional staging/rollback for the designated physical GLK GPU. Original public-API tooling; no code is derived from upstream Linux/XNU sources.",
+  "authors": [
+    {"agent": "Claude", "model": "claude-opus-4-8", "session": "wave7",
+     "role": "initial authoring of all device-lab sources, MSL workloads, oracle and tools"},
+    {"agent": "Claude", "model": "claude-opus-5-5", "session": "wave9 continuation",
+     "role": "completion: x86_64-only portable/native-x86 build with Mach-O/signature metadata and reproducibility check; host gate (x86_64, untranslated, 15.8.1/24H32) and PCI 00:02.0/IOPCIBridge/OSData ownership checks; JSON-safe emit; process watchdogs; presentation confirmation; oracle digests and sanitizer canaries; orchestrator process-group watchdog and evidence validation; pure-sh transactional install/rollback with static safety scan; host test harness"}
+  ],
+  "target_identity": {
+    "source": "target-passive-preflight.json",
+    "source_sha256": "f1a7ab8def0e724f083fbc96a95c13fb7b5946d0c6f38d71cd5374e7b3ef6e0b",
+    "pci": {"vendor_id": "0x8086", "device_id": "0x3185", "revision_id": "0x06",
+            "subsystem_vendor_id": "0x17AA", "subsystem_id": "0x3E77", "location": "00:02.0 (GFX0@2 under AppleACPIPCI)"},
+    "os_product_version": "15.8.1", "os_build": "24H32", "kernel_arch": "x86_64",
+    "cpu": "Intel(R) Celeron(R) N4120",
+    "observed_state_note": "Passive preflight shows NO IOAccelerator/Metal device (accelerator ioreg empty, hardware_or_metal_tested=false); the display is IONDRVFramebuffer only and a newly staged AuxKC requires a reboot. The tools therefore fail as unavailable (exit 3) on the target until a Metal 3 device bound to the physical GLK GPU exists."
+  },
+  "toolchain_pins": {
+    "sdk": "/Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk (fallback: xcrun --sdk macosx, version >= 15.0)",
+    "deployment_target": "macos15.0",
+    "installable_arches": ["x86_64"],
+    "host_test_variants": "build-host architecture plain + AddressSanitizer builds, never staged",
+    "swiftc": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)",
+    "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "metallib_offline": "NOT_RUN on this host (offline Metal toolchain absent); runtime MSL compilation on the target is the authoritative path"
+  },
+  "upstream_derivation": {
+    "linux_revision": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+    "xnu_revision": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+    "applicability": "NOT APPLICABLE: the device-lab tools contain no Linux/XNU-derived source. They call only public Apple frameworks (Metal, AppKit, QuartzCore, IOKit, CryptoKit, Foundation), the C++ standard library and POSIX sh utilities."
+  },
+  "boundaries": [
+    "PUBLIC Metal/AppKit/IOKit success is NOT native-driver, fence, full-GPU-execution, WindowServer-scanout, or game-compatibility attestation; all such flags are kept false and the orchestrator rejects reports that set them.",
+    "The tools run only as an untranslated x86_64 process on macOS 15.8.1 (24H32); the host gate runs before any Metal/IOKit device or WindowServer call.",
+    "A Metal device counts only when its registryID resolves through IOService ancestors to an exact-class IOPCIDevice under an IOPCIBridge at 00:02.0 with the exact OSData IDs and reg/assigned-addresses; IORegistryCompatibility / synthetic metadata is rejected.",
+    "No Metal device, a Rosetta-translated process, or a missing Metal 3 family is a FAILING/UNAVAILABLE result, never a passing skip and never a CPU fallback.",
+    "Drawable-texture readback proves GPU-produced presented pixels; photon/scanout verification needs Screen Recording (TCC) permission and is NOT_RUN by design (no TCC change).",
+    "Staging never deploys; install/rollback is a separate reviewed step on the target, guarded by machine/OS/PCI fingerprint and restricted to a validated non-system install root with verified byte backups."
+  ],
+  "adaptation": "Claude authored all device-lab source, the MSL workloads, the oracle cross-checks, the build/orchestrate/staging tools and the host integration tests. Builds and host CPU-only tests ran on a build-only Apple-silicon developer Mac; x86_64 artifacts were exercised there only under Rosetta in CPU-only modes or up to the host gate. Metal/GPU/GUI paths were compiled but intentionally NOT executed (no developer-Mac GPU execution) and are for the operator to run on the physical target.",
+  "execution": "HOST build + CPU-only self/integration tests only",
+  "target_execution": "NOT_RUN",
+  "hardware_qualification": false
+}

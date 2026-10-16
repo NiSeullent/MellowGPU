@@ -1,0 +1,433 @@
+{
+ "component_files": [
+  "Drivers/NativeGlk/OpRegionSnapshot.hpp",
+  "Drivers/NativeGlk/OpRegionSnapshot.cpp",
+  "Mellow/GlkOpRegionIOKit.hpp",
+  "Mellow/GlkOpRegionIOKit.cpp"
+ ],
+ "consulted_not_reexpressed": [
+  {
+   "git_blob": "6b6f32f40cbeb4930193f2949c0d5cdd6da140ce",
+   "note": "GLK uses gen9_early_ops for stolen memory; its GMS->size decode is deliberately NOT implemented (GPL); GMS and BDSM are reported raw.",
+   "path": "arch/x86/kernel/early-quirks.c",
+   "sha256": "ecbdad921b409704de1d278dcecb2f3bd420d98519e91204d3e1d03150ba8c1a",
+   "spdx": "GPL-2.0"
+  }
+ ],
+ "deliberate_deviations_from_linux": [
+  "Only OpRegion 2.0 and 2.1 admitted (Linux applies 2.1 semantics to all >2.0).",
+  "2.1 RVDA < OPREGION_SIZE refused (Linux WARN_ON then maps).",
+  "RVDS > 64 KiB refused (vbt_size is u16).",
+  "RVDA map failure refuses the capture (Linux falls back to mailbox #4).",
+  "Declared header SIZE must be >= 8 (unit not given at the pin; KiB by IGD convention).",
+  "Extra refusals never redirect selection: vbt_size < sizeof(vbt_header), BDB signature prefix 'BIOS_DATA_BLOCK', zero-sum checksum. The checksum semantics are a convention, NOT stated by the pinned primary (vbt_defs.h documents vbt_checksum only as 'Checksum'; intel_bios.c does not verify it).",
+  "kIOMapDefaultCache (XNU per-page policy) instead of MEMREMAP_WB.",
+  "Two-pass coherence: header, RVDA/RVDS, every published byte, ASLS, GGC and BDSM re-read; any difference refuses.",
+  "VBT bytes differing from an earlier capture in the same instance are refused (Changed) and unpublished.",
+  "intel_no_opregion_vbt DMI quirk lists only ThinkCentre A57 (97027RG); not applicable to the pinned 17aa:3e77 profile."
+ ],
+ "frozen_inputs_consumed_unchanged": {
+  "Drivers/NativeGlk/PageTableEncoding.cpp": "21629a44864ab2448d49ee658b473acf5414f800c000bf4d1d5764e0a4289d44",
+  "Drivers/NativeGlk/PageTableEncoding.hpp": "378c55617ebcd693290fa1ba87001ffe261a024d9f1502cf747c70d861466b8e",
+  "Drivers/NativeGpu/MemoryOwner.hpp": "f963a4211a604853e40977d6a533e318e52013fc5975179eec7b75c05c83aaa2",
+  "Mellow/GlkDmaMemoryIOKit.hpp": "06ef913d61fc7a65cbc009ebbab6321c0f6adb2a1aa36e3565176265ccc5a9aa",
+  "Mellow/GlkPhysicalOwnerIOKit.cpp": "62a2be73e89d670cff64edc6edb6b96499143e4172c95c75228641c3c20d6555",
+  "Mellow/GlkPhysicalOwnerIOKit.hpp": "c31a977ca11816c0e71ec5f2043895e15728f584d4ff7a3f5974952893571f52"
+ },
+ "linux_revision": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+ "native_contract": {
+  "binding": "runLeased(epoch) only; delivered binding re-checked: OSDynamicCast owner class and instance, provider, work loop in gate, open state, registry ID, owner snapshot liveEpoch/powered/!revoking, live config identity",
+  "descriptor": "IOMemoryDescriptor::withAddressRange(pa, len, kIODirectionOut|kIOMemoryMapperNone, TASK_NULL)",
+  "mapping": "createMappingInTask(kernel_task, 0, kIOMapAnywhere|kIOMapReadOnly|kIOMapDefaultCache, 0, len); verified length, physical, read-only option and page offset; unmap()+release before capture returns",
+  "physical_sources": "ASLS read from the leased IOPCIDevice; RVDA only from the validated header of the same capture. No caller physical address.",
+  "publication": "IOMallocData copy of exactly vbt_size bytes; served only via withVbt/copyVbt under runLeased of the capture epoch; no registry property, log or user-visible pointer",
+  "uncertainty": "unmap() failure: map+descriptor retained forever, instance quarantined, nothing published"
+ },
+ "not_claimed": [
+  "No execution on the 15IGL7 or any hardware; hosted results use an injected model.",
+  "No full Linux/XNU source-closure or license clearance; source references only.",
+  "No DMAR/PMR/memory-ownership attestation beyond the bounded read-only firmware mapping.",
+  "No ASLE/SWSCI handshake, ACPI method, display, panel, BAR, MMIO or PCI write."
+ ],
+ "schema": "mellowgpu.glk-opregion-provenance/1",
+ "scope": "Re-expressed (no verbatim code) read-only GLK IGD OpRegion/VBT snapshot: Drivers/NativeGlk/OpRegionSnapshot (rules) and Mellow/GlkOpRegionIOKit (native IOKit windows bound to MellowGlkPhysicalOwner leases).",
+ "sdk": "MacOSX15.5.sdk Kernel.framework",
+ "sdk_headers": {
+  "IOKit/IOLib.h": "ecee583778ac99a815de4d02dbfaf87a0ae938bcd95ba6ec6dc086ad1938fe5c",
+  "IOKit/IOMapTypes.h": "cea3ef6397bf5e7e94e67832fab824b62695d42e16fb3de0f9c1edff8fd5e238",
+  "IOKit/IOMemoryDescriptor.h": "74ad1eb29c9e52ef3b457cad37ae8f8d789f22ef6c955edda00e7a7ffc3e4c0f",
+  "IOKit/pci/IOPCIDevice.h": "1d07805ca214f6903601a4ffca5e3b239bff766795852423fe635af333063a72",
+  "kern/task.h": "24a663e176cdee4438cdc54d3d5a7832642d596f535540eddad9dedfb95e0711"
+ },
+ "target": {
+  "driver_model": "i915/execlists (not Xe/GuC)",
+  "os": "macOS 15.8.1 24H32 x86_64",
+  "profile": "Lenovo 15IGL7 N4120 GLK 8086:3185 rev 06 sub 17aa:3e77"
+ },
+ "upstream_files": [
+  {
+   "anchor_lines": {
+    "#define OPREGION_HEADER_OFFSET 0": 45,
+    "#define OPREGION_SIGNATURE \"IntelGraphicsMem\"": 54,
+    "#define OPREGION_SIZE": 256,
+    "base = memremap(asls, OPREGION_SIZE, MEMREMAP_WB);": 910,
+    "const void *intel_opregion_get_vbt(struct intel_display *display, size_t *size)": 1149,
+    "drm_WARN_ON(display->drm, rvda < OPREGION_SIZE);": 988,
+    "int intel_opregion_setup(struct intel_display *display)": 876,
+    "memunmap(opregion->rvda);": 1007,
+    "opregion->header->over.major >= 2 && opregion->asle &&": 976,
+    "pci_read_config_dword(pdev, ASLS, &asls);": 893,
+    "rvda += asls;": 990,
+    "static const struct dmi_system_id intel_no_opregion_vbt[]": 864,
+    "struct opregion_asle {": 115,
+    "struct opregion_header {": 63,
+    "u32 rvds;": 137,
+    "u64 rvda;": 135,
+    "vbt_size = (mboxes & MBOX_ASLE_EXT) ?": 1020,
+    "void intel_opregion_cleanup(struct intel_display *display)": 1275
+   },
+   "bytes": 37201,
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "git_blob": "9f88b7cac9f74949ad567c0d83fa3e867c853a19",
+   "path": "drivers/gpu/drm/i915/display/intel_opregion.c",
+   "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_opregion.c",
+   "repo": "torvalds/linux",
+   "sha256": "df1f4265b31b260f541b3aa1f279150d15ab3632d42eb38ba1826d3df0e1a8f5",
+   "used_for": "OPREGION_SIZE, mailbox offsets/bits, packed header/ASLE layout, ASLS read, version-gated RVDA absolute (2.0) vs ASLS-relative (2.1+), RVDA-then-mailbox#4 selection and fallback, ASLE_EXT window, unmap/cleanup, kmemdup-style owned copy",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "intel_opregion_get_vbt": 57
+   },
+   "bytes": 4057,
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "git_blob": "8101eeebfd8b7dd377f25a063534d7c6733420e9",
+   "path": "drivers/gpu/drm/i915/display/intel_opregion.h",
+   "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_opregion.h",
+   "repo": "torvalds/linux",
+   "sha256": "605bfda9f26cc6ea3fa5d087b414bed441e0d01e461967f42672fd403a476733",
+   "used_for": "consumer contract shape (owned VBT copy + size)",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "BDB header incomplete": 3120,
+    "BDB incomplete": 3126,
+    "VBT incomplete (vbt_size overflows)": 3110,
+    "bool intel_bios_is_valid_vbt(struct intel_display *display,": 3089,
+    "static const char vbt_signature[] = \"$VBT\";": 3078
+   },
+   "bytes": 107883,
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "git_blob": "97cbae2e547e2d11da6cc0e9f92801bf7ca969b3",
+   "path": "drivers/gpu/drm/i915/display/intel_bios.c",
+   "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_bios.c",
+   "repo": "torvalds/linux",
+   "sha256": "da901f6ac60909d9bf379333244b424ab512410069cbd6c7a2674c96fbfe9be5",
+   "used_for": "intel_bios_is_valid_vbt order and range_overflows_t checks (Linux verdicts)",
+   "verification": "glk-next-native-primitives/parent-verified-extra-sources.json git blob match"
+  },
+  {
+   "anchor_lines": {
+    "@vbt_checksum:": 92,
+    "BDB signature \"BIOS_DATA_BLOCK\"": 110,
+    "struct bdb_header {": 115,
+    "struct vbt_header {": 97
+   },
+   "bytes": 40068,
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "git_blob": "0dc13d080e8aa92c9b083ec67ae2dbb350b4db47",
+   "path": "drivers/gpu/drm/i915/display/intel_vbt_defs.h",
+   "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_vbt_defs.h",
+   "repo": "torvalds/linux",
+   "sha256": "75f0d7e96dd8aa00564b69fcfef6fe2781c84def6fe1705ad40e37db34bcb1fe",
+   "used_for": "packed vbt_header/bdb_header layout; BDB signature text",
+   "verification": "glk-next-native-primitives/parent-verified-extra-sources.json git blob match"
+  },
+  {
+   "anchor_lines": {
+    "#define ASLS": 101
+   },
+   "bytes": 3505,
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "git_blob": "ebe040828e204c236136203976d1926a86e572f0",
+   "path": "include/drm/intel/pci_config.h",
+   "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/pci_config.h",
+   "repo": "torvalds/linux",
+   "sha256": "f792fd35a880fc179a4d556b78125466e8ff0668f7aaaa7957c286bc8fbdd462",
+   "used_for": "ASLS configuration offset 0xfc",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "#define INTEL_BSM": 97,
+    "#define SNB_GMCH_CTRL": 47,
+    "BDW_GMCH_GGMS_SHIFT": 52,
+    "BDW_GMCH_GMS_SHIFT": 54,
+    "INTEL_BSM_MASK": 100
+   },
+   "bytes": 3735,
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "git_blob": "1fdaabed14702072d32dce90a8146444c41d72fe",
+   "path": "include/drm/intel/i915_drm.h",
+   "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/i915_drm.h",
+   "repo": "torvalds/linux",
+   "sha256": "a9767c413372bc1f834e929db13d46f211a0befbf1f7f49483fa0c77445684de",
+   "used_for": "GGC (SNB_GMCH_CTRL 0x50) GGMS/GMS fields; INTEL_BSM 0x5c and mask",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "static unsigned int gen8_get_total_gtt_size(u16 bdw_gmch_ctl)": 1153
+   },
+   "bytes": 44506,
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "git_blob": "64ca5bbc53c686b6c083459216aa30516e39ed83",
+   "path": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+   "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ggtt.c",
+   "repo": "torvalds/linux",
+   "sha256": "1735034708a4d7eb4623a229e721271ea57b37e3475d6e01c787d01cbf5678ce",
+   "used_for": "GSM bytes from GGMS (1 << GGMS MiB)",
+   "verification": "glk-next-native-primitives/primary-additional-sources.json git blob match"
+  },
+  {
+   "anchor_lines": {
+    "// default cache mode for physical": 549,
+    "IOMemoryDescriptor::createMappingInTask(": 5777,
+    "IOMemoryDescriptor::withAddressRanges(IOAddressRange *   ranges,": 1755,
+    "IOMemoryMap::free()": 5531,
+    "IOMemoryMap::unmap( void )": 5464,
+    "addr    += pageOffset;": 1128,
+    "options |= kIOMemoryTypePhysical64;": 1765,
+    "warning: creating writable mapping from IOMemoryDescriptor(kIODirectionOut)": 4865
+   },
+   "bytes": 168859,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "4fa100885cdded63f03aa1123916ea3aba4688be",
+   "path": "iokit/Kernel/IOMemoryDescriptor.cpp",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOMemoryDescriptor.cpp",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "c16133a089fc04d629c8ae85f0d9896a38c615c976ab6f74456631575c1df9ec",
+   "used_for": "TASK_NULL => kIOMemoryTypePhysical64; kIODefaultCache resolved per physical page (IODefaultCacheBits); in-page offset kept; read-only for kIODirectionOut; unmap/free lifetime",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "kIOMemoryMapperNone": 114,
+    "withAddressRange(": 514
+   },
+   "bytes": 61735,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "17b16acbfcf84be04526363af6b5059756abe6df",
+   "path": "iokit/IOKit/IOMemoryDescriptor.h",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/IOKit/IOMemoryDescriptor.h",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "501df4524a1e35d680fab5e724a1260ff1a4739b95e557acb237b63c2eccdbfa",
+   "used_for": "public declarations at the pin",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 14060,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "d41d29fffdac41b7dd315f051550315887be8de9",
+   "path": "config/BSDKernel.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/BSDKernel.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "6d3c1441dbce51c8a42ebeced0101235ce54f08128ed404ced8071df3ad5ca1a",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 231,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "0d534ae6d5c7cf692a0c39d467af24894063f19b",
+   "path": "config/BSDKernel.x86_64.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/BSDKernel.x86_64.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "f64c7b1a48d33a1f51d569c7a3a11349bb048cdd30e2a38d3eb3f2d80d808fe2",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 80064,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "f70f20f1108cf17b6d107d9829f1a331118f6179",
+   "path": "config/IOKit.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/IOKit.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "583729fdb8f58992e356ca19d5b5085abc07c23b57be99b137262c01ee3eae5e",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 13354,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "c7a42640d058fa5e598b57ac2db1cc57d6c8d03d",
+   "path": "config/IOKit.x86_64.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/IOKit.x86_64.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "2d970900f4eafd2478f825ce7220ad11a8090a46b06af75ab0e3ca695ed0fbbe",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 25049,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "24b4f2039f75b0e638b7e09cf1f029686ced5367",
+   "path": "config/Libkern.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/Libkern.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "4a30e36e16c965d7ddfc761cd47e6d54f96ae8d0a78bb7f7014683243cd82386",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 296,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "95b57f43be2cc334b7e37a7e62de6206c56e8d60",
+   "path": "config/Libkern.x86_64.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/Libkern.x86_64.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "d7a66f639d0aaee9a5e69f5da2c62aff3d36b5760c674261ad5993e3c4fb3e57",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 1785,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "af102a0a37c5f3ed11e908f17e58b7c72272171d",
+   "path": "config/Mach.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/Mach.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "25848d1a4f1380ca69177f36035b0c7aa7d346e9a3c3f64aba53507fd4c8a981",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 25,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "09d50d0f15370c0fb3f8f6c7c5075087ae022466",
+   "path": "config/Mach.x86_64.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/Mach.x86_64.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "266cce656899dffb4265fc3547f558be91006e9a1c716405cd01172041c03e5b",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 4446,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "eafc2a242b5185bb8c6ad7d061fe30ea5fa14e1a",
+   "path": "config/Unsupported.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/Unsupported.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "ebfacb06eba4788f2f845387319d2fb9940e63339394f0f4be563211003d68b4",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  },
+  {
+   "anchor_lines": {
+    "": 1
+   },
+   "bytes": 605,
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "git_blob": "002759bab1a66a5929c2c82b23324b413fcaaf57",
+   "path": "config/Unsupported.x86_64.exports",
+   "primary_source_url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/Unsupported.x86_64.exports",
+   "repo": "apple-oss-distributions/xnu",
+   "sha256": "e84136681c161e8eb5b93f8cf5a010013955351ff93c1791634d3aa35f630e0b",
+   "used_for": "kext symbol resolution",
+   "verification": "fresh raw fetch this session; GitHub contents API git blob match (primary-fetch-manifest.json)"
+  }
+ ],
+ "verification": {
+  "kernel_immediates": {
+   "createMappingInTask_calls": 1,
+   "descriptor_options_0x802": 1,
+   "map_options_0x1001": 1,
+   "withAddressRange_calls": 1
+  },
+  "kernel_objects": {
+   "Drivers/NativeGlk/OpRegionSnapshot.cpp": "b382ccf8159c87cb62685f07f52fda92d80ed1edd0f7eb5f26f5112ffc408198",
+   "Mellow/GlkOpRegionIOKit.cpp": "1a65d3f21179c88f97cf086f070b1797f4694cbb30f25887406e208d0579904a",
+   "Mellow/GlkPhysicalOwnerIOKit.cpp": "a7a8fcceeda0b75477265e73fdef4727343b43a75a9c9ade63912ddc197d8b37"
+  },
+  "kernel_undefined": {
+   "Drivers/NativeGlk/OpRegionSnapshot.cpp": {
+    "iopcifamily_kpi": [],
+    "kext_objects": [],
+    "xnu_exports": [
+     "___bzero",
+     "___stack_chk_fail",
+     "___stack_chk_guard"
+    ]
+   },
+   "Mellow/GlkOpRegionIOKit.cpp": {
+    "iopcifamily_kpi": [
+     "__ZN11IOPCIDevice20extendedConfigRead16Ey",
+     "__ZN11IOPCIDevice20extendedConfigRead32Ey"
+    ],
+    "kext_objects": [
+     "__ZN12MellowNative22MellowGlkPhysicalOwner13runSerializedEPFNS_14GlkOwnerStatusEPvRKNS_18GlkPhysicalBindingEES2_",
+     "__ZN12MellowNative22MellowGlkPhysicalOwner8snapshotEv",
+     "__ZN12MellowNative22MellowGlkPhysicalOwner9metaClassE",
+     "__ZN12MellowNative22MellowGlkPhysicalOwner9runLeasedEyPFNS_14GlkOwnerStatusEPvRKNS_18GlkPhysicalBindingEES2_",
+     "__ZN6Mellow9NativeGlk15captureOpRegionEjRKNS0_14FirmwareWindowERKNS0_16OpRegionPlatformERNS0_16OpRegionSnapshotE",
+     "__ZN6Mellow9NativeGlk15gsmBytesFromGgcEt",
+     "__ZN6Mellow9NativeGlk15releaseSnapshotERKNS0_16OpRegionPlatformERNS0_16OpRegionSnapshotE",
+     "__ZN6Mellow9NativeGlk9checkAslsEj"
+    ],
+    "xnu_exports": [
+     "_IOFreeData",
+     "_IOMallocData",
+     "__ZN11IOMemoryMap18getPhysicalAddressEv",
+     "__ZN15IORegistryEntry18getRegistryEntryIDEv",
+     "__ZN15OSMetaClassBase12safeMetaCastEPKS_PK11OSMetaClass",
+     "__ZN18IOMemoryDescriptor16withAddressRangeEyyjP4task",
+     "__ZN18IOMemoryDescriptor19createMappingInTaskEP4taskyjyy",
+     "__ZNK9IOService10isInactiveEv",
+     "_kernel_task"
+    ]
+   }
+  },
+  "run_results_sha256": "d553c07e4847cdd12161e8b417d015c58edbd860c1c2e4fe64e604b01f05078c",
+  "summary": {
+   "forbidden_symbols": 0,
+   "hosted_green": true,
+   "kernel_compiled": true,
+   "mutants_killed": 35,
+   "mutants_other": [],
+   "mutants_total": 35,
+   "unresolved_symbols": 0
+  }
+ },
+ "xnu_revision": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4"
+}

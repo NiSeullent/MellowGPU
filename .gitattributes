@@ -6,3 +6,5 @@
 *.a binary
 *.png binary
 *.pdf binary
+# Locked upstream patches: whitespace in +/context lines is significant.
+Userspace/NativeGlkCompiler/patches/*.patch -whitespace

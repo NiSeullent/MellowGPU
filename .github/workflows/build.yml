@@ -24,6 +24,7 @@ jobs:
         run: |
           python3 tests/product_migration_tests.py
           python3 tests/efi_boot_profiles_tests.py
+          python3 tests/validate_macho_identity_tests.py
           python3 Tools/run-host-tests.py --cxx clang++ --out build/host-tests
           python3 Tools/run-native-control-tests.py --cxx clang++ --sanitize --out build/native-control-tests
           python3 Tools/run-probe-control-tests.py --cxx clang++ --sanitize --out build/control-probe-tests

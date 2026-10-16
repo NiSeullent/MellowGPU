@@ -1,0 +1,755 @@
+{
+  "schema": "mellowgpu.glk-ggtt-provenance/1",
+  "revision": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+  "scope": "Re-expressed (no verbatim code) GEN9_LP GGTT publication, GSM geometry, and gen8 engine TLB invalidation for Mellow/GlkGgttIOKit and Drivers/NativeGlk/GgttPublication.",
+  "component_files": [
+    "Drivers/NativeGlk/GgttPublication.hpp",
+    "Drivers/NativeGlk/GgttPublication.cpp",
+    "Mellow/GlkGgttIOKit.hpp",
+    "Mellow/GlkGgttIOKit.cpp"
+  ],
+  "reused_seeded_contracts": [
+    "Drivers/NativeGlk/PageTableEncoding.hpp (encodeGgttPte, ggttTotalFromGmchControl, storeLe64/loadLe64)",
+    "Drivers/NativeGpu/MemoryOwner.hpp (MemoryBackend map/unmap/retired/quiesce semantics)",
+    "Mellow/GlkDmaMemoryIOKit.hpp (GlkPhysicalVmOps, GlkDmaIdentity, glkCpuFence)"
+  ],
+  "upstream_files": [
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "bytes": 44506,
+      "sha256": "1735034708a4d7eb4623a229e721271ea57b37e3475d6e01c787d01cbf5678ce",
+      "git_blob": "64ca5bbc53c686b6c083459216aa30516e39ed83",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "verification": "cache manifest primary-additional-sources.json blob match; PageTableEncoding.provenance.json fresh primary raw bytes",
+      "spdx": "MIT"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "bytes": 4458,
+      "sha256": "eef089cd245411d0a65e46362ff70b8deaf3c4406cb258dec1adfb199ba0147e",
+      "git_blob": "2487768bc23038df9e8897429427a3b6ff64e403",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "verification": "fresh raw.githubusercontent fetch this session; GitHub contents API blob sha match",
+      "spdx": "MIT"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "bytes": 71135,
+      "sha256": "3b832bd7e1d5225cb336749f5ccd17a08fa6ddbe1d62387972f1606b144375e4",
+      "git_blob": "c0fd349a4600c638306fec937ecc77538ed23245",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "verification": "cache manifest primary-additional-sources.json blob match",
+      "spdx": "MIT"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_engine_types.h",
+      "bytes": 18571,
+      "sha256": "47b77f01148818361cf0f0c02bb40fd6420b06941d6e06516e9447f3146b6a62",
+      "git_blob": "155b6255a63ea83224628e835f429879fb382d46",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_types.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_types.h",
+      "verification": "cache manifest primary-engine-sources.json blob match",
+      "spdx": "MIT"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "bytes": 65593,
+      "sha256": "ccc7fb4c51e94ce99dc2695f9351284e00dddef7fded90bf0be169c6539d77ac",
+      "git_blob": "3ba9b2206b79812c4bb6ec2f0be7f90cdc08c945",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "verification": "cache manifest primary-sources.json blob match; PageTableEncoding.provenance.json fresh primary raw bytes",
+      "spdx": "MIT"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "bytes": 21522,
+      "sha256": "89bc7d84423b2af56ba463239691c984dee74540cdd1902375a89e02ed583a22",
+      "git_blob": "b54ee4f25af1024952210a42b46f400142ff0d46",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "verification": "PageTableEncoding.provenance.json fresh primary raw bytes",
+      "spdx": "MIT"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/intel_uncore.c",
+      "bytes": 91692,
+      "sha256": "357d32c4980bd619d73aaea4f35136bed08762a1c2f718fedcf1c40a500ea47a",
+      "git_blob": "170e83a8c9fc3ad5ad3406790134416328b85cf6",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_uncore.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_uncore.c",
+      "verification": "cache manifest primary-sources.json blob match",
+      "spdx": "MIT"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/i915_wait_util.h",
+      "bytes": 3235,
+      "sha256": "f82d2bc0064497f06b9ddf8e2d69b649915cf5674085ffb10e49552f9176165c",
+      "git_blob": "e1ed7921ec701dad758569fc109aa837dd3b8746",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_wait_util.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_wait_util.h",
+      "verification": "fresh raw.githubusercontent fetch this session; GitHub contents API blob sha match",
+      "spdx": "MIT"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/i915_pci.c",
+      "bytes": 26723,
+      "sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1",
+      "git_blob": "2f03f95945f1b9a243a61db163576d0071d53e9c",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+      "verification": "cache manifest primary-sources.json blob match; PageTableEncoding.provenance.json fresh primary raw bytes",
+      "spdx": "MIT"
+    },
+    {
+      "path": "include/drm/intel/i915_drm.h",
+      "bytes": 3735,
+      "sha256": "a9767c413372bc1f834e929db13d46f211a0befbf1f7f49483fa0c77445684de",
+      "git_blob": "1fdaabed14702072d32dce90a8146444c41d72fe",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/i915_drm.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/i915_drm.h",
+      "verification": "PageTableEncoding.provenance.json fresh primary raw bytes",
+      "spdx": "MIT"
+    },
+    {
+      "path": "LICENSES/preferred/MIT",
+      "bytes": 1372,
+      "sha256": "323c587d0ccf10e376f8bf9a7f31fb4ca6078105194b42e0b1e0ee2bc9bde71f",
+      "git_blob": "f33a68ceb3ea00a533d2331a091ec7f2580bb4df",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/LICENSES/preferred/MIT",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/LICENSES/preferred/MIT",
+      "verification": "PageTableEncoding.provenance.json fresh primary raw bytes",
+      "spdx": "MIT"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_engine_pm.h",
+      "bytes": 2981,
+      "sha256": "7716640ce4941436d02260b3e0fab1c7c8fa673906ba0cbf3cad4c99f0d08975",
+      "git_blob": "1d97c435a01528404d6e8840c9ad1dbb792cc628",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_pm.h",
+      "primary_source_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_pm.h",
+      "verification": "Fresh exact-commit primary raw bytes; SHA256/Git blob computed, no contents-API verification claimed."
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gt_pm.h",
+      "bytes": 3013,
+      "sha256": "6de210eb2d7030f9bb20ce9bbd1242c27028abd83e5f87dafe6b6d107a9e4f30",
+      "git_blob": "6f25c747bc29b1c4be0760859fb83f6610d6f615",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_pm.h",
+      "primary_source_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_pm.h",
+      "verification": "Fresh exact-commit primary raw bytes; SHA256/Git blob computed, no contents-API verification claimed."
+    },
+    {
+      "path": "drivers/gpu/drm/i915/intel_wakeref.h",
+      "bytes": 8686,
+      "sha256": "cbd8715b796dbca31b089890c9080e59a008f3b559901a3ee5a1e47ad0bc1afa",
+      "git_blob": "81308bac34babe251ce1c8c0ead12fb0e7ff9954",
+      "url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_wakeref.h",
+      "primary_source_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_wakeref.h",
+      "verification": "Fresh exact-commit primary raw bytes; SHA256/Git blob computed, no contents-API verification claimed."
+    }
+  ],
+  "symbol_fragments": [
+    {
+      "symbol": "needs_wc_ggtt_mapping",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 211,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "46548aa47b40a5d457ecacdc61a745a4dd1c7459c0f57199f45b8e68456a95c2",
+      "used_for": "GEN9_LP GSM is never WC-mapped"
+    },
+    {
+      "symbol": "gen8_ggtt_invalidate",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 227,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "8244552746a0502579f8e419981e0eb56fcfeb13ac9a4508a9fa644626659388",
+      "used_for": "no GFX_FLSH_CNTL write on GEN9_LP"
+    },
+    {
+      "symbol": "gen8_ggtt_pte_encode",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 281,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "d3db0b129b97f1e8e853fbfba81cbcf76ed72a9d102ba1c9831bebf80e07f1cd",
+      "used_for": "addr | GEN8_PAGE_PRESENT (via PageTableEncoding)"
+    },
+    {
+      "symbol": "gen8_set_pte",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 444,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "04b4f055ef2ebcff6ca41976f7f164abaab81bfd599d50653d4bb6720938ee86",
+      "used_for": "one 64-bit store per entry"
+    },
+    {
+      "symbol": "gen8_get_pte",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 449,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "7695f08c7a91744792c416eeb39470ba281d4d6450b31b6eb415438fa087ac0e",
+      "used_for": "one 64-bit load per entry"
+    },
+    {
+      "symbol": "gen8_ggtt_insert_entries",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 525,
+      "occurrences_from_anchor": 2,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "70c4ce4c3ff4fa20c180d24e0036b1ff16339ad60f21ba99695db57089060397",
+      "used_for": "invalidate only after all entry writes"
+    },
+    {
+      "symbol": "init_ggtt.pin_bias",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 883,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "d8fe83f1309c4892a87f46cb4d8c7fbdb7e30608faf06b6803868974fda14c4d",
+      "used_for": "first page excluded from the pool"
+    },
+    {
+      "symbol": "init_ggtt.guard",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 953,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "753aeadb5f057665f2beffb0840007a5be12fe694415bb4862127a8c5b75dcca",
+      "used_for": "last page excluded from the pool"
+    },
+    {
+      "symbol": "gen8_get_total_gtt_size",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1153,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "a1aeb04452cd987f04350e81f3774b90322172e306277348da527badc33332ef",
+      "used_for": "GSM size from GGMS (via PageTableEncoding)"
+    },
+    {
+      "symbol": "gen6_gttmmadr_size",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1187,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "bcc106775736232a36772a2a253e0e076c6b163761b5e7a508933f1c89b890db",
+      "used_for": "GTTMMADR is 16 MiB"
+    },
+    {
+      "symbol": "gen6_gttadr_offset",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1192,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "d8ecd3900523538c790f2175dec512b9c8408ded111dd136b1503c1a260a0160",
+      "used_for": "GSM at BAR0 + 8 MiB"
+    },
+    {
+      "symbol": "ggtt_probe_common.bar_len",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1204,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "76c0f9d29df890df661c673e0093f7f379a51929122da718dad7aa47c6974941",
+      "used_for": "BAR length check (made fatal)"
+    },
+    {
+      "symbol": "ggtt_probe_common.phys",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1210,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "709ebc3f8b13f71f8a9e24ad1b2666d3c1027a83ecdff3c5496b12d55dabb520",
+      "used_for": "GSM physical base"
+    },
+    {
+      "symbol": "ggtt_probe_common.ioremap",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1216,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "51b31ea7b241ca302ce9f1b52afca44179d4faa941250b826ed22cf9f015586a",
+      "used_for": "uncached GSM mapping"
+    },
+    {
+      "symbol": "gen8_gmch_probe.gmch",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1274,
+      "occurrences_from_anchor": 2,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "6bdef0f3c6e19ca7adbe68fad331439275944231ec9a214bc3e66cc0565e9baf",
+      "used_for": "GMCH control config read"
+    },
+    {
+      "symbol": "gen8_gmch_probe.total",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1284,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "0ada18d20c309dd0ba0653c0c0f72e29911acbd16dafcc972676a72b702a8f49",
+      "used_for": "GGTT total from GSM size"
+    },
+    {
+      "symbol": "gen8_gmch_probe.clear_range",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1287,
+      "occurrences_from_anchor": 2,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "920e0f8420f750f0dc4bf75a7e3d570c3d0966ef22eaa6d4a34b9972ed669f60",
+      "used_for": "Linux leaves stale entries on unbind; port restores captured entries"
+    },
+    {
+      "symbol": "gen8_gmch_probe.invalidate",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "line": 1328,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "7de6925c3c5074a8eca9426c0f05eb8afb7d9b3abe307fbdc2c477b2116b3440",
+      "used_for": "execlists (non-GuC) invalidate hook"
+    },
+    {
+      "symbol": "TLB_INVAL_TIMEOUT_US",
+      "file": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "line": 22,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "e053775b76f4f26b0ffaaf3395ee523a9e5c2b60c693a01c5fbee4cc02f2ebe4",
+      "used_for": "tight wait bound"
+    },
+    {
+      "symbol": "TLB_INVAL_TIMEOUT_MS",
+      "file": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "line": 23,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "4153ee61b3d813cc36ae488e2332367cf8356284f5dd06acbadf496d1310a2b4",
+      "used_for": "sleeping wait bound"
+    },
+    {
+      "symbol": "wait_for_invalidate",
+      "file": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "line": 40,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "c1b97cfae09d4cf067528e191a0141c7887601f6cda8119b12a2e5f3c136832f",
+      "used_for": "wait (reg & done) == 0"
+    },
+    {
+      "symbol": "mmio_invalidate_full.forcewake",
+      "file": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "line": 61,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "a70688fdeca381dda18def615d037228bf39da66a9510da7926d20b1626f655a",
+      "used_for": "GT access hold contract"
+    },
+    {
+      "symbol": "mmio_invalidate_full.reset",
+      "file": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "line": 64,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "75781929e5365b4af5a1458cd34dbfa1fc247078f4020a9a53eaa3973de41808",
+      "used_for": "reset exclusion in GT access hold"
+    },
+    {
+      "symbol": "mmio_invalidate_full.awake",
+      "file": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "line": 68,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "6c4a60a33b05f2dd712848c2973a8328aae9facbb6de12700324cdb8590d526c",
+      "used_for": "Trusted native per-engine runtime-PM observation selects exactly the write/wait engine set."
+    },
+    {
+      "symbol": "mmio_invalidate_full.request",
+      "file": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "line": 76,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "a19f81c5ec4830d67951fea9169888a7859185b2c3c5a82a821144534d8a3f30",
+      "used_for": "request write (non-MCR Gen8 path)"
+    },
+    {
+      "symbol": "mmio_invalidate_full.wait",
+      "file": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "line": 98,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "39252ab6122ce9535b8f371f2fab78fb67834e5c8d9ef80058cbb277bf0a4923",
+      "used_for": "Linux logs on timeout; port quarantines"
+    },
+    {
+      "symbol": "intel_gt_invalidate_tlb_full.awake",
+      "file": "drivers/gpu/drm/i915/gt/intel_tlb.c",
+      "line": 134,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "bb8b20cca6afa37a0fcc635c0f236a7a11db9900e72436be0a231feb74f75534",
+      "used_for": "Acquire must hold real native GT runtime-PM awake reference across the transaction; absent producer refuses effects."
+    },
+    {
+      "symbol": "gen8_regs.RENDER",
+      "file": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "line": 1132,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "18d945ad835c64499cad6020db7615b318ef21f1be272a9f9cb529f79ed54ca8",
+      "used_for": "RCS control"
+    },
+    {
+      "symbol": "gen8_regs.VIDEO_DECODE",
+      "file": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "line": 1133,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "6aa93216b6a42edd263f6ef25d84cd9a5ea6a3756ab701ec211263999152f94d",
+      "used_for": "VCS0 control"
+    },
+    {
+      "symbol": "gen8_regs.VIDEO_ENHANCEMENT",
+      "file": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "line": 1134,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "821650ff480fba04bf4900e156226019ac64e67dcb57013a2a6e4501b6f28c52",
+      "used_for": "VECS control"
+    },
+    {
+      "symbol": "gen8_regs.COPY",
+      "file": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "line": 1135,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "8f69b59116fb32b2e165f150f162acfcc6326ba8fb5ca386a293ba4e8c6f3627",
+      "used_for": "BCS control"
+    },
+    {
+      "symbol": "gen8_regs.range",
+      "file": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "line": 1191,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "f3342a6f02b9b05e285a62fdcd7779ef1625f61d25a727769d5b1a1cfa7bb851",
+      "used_for": "Gen9 selects gen8_regs"
+    },
+    {
+      "symbol": "tlb_inv.bit",
+      "file": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "line": 1225,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "c3f460ab1a538d16e99de95c57245c87ff77ec0bcdbac432310063754a49176b",
+      "used_for": "BIT(instance)"
+    },
+    {
+      "symbol": "tlb_inv.request",
+      "file": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "line": 1238,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "555c46c680a1369cdee7d220bd13fd0ac2c17344e4eada2effa13d60e108551a",
+      "used_for": "unmasked request below Gen12"
+    },
+    {
+      "symbol": "intel_engine_id",
+      "file": "drivers/gpu/drm/i915/gt/intel_engine_types.h",
+      "line": 111,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "1759d062e0a2a5163cee1364ee0ab3c9b2fc30e37150070e78a7fe57af190e44",
+      "used_for": "for_each_engine order RCS0, BCS0, VCS0, VECS0"
+    },
+    {
+      "symbol": "GEN8_RTCR",
+      "file": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "line": 347,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "0961076098b16c9f3d01967c1003906d66d0df0b3b384f28c8b5eef0b3dd3770",
+      "used_for": "0x4260"
+    },
+    {
+      "symbol": "GEN8_M1TCR",
+      "file": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "line": 348,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "997cc848710e07b11b4eb0bcf456ac8c98de59f889dc879790f0af192e26f663",
+      "used_for": "0x4264"
+    },
+    {
+      "symbol": "GEN8_BTCR",
+      "file": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "line": 350,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "20862290aa69115f160398974f5122d3df8babaabdaa08513f3bb43e207605cc",
+      "used_for": "0x426c"
+    },
+    {
+      "symbol": "GEN8_VTCR",
+      "file": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "line": 351,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "399641d8e07f82e32b110510f6d9f6fe9978998acacb4bbfc062536f091b99f2",
+      "used_for": "0x4270"
+    },
+    {
+      "symbol": "GFX_FLSH_CNTL_GEN6",
+      "file": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "line": 1475,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "279d15156883d51d2159d91984039ac84b0eca26c9e6e57f1a2182471dd682b9",
+      "used_for": "never written on GEN9_LP"
+    },
+    {
+      "symbol": "I915_GTT_PAGE_SIZE",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 49,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "b35e1eaabb4a0b5d321770dd87c19198c482730ada7197169fe7696263e29685",
+      "used_for": "4 KiB GGTT page"
+    },
+    {
+      "symbol": "__intel_wait_for_register_fw",
+      "file": "drivers/gpu/drm/i915/intel_uncore.c",
+      "line": 2755,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "298d4e245217c3142237ce895a88c0fcebbced72a0748e2f15c3481cd4ed9edb",
+      "used_for": "two-phase wait"
+    },
+    {
+      "symbol": "__intel_wait_for_register_fw.fast",
+      "file": "drivers/gpu/drm/i915/intel_uncore.c",
+      "line": 2774,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "91fe6bfafd079c409c41edbd2e35ff02a403f5d6b6b9ab5ac1bbad341ea2b534",
+      "used_for": "tight phase"
+    },
+    {
+      "symbol": "__intel_wait_for_register_fw.slow",
+      "file": "drivers/gpu/drm/i915/intel_uncore.c",
+      "line": 2776,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "5318f8a929c42a8191b0f9e7751986ec703bdb522567c857ffff7c11853ea3ab",
+      "used_for": "sleeping phase"
+    },
+    {
+      "symbol": "__wait_for.expired",
+      "file": "drivers/gpu/drm/i915/i915_wait_util.h",
+      "line": 27,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "6ad4a2fbd9c972feff1e71a5b900e4d5a9bcd680045213db5fee086c532f9346",
+      "used_for": "expiry sampled before condition"
+    },
+    {
+      "symbol": "__wait_for.backoff",
+      "file": "drivers/gpu/drm/i915/i915_wait_util.h",
+      "line": 40,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "59d86ae1bbdf875f171645b33b551a4044b060ecbb1950b5b15913144199c3e8",
+      "used_for": "doubling while below Wmax"
+    },
+    {
+      "symbol": "wait_for",
+      "file": "drivers/gpu/drm/i915/i915_wait_util.h",
+      "line": 48,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "86548f83022faedb138693a9aa2b982c679a5183a998031a229760ddf7e11b06",
+      "used_for": "Wmin 10 us, Wmax 1000 us"
+    },
+    {
+      "symbol": "_wait_for_atomic.timeout",
+      "file": "drivers/gpu/drm/i915/i915_wait_util.h",
+      "line": 82,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "b77a1fb31130e8537ab512676a2ae7717c02c8fe77632e9ce03b30ce79248c38",
+      "used_for": "tight-phase expiry"
+    },
+    {
+      "symbol": "GEN9_LP_FEATURES.engines",
+      "file": "drivers/gpu/drm/i915/i915_pci.c",
+      "line": 513,
+      "occurrences_from_anchor": 1,
+      "anchor": "#define GEN9_LP_FEATURES",
+      "match": "whitespace-normalized full line",
+      "sha256": "14969fa666d7f796a540417afe34ff4161f553c001172b5479c040087b4c649a",
+      "used_for": "four GLK engines"
+    },
+    {
+      "symbol": "GEN9_LP_FEATURES.dma",
+      "file": "drivers/gpu/drm/i915/i915_pci.c",
+      "line": 521,
+      "occurrences_from_anchor": 1,
+      "anchor": "#define GEN9_LP_FEATURES",
+      "match": "whitespace-normalized full line",
+      "sha256": "10041d703759989c8cf3298ad9f3398bb23482c4b9140550457926ad17d8cf55",
+      "used_for": "39-bit DMA"
+    },
+    {
+      "symbol": "glk_info",
+      "file": "drivers/gpu/drm/i915/i915_pci.c",
+      "line": 537,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "5c033a03c976f50653c143f9cdbc9d3240d829cc31fb1c587084e1265fe0d0f7",
+      "used_for": "GLK is GEN9_LP"
+    },
+    {
+      "symbol": "SNB_GMCH_CTRL",
+      "file": "include/drm/intel/i915_drm.h",
+      "line": 47,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "c3b723b8897aa28a3662d8833a3d4e86f8c67c4c16ad91602379ffcbbbc26b9c",
+      "used_for": "GMCH control offset"
+    },
+    {
+      "symbol": "BDW_GMCH_GGMS_SHIFT",
+      "file": "include/drm/intel/i915_drm.h",
+      "line": 52,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "79a2a47973176e5e2f950ba47502d79d1a596ebf990e1e8c2b2067b33f5f0ce7",
+      "used_for": "GGMS field"
+    },
+    {
+      "symbol": "BDW_GMCH_GGMS_MASK",
+      "file": "include/drm/intel/i915_drm.h",
+      "line": 53,
+      "occurrences_from_anchor": 1,
+      "anchor": null,
+      "match": "whitespace-normalized full line",
+      "sha256": "d7cf24fa5b4daea3c2acee25a5fd505aae32c83151796171061f7e0119a21950",
+      "used_for": "GGMS field"
+    },
+    {
+      "symbol": "native-awake-observation",
+      "file": "drivers/gpu/drm/i915/gt/intel_engine_pm.h",
+      "line": 19,
+      "sha256": "569811e9b1d1a01bd1e8ed2363379af90c1e9a0214ea14a2d994dc857fa10f6a",
+      "used_for": "Actual native runtime-PM wakeref observation required under held token; not a caller bitmask or hardware-register guess."
+    },
+    {
+      "symbol": "native-awake-observation",
+      "file": "drivers/gpu/drm/i915/gt/intel_gt_pm.h",
+      "line": 16,
+      "sha256": "7341270ce310cbc3edd548ba1dbaafe2f0e6264c7db1db6c294a9df3a84bb256",
+      "used_for": "Actual native runtime-PM wakeref observation required under held token; not a caller bitmask or hardware-register guess."
+    },
+    {
+      "symbol": "native-awake-observation",
+      "file": "drivers/gpu/drm/i915/intel_wakeref.h",
+      "line": 112,
+      "sha256": "ac5f2b9faf7c4d7371aeef1c3813bf185164d9dccd948edf7b03fcc74bcdec2a",
+      "used_for": "Actual native runtime-PM wakeref observation required under held token; not a caller bitmask or hardware-register guess."
+    },
+    {
+      "symbol": "native-awake-observation",
+      "file": "drivers/gpu/drm/i915/intel_wakeref.h",
+      "line": 157,
+      "sha256": "ac5f2b9faf7c4d7371aeef1c3813bf185164d9dccd948edf7b03fcc74bcdec2a",
+      "used_for": "Actual native runtime-PM wakeref observation required under held token; not a caller bitmask or hardware-register guess."
+    },
+    {
+      "symbol": "native-awake-observation",
+      "file": "drivers/gpu/drm/i915/intel_wakeref.h",
+      "line": 252,
+      "sha256": "e774085a74264aa281b387fb45179cd5ed32469aa107edd320c8b4ba18cb8d5e",
+      "used_for": "Actual native runtime-PM wakeref observation required under held token; not a caller bitmask or hardware-register guess."
+    },
+    {
+      "symbol": "intel_wakeref_is_active.actual",
+      "file": "drivers/gpu/drm/i915/intel_wakeref.h",
+      "line": 241,
+      "sha256": "10ae8df62168c7604b7e2ed257d4ec702cbfbf03037dc7dee18e91e14bc31925",
+      "used_for": "Actual held runtime-PM wakeref observation, distinct from caller-supplied booleans or forcewake ACK bits."
+    }
+  ],
+  "adaptations": [
+    "gen8_ggtt_invalidate is a no-op on GEN9_LP (UC GSM); the pinned gen8 mmio_invalidate_full engine invalidation is additionally run after publication and after restoration, and its completion (each control reads 0) is required.",
+    "Linux only logs an invalidation timeout; this port quarantines the extent, keeps the capture and backing, and latches the publisher.",
+    "gen8 clear_range is nop_clear_range in Linux (stale entries left after unbind); this port restores exactly the captured prior entries of the owned extent before invalidation.",
+    "GEM_WARN_ON(GTTMMADR length != 16 MiB) is a refusal here.",
+    "_wait_for_atomic spins with cpu_relax; this port pauses 1 us per tight poll and caps polls at 4096 so a stopped clock still terminates.",
+    "Each entry is verified by a non-posted readback after an mfence, as the readback check named in needs_wc_ggtt_mapping's comment.",
+    "Engine runtime-PM awake filtering now comes only from a required native observer bound to the held forcewake/reset/GT runtime-PM token. No producer exists yet: missing or unknown state refuses publication before PTE writes.",
+    "Owner-final-release teardown captures/clears fields first; last owner release may destroy an embedded adapter."
+  ],
+  "not_source_derived": [
+    "Requirement that GTTMMADR be a non-prefetchable 64-bit memory BAR with decode enabled (PCI semantics for registers with read side effects), not a Linux check.",
+    "IOKit mapping options kIOMapAnywhere|kIOMapInhibitCache and their verification via IOMemoryMap::getMapOptions (SDK15.5 headers)."
+  ],
+  "xnu_source_consulted": false,
+  "dependency_clearance": "A source reference is not full dependency or firmware clearance."
+}

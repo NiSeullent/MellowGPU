@@ -16,7 +16,8 @@ MH_KEXT_BUNDLE = 11
 N_STAB, N_TYPE, N_EXT, N_UNDF = 0xE0, 0x0E, 1, 0
 
 
-def inspect_binary(path):
+def inspect_binary(path, *, expected_bundle_id=BUNDLE_ID, expected_version=VERSION,
+                   required_entrypoints=("_MellowGPU_kern_start", "_MellowGPU_kern_stop")):
     data = path.read_bytes()
     if len(data) < 32:
         raise ValueError("Truncated Mach-O header")
@@ -105,7 +106,7 @@ def inspect_binary(path):
                             report["kmod_identifier"] = data[pos + 16:pos + 80].split(b"\0", 1)[0].decode()
                             report["kmod_version"] = data[pos + 80:pos + 144].split(b"\0", 1)[0].decode()
                             break
-        for required in ("_kmod_info", "_MellowGPU_kern_start", "_MellowGPU_kern_stop"):
+        for required in ("_kmod_info", *required_entrypoints):
             if required not in report["defined_symbols"]:
                 report["errors"].append("Missing module definition " + required)
         for user_symbol in ("_main", "dyld_stub_binder", "_dyld_stub_binder", "___cxa_atexit", "_atexit",
@@ -115,7 +116,7 @@ def inspect_binary(path):
     for section in ("__mod_init_func", "__mod_term_func"):
         if not any(s["name"] == section and s["size"] > 0 for s in report["sections"]):
             report["errors"].append("Mellow static lifecycle section missing: " + section)
-    if report.get("kmod_identifier") != BUNDLE_ID or report.get("kmod_version") != VERSION:
+    if report.get("kmod_identifier") != expected_bundle_id or report.get("kmod_version") != expected_version:
         report["errors"].append("KMOD identity is not the current MellowGPU development product")
     report["structural_validation_passed"] = not report["errors"]
     return report

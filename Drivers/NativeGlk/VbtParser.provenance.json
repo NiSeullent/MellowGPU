@@ -1,0 +1,81 @@
+{
+  "actual_vbt_captured": false,
+  "authors": {
+    "cpp_runner_and_completion": "Codex /root/driver_research",
+    "independent_peer_legacy_correction": "Codex /root/framebuffer_review: source-backed legacy fallback enum, regression tests and scope clarification",
+    "initial_header_and_tests": "Claude glk_vbt_author, interrupted before implementation"
+  },
+  "deliberate_strict_differences": [
+    "Decoded block duplicates invalidate entire document instead of selecting an ambiguous instance",
+    "Only exact 28-byte generic DTD entries are accepted, larger future entries retained as rejected",
+    "Structural errors clear the entire caller output",
+    "Unknown panel does not fall back to index 0",
+    "Version beyond known264 cannot make ready profile",
+    "Checksum mismatch remains diagnostically parseable but prevents data-ready profile",
+    "Unrepresentable min brightness remains unknown instead of narrowing above255"
+  ],
+  "explicit_source_fallbacks": [
+    "Selected valid PWM entry below191 has LegacyBefore191 controller0 from pinned parse_lfp_backlight; not an observed controller byte, hardware PPS selection, or display write authority"
+  ],
+  "hardware_qualified": false,
+  "implementation": "Bounded explicit little-endian byte decoding, no packed input casts, heap, OS, MMIO, firmware access or retained input pointers",
+  "metal_qualified": false,
+  "not_implemented": [
+    "Firmware/OpRegion/ROM acquisition or provenance validation",
+    "EDID/AUX/DPCD capture and validation",
+    "Live panel/connector ownership or display-power admission",
+    "Native delay merge with hardware/specification and PPS field encoding",
+    "MMIO, backlight, link training, mode setting, display/Metal/WindowServer qualification"
+  ],
+  "primary_sources": [
+    {
+      "bytes": 40068,
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "0dc13d080e8aa92c9b083ec67ae2dbb350b4db47",
+      "legacy_mit_notice": true,
+      "path": "drivers/gpu/drm/i915/display/intel_vbt_defs.h",
+      "sha256": "75f0d7e96dd8aa00564b69fcfef6fe2781c84def6fe1705ad40e37db34bcb1fe",
+      "spdx": [],
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_vbt_defs.h"
+    },
+    {
+      "bytes": 107883,
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "97cbae2e547e2d11da6cc0e9f92801bf7ca969b3",
+      "legacy_mit_notice": true,
+      "path": "drivers/gpu/drm/i915/display/intel_bios.c",
+      "sha256": "da901f6ac60909d9bf379333244b424ab512410069cbd6c7a2674c96fbfe9be5",
+      "spdx": [],
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_bios.c"
+    },
+    {
+      "bytes": 54984,
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "d4c98b150fa2b7c9736cf5071e67ac55d73f17cb",
+      "legacy_mit_notice": false,
+      "path": "drivers/gpu/drm/i915/display/intel_pps.c",
+      "sha256": "f1f9c08347630a7ff9f7e5c9fb3e527d3db6ae81320b31519843b0ec0cc92866",
+      "spdx": [
+        "MIT"
+      ],
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_pps.c"
+    }
+  ],
+  "profile_version_scope": "Reviewed format policy155..264; upper264 is pinned child-size table limit, not actual GLK firmware/panel support. Native platform/connector/ownership admission remains separate.",
+  "schema": "mellowgpu.glk-vbt-parser-provenance/1",
+  "source_functions": [
+    "find_raw_section/_get_blocksize",
+    "validate_lfp_data_ptrs/fixup_lfp_data_ptrs",
+    "generate_lfp_data_ptrs",
+    "fill_detail_timing_data",
+    "parse_generic_dtd",
+    "parse_lfp_backlight",
+    "parse_edp",
+    "get_panel_type",
+    "child_device_size_valid",
+    "dvo_port_to_port",
+    "pps_initial_setup"
+  ],
+  "upstream_commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+  "windowserver_qualified": false
+}

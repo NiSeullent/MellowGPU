@@ -1,0 +1,270 @@
+{
+  "schema": "mellowgpu.glk-bcs-provenance/1",
+  "component": "Drivers/NativeGlk/BcsExecution",
+  "linux_commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+  "sdk": "MacOSX15.5.sdk (Kernel.framework headers, compile only)",
+  "xnu_reference": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4 (not needed beyond SDK KPI headers for this unit)",
+  "seeded_inputs_used_unchanged": [
+    "Drivers/NativeGlk/CommandEncoding.*",
+    "Drivers/NativeGlk/LrcImage.*",
+    "Drivers/NativeGpu/MemoryOwner.*"
+  ],
+  "transcription_scope": "Register offsets/bits, masked-write encodings, HWSP indices, enable/sanitize/submit/CSB/stop/reset-handshake ordering. No upstream code is copied verbatim; bodies are re-expressed in C++ against injected native authorities.",
+  "original_mellow_rules": [
+    "five-part completion correlation (CSB promote+completion with assigned context ID, HWSP breadcrumb, GPU-only nonce, saved CTX_RING_HEAD, held leases/epochs)",
+    "Unknown records keep job holds and context tags",
+    "GT forcewake required for every BCS0 access",
+    "readback verification after enable",
+    "all-ones register reads mean device lost",
+    "no replay after reset"
+  ],
+  "clearance": "A source reference is not dependency, firmware, patent or distribution clearance.",
+  "files": [
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_execlists_submission.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "e693b0c9d2a3e2ee0530b0cafbe39621038c0c20",
+      "sha256": "44c53b014628fdd409d089d15209020a79a0098bf2b6f4c477d89df73ddf5cf2",
+      "bytes": 127064,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/gt/intel_execlists_submission.c",
+      "git_blob_matches_primary_manifest": true,
+      "symbols": [
+        "execlists_submit_ports",
+        "write_desc",
+        "execlists_update_context",
+        "process_csb",
+        "csb_read",
+        "wa_csb_read",
+        "gen8_csb_parse",
+        "reset_csb_pointers",
+        "ring_set_paused",
+        "execlists_sanitize",
+        "sanitize_hwsp",
+        "enable_execlists",
+        "enable_error_interrupt",
+        "execlists_resume",
+        "execlists_reset_prepare",
+        "GEN8_CTX_STATUS_IDLE_ACTIVE",
+        "GEN8_CTX_STATUS_PREEMPTED",
+        "intel_execlists_submission_setup"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "c0fd349a4600c638306fec937ecc77538ed23245",
+      "sha256": "3b832bd7e1d5225cb336749f5ccd17a08fa6ddbe1d62387972f1606b144375e4",
+      "bytes": 71135,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "git_blob_matches_primary_manifest": true,
+      "symbols": [
+        "intel_engine_set_hwsp_writemask",
+        "__intel_engine_stop_cs",
+        "intel_engine_stop_cs",
+        "intel_engine_cancel_stop_cs",
+        "cleanup_status_page",
+        "intel_engine_init_execlists"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_cs.c"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/gen8_engine_cs.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "071c1cc45257a78515f7c5c2e7dfb8951ff343af",
+      "sha256": "d605b5e4b74d76e29be1db9fb22b2f16d52f8ed96ad2c5746f850665f10f2c72",
+      "bytes": 22879,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/claude-swarm-20261016/wave5-results/glk_commands_author/upstream-linux-0d9ff90a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c",
+      "git_blob_matches_primary_manifest": false,
+      "symbols": [
+        "gen8_emit_flush_xcs",
+        "gen8_emit_fini_breadcrumb_xcs",
+        "gen8_emit_wa_tail"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_reset.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "6053f3e8aa27c1bcc6cb6ef0c38c14e8cdfa90a0",
+      "sha256": "2d220e2ba24e01073525c21c5bfdc50b1dca5fae0cd93a725ec6c14a815019fc",
+      "bytes": 46492,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/gt/intel_reset.c",
+      "git_blob_matches_primary_manifest": true,
+      "symbols": [
+        "gen8_engine_reset_prepare",
+        "gen8_engine_reset_cancel",
+        "gen8_reset_engines"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_reset.c"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_engine_regs.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "1c4784cb296c8b9fae1d2c732304b043a31f54a4",
+      "sha256": "e6ae20bc2946a252a948628df6a84522c19dd45d537f5efa0e5c55d08e82961a",
+      "bytes": 12482,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/gt/intel_engine_regs.h",
+      "git_blob_matches_primary_manifest": true,
+      "symbols": [
+        "RING_TAIL",
+        "RING_HEAD",
+        "RING_START",
+        "RING_CTL",
+        "RING_ACTHD",
+        "RING_HWS_PGA",
+        "RING_HWSTAM",
+        "RING_MI_MODE",
+        "MODE_IDLE",
+        "STOP_RING",
+        "RING_EIR",
+        "RING_EMR",
+        "RING_ESR",
+        "RING_RESET_CTL",
+        "RESET_CTL_CAT_ERROR",
+        "RESET_CTL_READY_TO_RESET",
+        "RESET_CTL_REQUEST_RESET",
+        "RING_ELSP",
+        "RING_MODE_GEN7",
+        "GFX_RUN_LIST_ENABLE",
+        "RING_CONTEXT_STATUS_PTR",
+        "HEAD_ADDR",
+        "TAIL_ADDR",
+        "RING_NR_PAGES"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_regs.h"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_lrc_reg.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "304000c7e34537be36b325f33ecca7feb40ce672",
+      "sha256": "671b2adfb2825597425eea515b892cba1365f658d552f9a90439182f0f7f21c0",
+      "bytes": 2746,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/gt/intel_lrc_reg.h",
+      "git_blob_matches_primary_manifest": true,
+      "symbols": [
+        "GEN8_EXECLISTS_STATUS_BUF",
+        "CTX_RING_HEAD",
+        "GEN8_CSB_ENTRIES"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_lrc_reg.h"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_engine.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "f6a98cf1e5a50cba37a9c8b8863ce93e6ecc6985",
+      "sha256": "d07100bbdd00a2874b19851134c56b56c448df0219be67acb01e89ab3ed996cc",
+      "bytes": 12995,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/gt/intel_engine.h",
+      "git_blob_matches_primary_manifest": true,
+      "symbols": [
+        "I915_HWS_CSB_BUF0_INDEX",
+        "I915_HWS_CSB_WRITE_INDEX",
+        "I915_GEM_HWS_PREEMPT",
+        "I915_GEM_HWS_SEQNO"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine.h"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_ring.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "64b322e25f366a6bc6bdc76b4524fdd64d927d3b",
+      "sha256": "2057ac91d51ef486292595390de04e7e3435acafc2fa35a237de3bfd7b23c035",
+      "bytes": 4140,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/claude-swarm-20261016/wave5-results/glk_commands_author/upstream-linux-0d9ff90a/drivers/gpu/drm/i915/gt/intel_ring.h",
+      "git_blob_matches_primary_manifest": false,
+      "symbols": [
+        "__intel_ring_space",
+        "intel_ring_direction",
+        "intel_ring_wrap",
+        "assert_ring_tail_valid"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ring.h"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_ring.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "be7eeb95ff12bb1e872b5d81fc63d7159d51b280",
+      "sha256": "3a66c2a6c7e16cc9a5b17880145e828e353d1549c281af50f6da7c3c0a6d91e0",
+      "bytes": 7503,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/claude-swarm-20261016/wave5-results/glk_commands_author/upstream-linux-0d9ff90a/drivers/gpu/drm/i915/gt/intel_ring.c",
+      "git_blob_matches_primary_manifest": false,
+      "symbols": [
+        "intel_ring_begin"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ring.c"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/i915_reg.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "64e906380131a950e8ae96db9ed1a7a98dd3da72",
+      "sha256": "4378b821119b67119ed3b7d218c3563d481271e1a16dcd59c1fd258306140a85",
+      "bytes": 28943,
+      "spdx": "MIT permission text (no SPDX line)",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/i915_reg.h",
+      "git_blob_matches_primary_manifest": true,
+      "symbols": [
+        "BLT_RING_BASE",
+        "I915_ERROR_INSTRUCTION"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_reg.h"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/intel_uncore.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "fafc2ca9a237665307a3508419b23a772ea6207e",
+      "sha256": "f7eb9fab5de3ea62fa36f857f14d16a171fb8cc8e1034628e8552bfa8423b36a",
+      "bytes": 16807,
+      "spdx": "MIT permission text (no SPDX line)",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/intel_uncore.h",
+      "git_blob_matches_primary_manifest": true,
+      "symbols": [
+        "forcewake_domain_id",
+        "FORCEWAKE_ALL"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_uncore.h"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/intel_uncore.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "170e83a8c9fc3ad5ad3406790134416328b85cf6",
+      "sha256": "357d32c4980bd619d73aaea4f35136bed08762a1c2f718fedcf1c40a500ea47a",
+      "bytes": 91692,
+      "spdx": "MIT permission text (no SPDX line)",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/intel_uncore.c",
+      "git_blob_matches_primary_manifest": true,
+      "symbols": [
+        "__gen9_fw_ranges",
+        "intel_uncore_fw_domains_init",
+        "intel_uncore_setup_mmio",
+        "assert_forcewakes_active"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_uncore.c"
+    },
+    {
+      "path": "include/drm/intel/reg_bits.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "2a9066e1d808c0d3b03ec2e043b2304f86ab8fb1",
+      "sha256": "0b6499233882efd4720dbcba1e887811a7e9dc2b9ab233c1bf625c3bdde4cec5",
+      "bytes": 5845,
+      "spdx": "MIT",
+      "cache_path": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/claude-swarm-20261016/wave5-results/glk_lrc_author/fetched/linux/include/drm/intel/reg_bits.h",
+      "git_blob_matches_primary_manifest": false,
+      "symbols": [
+        "REG_MASKED_FIELD",
+        "REG_MASKED_FIELD_ENABLE",
+        "REG_MASKED_FIELD_DISABLE"
+      ],
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/reg_bits.h"
+    }
+  ]
+}

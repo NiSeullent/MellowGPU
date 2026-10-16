@@ -1,0 +1,537 @@
+{
+  "authorship": "Authored by Claude (claude-opus-5-5) in an isolated worktree based on 5d31a6c4; no commits or pushes.",
+  "completion_review": {
+    "author": "Codex /root/driver_research",
+    "final_adapter_checks": 98,
+    "forcewake_unknown_output": "Entire output cleared, ForcewakeReleaseUnknown status; endAccess(ForcewakeUnknown) must retain existing native operation/PM/BAR hold in owner quarantine",
+    "native_access_callbacks_wired": false,
+    "original_adapter_checks": 30,
+    "original_author": "Claude claude-opus-5-5",
+    "pure_render_producer_changed": false
+  },
+  "components": [
+    "Drivers/NativeGlk/RenderWorkarounds.hpp",
+    "Drivers/NativeGlk/RenderWorkarounds.cpp",
+    "Mellow/GlkTopologyIOKit.hpp",
+    "Mellow/GlkTopologyIOKit.cpp",
+    "tests/native_glk_render_wa_tests.cpp",
+    "tests/native_glk_topology_iokit_tests.cpp",
+    "tests/native_glk_render_wa_shim/IOKit/pci/IOPCIDevice.h",
+    "Tools/run-native-glk-render-wa-tests.py"
+  ],
+  "derivation": {
+    "MellowNative::glkReadTopology": "Mellow original IOKit adapter; pinned gen9_sseu_info_init register order. Codex completion adds required native-operation/PM lifetime grant, epoch-current checks, status-bearing forcewake cleanup and Unknown quarantine handoff. No native producer is wired.",
+    "RenderWa::buildWaContext": "intel_lrc.c lrc_init_wa_ctx(), gen9_init_indirectctx_bb(), gen8_emit_flush_coherentl3_wa(), emit_lri(); gen8_engine_cs.h gen8_emit_pipe_control()",
+    "RenderWa::contextWorkarounds": "intel_workarounds.c glk_ctx_workarounds_init(), gen9_ctx_workarounds_init(), _wa_add()",
+    "RenderWa::decodeTopology/checkTopology": "intel_sseu.c gen9_sseu_info_init() IS_GEN9_LP branch; stricter refusals are Mellow additions",
+    "RenderWa::defaultSseu/makeRpcs": "intel_sseu.h intel_sseu_from_device_info(); intel_sseu.c intel_sseu_make_rpcs() graphics version 9",
+    "RenderWa::emitContextWorkarounds": "intel_workarounds.c intel_engine_emit_ctx_wa(); gen8_engine_cs.c gen8_emit_flush_rcs(EMIT_BARRIER)",
+    "RenderWa::identifyPlatform": "intel_step.c intel_step_init() with glk_revids; pciids.h INTEL_GLK_IDS (0x3185 only accepted)"
+  },
+  "license": {
+    "notices": "Drivers/NativeGlk/RenderWorkarounds.LICENSE.MIT",
+    "spdx": "MIT"
+  },
+  "limitations": [
+    "A source reference is not full dependency, firmware or patent clearance.",
+    "Fuse values in tests are synthetic; no GLK part was read and no topology of the target is claimed.",
+    "intel_renderstate_emit() null-state batch for the default context image is not implemented.",
+    "No MMIO, DMA, kext load, GPU execution or hardware qualification occurred.",
+    "beginAccess/endAccess/bound/MMIO/forcewake are native-owner injection boundaries only; runtime lifetime/PM ownership, binding and cleanup/quarantine implementations remain unwired and unqualified."
+  ],
+  "macos_sdk": {
+    "IOKit/pci/IOPCIDevice.h_sha256": "1d07805ca214f6903601a4ffca5e3b239bff766795852423fe635af333063a72",
+    "name": "MacOSX15.5.sdk (CommandLineTools)",
+    "use": "declarations for the x86_64 kernel-style compile only"
+  },
+  "schema": "mellowgpu.glk-render-wa-provenance/1",
+  "upstream": {
+    "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+    "files": [
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2014 Intel Corporation"
+        ],
+        "git_blob": "071c1cc45257a78515f7c5c2e7dfb8951ff343af",
+        "path": "drivers/gpu/drm/i915/gt/gen8_engine_cs.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c",
+        "sha256": "d605b5e4b74d76e29be1db9fb22b2f16d52f8ed96ad2c5746f850665f10f2c72",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "gen8_emit_flush_rcs"
+        ]
+      },
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "867ba697aceb83e5f8c24ca121bf70a7a85b1c62",
+        "path": "drivers/gpu/drm/i915/gt/gen8_engine_cs.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h",
+        "sha256": "5d3def4da1e5469c10f4be1471574e01510d3353de3aae891fdfb4d2343c8d26",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "__gen8_emit_pipe_control",
+          "gen8_emit_pipe_control"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "f6a98cf1e5a50cba37a9c8b8863ce93e6ecc6985",
+        "path": "drivers/gpu/drm/i915/gt/intel_engine.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine.h",
+        "sha256": "d07100bbdd00a2874b19851134c56b56c448df0219be67acb01e89ab3ed996cc",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "CACHELINE_BYTES"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2016 Intel Corporation"
+        ],
+        "git_blob": "c0fd349a4600c638306fec937ecc77538ed23245",
+        "path": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+        "sha256": "3b832bd7e1d5225cb336749f5ccd17a08fa6ddbe1d62387972f1606b144375e4",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "engine->sseu = intel_sseu_from_device_info()"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "1c4784cb296c8b9fae1d2c732304b043a31f54a4",
+        "path": "drivers/gpu/drm/i915/gt/intel_engine_regs.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_regs.h",
+        "sha256": "e6ae20bc2946a252a948628df6a84522c19dd45d537f5efa0e5c55d08e82961a",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "GEN8_R_PWR_CLK_STATE",
+          "GEN8_RPCS_ENABLE",
+          "GEN8_RPCS_S_CNT_*",
+          "GEN8_RPCS_SS_CNT_*",
+          "GEN8_RPCS_EU_MAX_*",
+          "GEN8_RPCS_EU_MIN_*"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "155b6255a63ea83224628e835f429879fb382d46",
+        "path": "drivers/gpu/drm/i915/gt/intel_engine_types.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_types.h",
+        "sha256": "47b77f01148818361cf0f0c02bb40fd6420b06941d6e06516e9447f3146b6a62",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "EMIT_INVALIDATE",
+          "EMIT_FLUSH",
+          "EMIT_BARRIER"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2014 Intel Corporation"
+        ],
+        "git_blob": "e693b0c9d2a3e2ee0530b0cafbe39621038c0c20",
+        "path": "drivers/gpu/drm/i915/gt/intel_execlists_submission.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c",
+        "sha256": "44c53b014628fdd409d089d15209020a79a0098bf2b6f4c477d89df73ddf5cf2",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "engine->emit_flush = gen8_emit_flush_rcs",
+          "lrc_init_wa_ctx() call site"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "5394bc7d4daf81977265d80fe6f6db62810472fa",
+        "path": "drivers/gpu/drm/i915/gt/intel_gpu_commands.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h",
+        "sha256": "d8d14b3edefb858418eb52506f5f7598ee2cd6bd8affa659e43faaf11c85e77c",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "MI_INSTR",
+          "MI_NOOP",
+          "MI_ARB_ON_OFF",
+          "MI_ARB_ENABLE",
+          "MI_ARB_DISABLE",
+          "MI_LOAD_REGISTER_IMM",
+          "MI_STORE_REGISTER_MEM_GEN8",
+          "MI_LOAD_REGISTER_MEM_GEN8",
+          "MI_SRM_LRM_GLOBAL_GTT",
+          "GEN9_MEDIA_POOL_STATE",
+          "GEN9_MEDIA_POOL_ENABLE",
+          "GFX_OP_PIPE_CONTROL",
+          "PIPE_CONTROL_* (FLUSH_L3, STORE_DATA_INDEX, CS_STALL, TLB_INVALIDATE, QW_WRITE, RENDER_TARGET_CACHE_FLUSH, INSTRUCTION_CACHE_INVALIDATE, TEXTURE_CACHE_INVALIDATE, FLUSH_ENABLE, DC_FLUSH_ENABLE, VF_CACHE_INVALIDATE, CONST_CACHE_INVALIDATE, STATE_CACHE_INVALIDATE, DEPTH_CACHE_FLUSH)"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2019 Intel Corporation"
+        ],
+        "git_blob": "5c7f862f7100a054ed60bd73f9429ec843fe03b1",
+        "path": "drivers/gpu/drm/i915/gt/intel_gt.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt.c",
+        "sha256": "4d1441c4a15bb07200e8f89d545395a2e6b02955ff982af4c186fd5e206ffead",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "intel_gt_init_scratch",
+          "intel_gt_init_mmio",
+          "__engines_record_defaults"
+        ]
+      },
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "998ca029b73a106b2fe898f2758a485c7e9142ab",
+        "path": "drivers/gpu/drm/i915/gt/intel_gt.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt.h",
+        "sha256": "74be24390462209952217f05d61be0793a2b2d6aad1d4867a84ee40711c3c855",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "intel_gt_scratch_offset"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "3ba9b2206b79812c4bb6ec2f0be7f90cdc08c945",
+        "path": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+        "sha256": "ccc7fb4c51e94ce99dc2695f9351284e00dddef7fded90bf0be169c6539d77ac",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "GEN8_L3SQCREG4",
+          "GEN8_LQSC_FLUSH_COHERENT_LINES",
+          "COMMON_SLICE_CHICKEN2",
+          "GEN9_DISABLE_GATHER_AT_SET_SHADER_COMMON_SLICE",
+          "GEN8_SBE_DISABLE_REPLAY_BUF_OPTIMIZATION",
+          "FF_SLICE_CHICKEN",
+          "FF_SLICE_CHICKEN_CL_PROVOKING_VERTEX_FIX",
+          "_3D_CHICKEN3",
+          "_3D_CHICKEN_SF_PROVOKING_VERTEX_FIX",
+          "GEN8_FUSE2",
+          "GEN8_F2_S_ENA_MASK",
+          "GEN9_F2_SS_DIS_MASK",
+          "GEN9_EU_DISABLE",
+          "GEN8_CS_CHICKEN1",
+          "GEN9_PREEMPT_3D_OBJECT_LEVEL",
+          "GEN9_PREEMPT_GPGPU_LEVEL",
+          "GEN9_PREEMPT_GPGPU_COMMAND_LEVEL",
+          "GEN9_PREEMPT_GPGPU_LEVEL_MASK",
+          "GEN9_WM_CHICKEN3",
+          "GEN9_FACTOR_IN_CLR_VAL_HIZ",
+          "CACHE_MODE_1",
+          "GEN8_4x4_STC_OPTIMIZATION_DISABLE",
+          "GEN9_PARTIAL_RESOLVE_IN_VC_DISABLE",
+          "HDC_CHICKEN0",
+          "HDC_FORCE_CSR_NON_COHERENT_OVR_DISABLE",
+          "HDC_FORCE_CONTEXT_SAVE_RESTORE_NON_COHERENT",
+          "HDC_FORCE_NON_COHERENT",
+          "HALF_SLICE_CHICKEN2",
+          "GEN8_ST_PO_DISABLE",
+          "GEN9_HALF_SLICE_CHICKEN5",
+          "GEN9_CCS_TLB_PREFETCH_ENABLE",
+          "GEN9_HALF_SLICE_CHICKEN7",
+          "GEN9_ENABLE_YV12_BUGFIX",
+          "GEN9_ENABLE_GPGPU_PREEMPTION",
+          "GEN8_ROW_CHICKEN",
+          "FLOW_CONTROL_ENABLE",
+          "PARTIAL_INSTRUCTION_SHOOTDOWN_DISABLE"
+        ]
+      },
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "bcee084b1f272b7813b0c51645028be7547549cd",
+        "path": "drivers/gpu/drm/i915/gt/intel_gt_types.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_types.h",
+        "sha256": "d5057f6a2819959c15b8f36e4e94c98d0bf4311c75502d168873748c8a9b6349",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "enum intel_gt_scratch_field"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2014 Intel Corporation"
+        ],
+        "git_blob": "147d22907960b6280d8404f272d1ca235fe69312",
+        "path": "drivers/gpu/drm/i915/gt/intel_lrc.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_lrc.c",
+        "sha256": "b10f6affc652967c619a846982bb9731f24ec8ef3b8d46daf428adb76f5b3843",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "gen9_init_indirectctx_bb",
+          "gen8_emit_flush_coherentl3_wa",
+          "emit_lri",
+          "struct lri",
+          "lrc_init_wa_ctx",
+          "CTX_WA_BB_SIZE",
+          "lrc_create_wa_ctx",
+          "init_wa_bb_regs",
+          "lrc_setup_indirect_ctx",
+          "lrc_ring_indirect_offset_default"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "7111bae759f3f9e1a592d3d350c279cb0ddf0e5d",
+        "path": "drivers/gpu/drm/i915/gt/intel_lrc.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_lrc.h",
+        "sha256": "e71534746b6f6720c978c0096316c51873f5afc2974d94cd4979303384a6f5b3",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "LRC_PPHWSP_SCRATCH",
+          "LRC_PPHWSP_SCRATCH_ADDR"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "304000c7e34537be36b325f33ecca7feb40ce672",
+        "path": "drivers/gpu/drm/i915/gt/intel_lrc_reg.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_lrc_reg.h",
+        "sha256": "671b2adfb2825597425eea515b892cba1365f658d552f9a90439182f0f7f21c0",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "GEN9_CTX_RCS_INDIRECT_CTX_OFFSET_DEFAULT"
+        ]
+      },
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2019 Intel Corporation"
+        ],
+        "git_blob": "656a499b2706d8ba26a07f996c35f1795aa664eb",
+        "path": "drivers/gpu/drm/i915/gt/intel_sseu.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_sseu.c",
+        "sha256": "809036e4325fda1c112d3f784853c23e319f00f822e166c7eb7a5a5e27d47132",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "gen9_sseu_info_init",
+          "intel_sseu_make_rpcs",
+          "intel_sseu_set_info",
+          "compute_eu_total",
+          "sseu_set_eus",
+          "intel_sseu_subslice_total"
+        ]
+      },
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "d7e8c374f153e01ed26d46e3bdb3bd90a72d0651",
+        "path": "drivers/gpu/drm/i915/gt/intel_sseu.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_sseu.h",
+        "sha256": "0986f94c4b3cce30e07887aa8f274d224487cfd30102faf811d0e15a76d43246",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "struct intel_sseu",
+          "intel_sseu_from_device_info",
+          "intel_sseu_has_subslice"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2014-2018 Intel Corporation"
+        ],
+        "git_blob": "24ea5d8d529c0347d8aac8640171751ad0cc9901",
+        "path": "drivers/gpu/drm/i915/gt/intel_workarounds.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_workarounds.c",
+        "sha256": "1c03b70783a52440cb5852da81da80976d2ad085e7fc95a743aee77bc0309b66",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "gen9_ctx_workarounds_init",
+          "glk_ctx_workarounds_init",
+          "__intel_engine_init_ctx_wa",
+          "intel_engine_emit_ctx_wa",
+          "_wa_add",
+          "wa_add",
+          "wa_mcr_add",
+          "wa_masked_en",
+          "wa_mcr_masked_en",
+          "wa_masked_dis",
+          "wa_mcr_masked_dis",
+          "wa_masked_field_set"
+        ]
+      },
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "e14188120e66043f97cb8ed2c6a727d29341fbba",
+        "path": "drivers/gpu/drm/i915/gt/intel_workarounds_types.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_workarounds_types.h",
+        "sha256": "da7c9dfd56f5266a1bea13498b06fc43237240a6da4ca9c4e108f625a5430d72",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "struct i915_wa"
+        ]
+      },
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "844ed79e72114eafc0d6834d9f724ddd92813684",
+        "path": "drivers/gpu/drm/i915/i915_drv.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_drv.h",
+        "sha256": "9474f2666449dc78bb97c4b22a7e14279c3182b49c90d4a73df5a9b4c6b71620",
+        "spdx": [],
+        "symbols": [
+          "HAS_POOLED_EU"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2016 Intel Corporation"
+        ],
+        "git_blob": "2f03f95945f1b9a243a61db163576d0071d53e9c",
+        "path": "drivers/gpu/drm/i915/i915_pci.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+        "sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1",
+        "spdx": [],
+        "symbols": [
+          "GEN9_LP_FEATURES",
+          "glk_info"
+        ]
+      },
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2020,2021 Intel Corporation"
+        ],
+        "git_blob": "60a2af5307fc32a2d6bd4986ab3127604de0ec01",
+        "path": "drivers/gpu/drm/i915/intel_step.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_step.c",
+        "sha256": "67f07f0bab8760e89d0b953bb26a4e8a9113e07ebc5660553829419a0322670d",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "glk_revids",
+          "intel_step_init"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright \u00a9 2013 Intel Corporation"
+        ],
+        "git_blob": "170e83a8c9fc3ad5ad3406790134416328b85cf6",
+        "path": "drivers/gpu/drm/i915/intel_uncore.c",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_uncore.c",
+        "sha256": "357d32c4980bd619d73aaea4f35136bed08762a1c2f718fedcf1c40a500ea47a",
+        "spdx": [],
+        "symbols": [
+          "__gen9_fw_ranges"
+        ]
+      },
+      {
+        "acquisition": "rehashed primary cache glk-next-native-primitives; sha256 equals its manifest",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [
+          "Copyright 2013 Intel Corporation"
+        ],
+        "git_blob": "dff389b56eb3bf0ebcf9d8a81c2e76722a0ea54f",
+        "path": "include/drm/intel/pciids.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/pciids.h",
+        "sha256": "102d8f821c9464ad17c0160535a4e3811f49609f199f1b6d7268050d71d8e8f0",
+        "spdx": [],
+        "symbols": [
+          "INTEL_GLK_IDS"
+        ]
+      },
+      {
+        "acquisition": "GitHub contents API at the pinned ref; git blob verified locally (wave6 fetch)",
+        "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+        "copyright": [],
+        "git_blob": "2a9066e1d808c0d3b03ec2e043b2304f86ab8fb1",
+        "path": "include/drm/intel/reg_bits.h",
+        "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/reg_bits.h",
+        "sha256": "0b6499233882efd4720dbcba1e887811a7e9dc2b9ab233c1bf625c3bdde4cec5",
+        "spdx": [
+          "MIT"
+        ],
+        "symbols": [
+          "REG_MASKED_FIELD",
+          "REG_MASKED_FIELD_ENABLE",
+          "REG_MASKED_FIELD_DISABLE",
+          "REG_GENMASK",
+          "REG_BIT",
+          "REG_FIELD_GET"
+        ]
+      }
+    ],
+    "repository": "https://github.com/torvalds/linux"
+  }
+}

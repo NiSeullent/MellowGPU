@@ -1,0 +1,154 @@
+{
+  "schema": "mellowgpu.glk-interrupt-provenance/1",
+  "scope": "source reference metadata; no dependency/license/hardware approval",
+  "qualification": {
+    "hardware_executed": false,
+    "gpu_executed": false,
+    "metal_qualified": false,
+    "windowserver_qualified": false
+  },
+  "sources": [
+    {
+      "repository": "torvalds/linux",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "path": "include/drm/intel/intel_gmd_interrupt_regs.h",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/intel_gmd_interrupt_regs.h",
+      "sha256": "02165ec24e577bfefe04673f75ba001df4395a21ca4b1b21b06edf60d48f0fbb",
+      "git_blob_sha1": "ce66c4151e769ab51aa9aae1ad4023f146d207b1",
+      "bytes": 3733,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "torvalds/linux",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "path": "drivers/gpu/drm/i915/display/intel_display_regs.h",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_display_regs.h",
+      "sha256": "b8f4adfd157b81c56bdcd81eed3ac9e0b61ec26abe750372d05381196ba98c8d",
+      "git_blob_sha1": "0f5018482497be21182738e1983fc1042dac8360",
+      "bytes": 142964,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "torvalds/linux",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "path": "drivers/gpu/drm/i915/i915_irq.c",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_irq.c",
+      "sha256": "27b8af81ce78ab211adb0e770e183f6d81f76eba4c2a101adc6a55ec3e6c9d86",
+      "git_blob_sha1": "932409b943ad252c2ad63b91384385fba0936a99",
+      "bytes": 34479,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "torvalds/linux",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "path": "drivers/gpu/drm/i915/gt/intel_gt_irq.c",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_irq.c",
+      "sha256": "366cbabfa36cd3d9e355d5a63dcbee1d59716641591fb3e5c9dbf3021a14788d",
+      "git_blob_sha1": "d85c849c008159790d2eafa2ee99632684bce71f",
+      "bytes": 17149,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "torvalds/linux",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "path": "drivers/gpu/drm/i915/i915_reg.h",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_reg.h",
+      "sha256": "4378b821119b67119ed3b7d218c3563d481271e1a16dcd59c1fd258306140a85",
+      "git_blob_sha1": "64e906380131a950e8ae96db9ed1a7a98dd3da72",
+      "bytes": 28943,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "torvalds/linux",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "path": "drivers/gpu/drm/i915/intel_uncore.c",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_uncore.c",
+      "sha256": "357d32c4980bd619d73aaea4f35136bed08762a1c2f718fedcf1c40a500ea47a",
+      "git_blob_sha1": "170e83a8c9fc3ad5ad3406790134416328b85cf6",
+      "bytes": 91692,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "torvalds/linux",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "path": "drivers/gpu/drm/i915/i915_pci.c",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+      "sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1",
+      "git_blob_sha1": "2f03f95945f1b9a243a61db163576d0071d53e9c",
+      "bytes": 26723,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "apple-oss-distributions/xnu",
+      "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+      "path": "iokit/Kernel/IOInterruptEventSource.cpp",
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOInterruptEventSource.cpp",
+      "sha256": "eeb34721f888cc03a24c006b87aa67032473562a4473f118cb94c83650c9d88e",
+      "git_blob_sha1": "5109834c12a1ab76255784ac5648a2f4219707e5",
+      "bytes": 15378,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "apple-oss-distributions/xnu",
+      "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+      "path": "iokit/Kernel/IOFilterInterruptEventSource.cpp",
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOFilterInterruptEventSource.cpp",
+      "sha256": "2d2bc8de4ca3cdb275984267e18e39742943549ed93c284562d99d22eecf5d5b",
+      "git_blob_sha1": "1c625ee83ae82094bdd37284b6bae68a12f1a1a4",
+      "bytes": 9171,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "apple-oss-distributions/xnu",
+      "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+      "path": "iokit/Kernel/IOInterruptController.cpp",
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOInterruptController.cpp",
+      "sha256": "76b9e77dc6a70dba9513737f9c175bcd522b8da30af3be171d0eb6eec22626aa",
+      "git_blob_sha1": "ebc7c26bd78bcd3b7ea2a56b433136dd72f6c738",
+      "bytes": 25019,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    },
+    {
+      "repository": "apple-oss-distributions/xnu",
+      "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+      "path": "iokit/Kernel/IOWorkLoop.cpp",
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOWorkLoop.cpp",
+      "sha256": "10f6d04e18a5fb60fda7782b13c5b551d7e27bb191e798ad1011429c0ef66bc3",
+      "git_blob_sha1": "1d93f463c39d7bb688d7311ef411ed5ef916a147",
+      "bytes": 18539,
+      "verification_scope": "original Claude immutable-URL source capture; local bytes, SHA256 and Git blob digest recomputed; no fresh remote membership attestation",
+      "import_scope": "constants/public API behavior and independently written sequencing; no full upstream source/function import"
+    }
+  ],
+  "native_facts": [
+    "IOInterruptEventSource registers its provider handler during init, not just addEventSource",
+    "IOInterruptController disable outside primary context sets soft-disable and drains active primary",
+    "IOWorkLoop removeEventSource unlinks source and setWorkLoop(nullptr) unregisters; checkForWork uses source after callback returns",
+    "Primary filter only uses bounded raw epoch-admitted access/atomics; no PCI/framework query",
+    "Callbacks receive interrupt hints, never GPU completion"
+  ],
+  "authorship": {
+    "Claude": [
+      "InterruptDecode base and notices",
+      "native header shape",
+      "original register-model and OS shim tests"
+    ],
+    "Codex": [
+      "Complete native IOFilterInterruptEventSource/workloop/lifetime body",
+      "Source-backed init registration timing and drain result guards",
+      "Callback reentrant unbind rejection, fresh epoch resume, partial-failure retained ownership",
+      "Initial register read failure scheduled as fault instead of ignored; real RED retained",
+      "Fatal sanitizer/nativeSDK runner and export audit"
+    ]
+  }
+}
