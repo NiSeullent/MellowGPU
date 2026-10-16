@@ -1,0 +1,54 @@
+{
+  "schema": "mellowgpu.physical-metal-enumeration-baseline/1",
+  "target": "user-designated15IGL7",
+  "cpu": "Intel Celeron N4120",
+  "physical_pci": {
+    "vendor-id": 32902,
+    "device-id": 12677,
+    "revision-id": 6,
+    "subsystem-vendor-id": 6058,
+    "subsystem-id": 15991,
+    "IORegistryEntryID": 4294967814
+  },
+  "os_build": "24H32",
+  "os_version": "15.8.1",
+  "process_architecture": "native x86_64",
+  "boot_session_before": "5D004F1C-A872-4C11-835D-E4C3B43FC79C",
+  "boot_session_after": "5D004F1C-A872-4C11-835D-E4C3B43FC79C",
+  "source_sha256": "c02d6ab550fd38fc013864daa312b3d6d444e179d17c78801d8515789c71914c",
+  "binary_sha256": "c1353e219d1d65bdf14ac1714b77d693f3b1abc3999c7fc8af42d30d6d0f04bf",
+  "scope": "Actual public Metal device enumeration on physical laptop; no GPU commands requested",
+  "iterations": [
+    {
+      "index": 1,
+      "exit": 3,
+      "seconds": 0.146709133,
+      "default_device_present": false,
+      "metal_device_count": 0
+    },
+    {
+      "index": 2,
+      "exit": 3,
+      "seconds": 0.08005359000000001,
+      "default_device_present": false,
+      "metal_device_count": 0
+    },
+    {
+      "index": 3,
+      "exit": 3,
+      "seconds": 0.08335600599999993,
+      "default_device_present": false,
+      "metal_device_count": 0
+    }
+  ],
+  "windowserver_process_unchanged": true,
+  "framebuffer_class": "IONDRVFramebuffer",
+  "framebuffer_memory_bytes": 8294400,
+  "ioaccelerator_instances": 0,
+  "gpu_execution": "NOT_RUN",
+  "metal3_qualified": false,
+  "windowserver_gpu_qualified": false,
+  "performance_benchmark": "NOT_RUN_NO_METAL_DEVICE",
+  "gpu_qualified_profiles": 0,
+  "driver_installed_in_this_baseline": false
+}

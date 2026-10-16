@@ -1,0 +1,64 @@
+{
+  "schema": "mellowgpu.glk-panel-source/1",
+  "sources": [
+    {
+      "path": "drivers/gpu/drm/i915/display/intel_pps.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "d4c98b150fa2b7c9736cf5071e67ac55d73f17cb",
+      "sha256": "f1f9c08347630a7ff9f7e5c9fb3e527d3db6ae81320b31519843b0ec0cc92866",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_pps.c",
+      "license_observation": "MIT SPDX or full leading MIT permission notice; not full dependency-closure approval",
+      "membership_verified": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/display/intel_pps_regs.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "2f014d929d3273b3bcb53a4c946741785a42da25",
+      "sha256": "530268ff35c775fe57ac49c6170faf64c4e5213c825fdd647bddc245bc10c532",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_pps_regs.h",
+      "license_observation": "MIT SPDX or full leading MIT permission notice; not full dependency-closure approval",
+      "membership_verified": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/display/intel_bios.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "97cbae2e547e2d11da6cc0e9f92801bf7ca969b3",
+      "sha256": "da901f6ac60909d9bf379333244b424ab512410069cbd6c7a2674c96fbfe9be5",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_bios.c",
+      "license_observation": "MIT SPDX or full leading MIT permission notice; not full dependency-closure approval",
+      "membership_verified": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/display/intel_vbt_defs.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "0dc13d080e8aa92c9b083ec67ae2dbb350b4db47",
+      "sha256": "75f0d7e96dd8aa00564b69fcfef6fe2781c84def6fe1705ad40e37db34bcb1fe",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/display/intel_vbt_defs.h",
+      "license_observation": "MIT SPDX or full leading MIT permission notice; not full dependency-closure approval",
+      "membership_verified": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/i915_pci.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "2f03f95945f1b9a243a61db163576d0071d53e9c",
+      "sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+      "license_observation": "MIT SPDX or full leading MIT permission notice; not full dependency-closure approval",
+      "membership_verified": true
+    },
+    {
+      "path": "include/drm/intel/pciids.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "dff389b56eb3bf0ebcf9d8a81c2e76722a0ea54f",
+      "sha256": "102d8f821c9464ad17c0160535a4e3811f49609f199f1b6d7268050d71d8e8f0",
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/pciids.h",
+      "license_observation": "MIT SPDX or full leading MIT permission notice; not full dependency-closure approval",
+      "membership_verified": true
+    }
+  ],
+  "adaptation": "Claude authored original GLK PPS protocol bodies and injected-MMIO tests. Codex added permanent native-owner/epoch revocation, single ownership of power references, reentrancy guard, corrected regression fixture, bounded fatal runner and independent missing-state mutation case.",
+  "execution": "HOSTED injected transport and kernel compile only",
+  "target_execution": "NOT_RUN",
+  "actual_panel_vbt_captured": false,
+  "hardware_qualification": false
+}

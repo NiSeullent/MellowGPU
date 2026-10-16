@@ -25,6 +25,13 @@ def main():
     # accel_contracts_harness.cpp requires production function extraction and
     # has its own runner; it must not compile as an independent test program.
     suites = [
+        ('tests/native_glk_command_tests.cpp', ['Drivers/NativeGlk/Gen9CommandEncoding.cpp'], [root]),
+        ('tests/native_glk_pte_tests.cpp', ['Drivers/NativeGlk/PageTableEncoding.cpp'], [root]),
+        ('tests/native_glk_lrc_tests.cpp', ['Drivers/NativeGlk/LrcImage.cpp'], [root]),
+        ('tests/native_glk_panel_power_tests.cpp', ['Drivers/NativeGlk/PanelPower.cpp'], [root]),
+        ('tests/native_glk_dma_iokit_tests.cpp',
+         ['Mellow/GlkDmaMemoryIOKit.cpp', 'Drivers/NativeGpu/MemoryOwner.cpp'],
+         [root / 'tests/native_glk_dma_shim', root], ['-DMELLOW_GLK_DMA_HOSTED_FENCE']),
         ('tests/backend_interface_tests.cpp', [], []),
         ('tests/native_amd_packet_tests.cpp', ['Drivers/NativeAmd/PacketEncoding.cpp'], [root]),
         ('tests/native_nvidia_lifecycle_tests.cpp',

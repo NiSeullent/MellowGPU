@@ -1,0 +1,185 @@
+{
+  "schema": "mellowgpu.source-adaptation/1",
+  "component": "Gen9 BCS0 MI command encoding/allowlisted decoder and first-write ring image",
+  "sources": [
+    {
+      "path": "drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "1f303d4eaa4d4f253e7de40b527a9d909692c08d",
+      "sha256": "82301d398741b3d1026527944feae43d2430f8ab86747ceae108ac33c59fd0bf",
+      "bytes": 95736,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "// SPDX-License-Identifier: MIT\n/*\n * Copyright © 2008,2010 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gem/selftests/igt_gem_utils.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "20a232a140b0f2b83897630c3ce7e5df7406f065",
+      "sha256": "7fbcbd44bd80608049342c52c42025ce3380fd53ff6ec59fe4d2ce832f0915fa",
+      "bytes": 3358,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gem/selftests/igt_gem_utils.c",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/*\n * SPDX-License-Identifier: MIT\n *\n * Copyright © 2018 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/gen8_engine_cs.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "071c1cc45257a78515f7c5c2e7dfb8951ff343af",
+      "sha256": "d605b5e4b74d76e29be1db9fb22b2f16d52f8ed96ad2c5746f850665f10f2c72",
+      "bytes": 22879,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "// SPDX-License-Identifier: MIT\n/*\n * Copyright © 2014 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/gen8_engine_cs.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "867ba697aceb83e5f8c24ca121bf70a7a85b1c62",
+      "sha256": "5d3def4da1e5469c10f4be1471574e01510d3353de3aae891fdfb4d2343c8d26",
+      "bytes": 3877,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/* SPDX-License-Identifier: MIT */\n/*\n * Copyright © 2014 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "c0fd349a4600c638306fec937ecc77538ed23245",
+      "sha256": "3b832bd7e1d5225cb336749f5ccd17a08fa6ddbe1d62387972f1606b144375e4",
+      "bytes": 71135,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_cs.c",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "// SPDX-License-Identifier: MIT\n/*\n * Copyright © 2016 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_engine_regs.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "1c4784cb296c8b9fae1d2c732304b043a31f54a4",
+      "sha256": "e6ae20bc2946a252a948628df6a84522c19dd45d537f5efa0e5c55d08e82961a",
+      "bytes": 12482,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_engine_regs.h",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/* SPDX-License-Identifier: MIT */\n/*\n * Copyright © 2022 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_execlists_submission.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "e693b0c9d2a3e2ee0530b0cafbe39621038c0c20",
+      "sha256": "44c53b014628fdd409d089d15209020a79a0098bf2b6f4c477d89df73ddf5cf2",
+      "bytes": 127064,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "// SPDX-License-Identifier: MIT\n/*\n * Copyright © 2014 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gpu_commands.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "5394bc7d4daf81977265d80fe6f6db62810472fa",
+      "sha256": "d8d14b3edefb858418eb52506f5f7598ee2cd6bd8affa659e43faaf11c85e77c",
+      "bytes": 20303,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/* SPDX-License-Identifier: MIT*/\n/*\n * Copyright © 2003-2018 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "b54ee4f25af1024952210a42b46f400142ff0d46",
+      "sha256": "89bc7d84423b2af56ba463239691c984dee74540cdd1902375a89e02ed583a22",
+      "bytes": 21522,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/* SPDX-License-Identifier: MIT */\n/*\n * Copyright © 2020 Intel Corporation\n *\n * Please try to maintain the following order within this file unless it makes\n * sense to do otherwise. From top to bottom:\n * 1. typedefs\n * 2. #defines, and macros\n * 3. structure definitions\n * 4. function prototypes\n *\n * Within each section, please try to order by generation in ascending order,\n * from top to bottom (ie. gen6 on the top, gen8 on the bottom).\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_lrc.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "7111bae759f3f9e1a592d3d350c279cb0ddf0e5d",
+      "sha256": "e71534746b6f6720c978c0096316c51873f5afc2974d94cd4979303384a6f5b3",
+      "bytes": 4046,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_lrc.h",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/* SPDX-License-Identifier: MIT */\n/*\n * Copyright © 2014 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_ring.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "be7eeb95ff12bb1e872b5d81fc63d7159d51b280",
+      "sha256": "3a66c2a6c7e16cc9a5b17880145e828e353d1549c281af50f6da7c3c0a6d91e0",
+      "bytes": 7503,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ring.c",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "// SPDX-License-Identifier: MIT\n/*\n * Copyright © 2019 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_ring.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "64b322e25f366a6bc6bdc76b4524fdd64d927d3b",
+      "sha256": "2057ac91d51ef486292595390de04e7e3435acafc2fa35a237de3bfd7b23c035",
+      "bytes": 4140,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ring.h",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/* SPDX-License-Identifier: MIT */\n/*\n * Copyright © 2019 Intel Corporation\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/i915_cmd_parser.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "41fef2d02449bb8452526870f5856235c93fd892",
+      "sha256": "4b4266d37092edadeeeff8677f28603b56a933801aa85dd635e8ef5752368c06",
+      "bytes": 50943,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_cmd_parser.c",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/*\n * Copyright © 2013 Intel Corporation\n *\n * Permission is hereby granted, free of charge, to any person obtaining a\n * copy of this software and associated documentation files (the \"Software\"),\n * to deal in the Software without restriction, including without limitation\n * the rights to use, copy, modify, merge, publish, distribute, sublicense,\n * and/or sell copies of the Software, and to permit persons to whom the\n * Software is furnished to do so, subject to the following conditions:\n *\n * The above copyright notice and this permission notice (including the next\n * paragraph) shall be included in all copies or substantial portions of the\n * Software.\n *\n * THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL\n * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\n * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS\n * IN THE SOFTWARE.\n *\n * Authors:\n *    Brad Volkin <bradley.d.volkin@intel.com>\n *\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/i915_pci.c",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "2f03f95945f1b9a243a61db163576d0071d53e9c",
+      "sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1",
+      "bytes": 26723,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/*\n * Copyright © 2016 Intel Corporation\n *\n * Permission is hereby granted, free of charge, to any person obtaining a\n * copy of this software and associated documentation files (the \"Software\"),\n * to deal in the Software without restriction, including without limitation\n * the rights to use, copy, modify, merge, publish, distribute, sublicense,\n * and/or sell copies of the Software, and to permit persons to whom the\n * Software is furnished to do so, subject to the following conditions:\n *\n * The above copyright notice and this permission notice (including the next\n * paragraph) shall be included in all copies or substantial portions of the\n * Software.\n *\n * THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL\n * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\n * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS\n * IN THE SOFTWARE.\n *\n */"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/i915_reg.h",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "git_blob": "64e906380131a950e8ae96db9ed1a7a98dd3da72",
+      "sha256": "4378b821119b67119ed3b7d218c3563d481271e1a16dcd59c1fd258306140a85",
+      "bytes": 28943,
+      "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_reg.h",
+      "commit_path_membership": "verified via GitHub contents API",
+      "license": "MIT",
+      "leading_notice": "/* Copyright 2003 Tungsten Graphics, Inc., Cedar Park, Texas.\n * All Rights Reserved.\n *\n * Permission is hereby granted, free of charge, to any person obtaining a\n * copy of this software and associated documentation files (the\n * \"Software\"), to deal in the Software without restriction, including\n * without limitation the rights to use, copy, modify, merge, publish,\n * distribute, sub license, and/or sell copies of the Software, and to\n * permit persons to whom the Software is furnished to do so, subject to\n * the following conditions:\n *\n * The above copyright notice and this permission notice (including the\n * next paragraph) shall be included in all copies or substantial portions\n * of the Software.\n *\n * THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.\n * IN NO EVENT SHALL TUNGSTEN GRAPHICS AND/OR ITS SUPPLIERS BE LIABLE FOR\n * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\n * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\n * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n */"
+    }
+  ],
+  "adaptation": "Claude Code authored original C++ implementation/tests from pinned i915 forms. Codex completed missing Invalid enum, rejected null observation and finalized runner/provenance. No Linux runtime called.",
+  "hardware_status": "NOT_RUN",
+  "gpu_support_qualified": false,
+  "prerequisites": [
+    "Native owned DMA/GGTT pages; alias-free physical ownership",
+    "Gen9 context/ring/execlists/PM/cache/TLB ownership and reset recovery",
+    "Native breadcrumb/context-switch completion verification"
+  ],
+  "not_included": [
+    "RCS render pipeline",
+    "shader compiler",
+    "Metal implementation",
+    "submission or MMIO driver activation"
+  ]
+}

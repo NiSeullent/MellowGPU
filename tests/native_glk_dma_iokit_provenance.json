@@ -1,0 +1,388 @@
+{
+ "component": "Mellow/GlkDmaMemoryIOKit.{hpp,cpp}",
+ "scope": "Primary-source facts used by the GLK DMA adapter. No code imported; no full-source, dependency or firmware clearance inferred.",
+ "cached_primary_cross_check": {
+  "path": "glk-next-native-primitives/linux/drivers/gpu/drm/i915/i915_pci.c",
+  "manifest_sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1"
+ },
+ "target_observation_not_proof": "15IGL7 GFX0 8086:3185 rev 06 subsystem 17aa:3e77 registry 4294967813: no iommu-parent; IOMapper/AppleVTD ioreg queries empty. Neither proves IOMMU off nor direct DMA legitimate.",
+ "sources": [
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "release_tag": "xnu-11417.140.69",
+   "path": "iokit/Kernel/IODMACommand.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IODMACommand.cpp",
+   "bytes": 49148,
+   "sha256": "9ae5426721f4251fcca37a44cb99372e02a4a6c445bb7d2034f0a75e3721093b",
+   "git_blob": "bb0930d4c22d2060bc10de815286300a116aaaaa",
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@)",
+   "anchors_line_numbers": {
+    "IODMACommand::setSpecification": [
+     246
+    ],
+    "if (!mapper && (kUnmapped != MAPTYPE(mappingOptions)))": [
+     293
+    ],
+    "mapper = IOMapper::gSystem;": [
+     295
+    ],
+    "maxPhys = (1ULL << target->fNumAddressBits);": [
+     510
+    ],
+    "state->fDoubleBuffer = (state->fMisaligned || state->fForceDoubleBuffer);": [
+     657
+    ],
+    "if (IS_NONCOHERENT(mappingOptions) && flushCache)": [
+     901
+    ],
+    "IODMACommand::synchronize(IOOptionBits options)": [
+     1139
+    ],
+    "case kBypassed:": [
+     326
+    ]
+   },
+   "fact_relied_on": "Null mapper selects native IOMapper::gSystem unless kUnmapped; kBypassed rejects a selected mapper, supplying native no-mapper eligibility. Direct route uses kBypassed plus exact native null-state and original-page/39-bit checks. Address restrictions may introduce bounce pages; adapter rejects every differing page. Explicit CPU cache maintenance is separate from GPU completion.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "release_tag": "xnu-11417.140.69",
+   "path": "iokit/Kernel/IOMemoryDescriptor.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOMemoryDescriptor.cpp",
+   "bytes": 168859,
+   "sha256": "c16133a089fc04d629c8ae85f0d9896a38c615c976ab6f74456631575c1df9ec",
+   "git_blob": "4fa100885cdded63f03aa1123916ea3aba4688be",
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@)",
+   "anchors_line_numbers": {
+    "IOMemoryDescriptor::performOperation( IOOptionBits options,": [
+     3916
+    ],
+    "func = &dcache_incoherent_io_flush64;": [
+     3942
+    ],
+    "func = &dcache_incoherent_io_store64;": [
+     3955
+    ],
+    "dstAddr64 = getPhysicalSegment(offset, &dstLen, kIOMemoryMapperNone);": [
+     3988
+    ],
+    "return remaining ? kIOReturnUnderrun : kIOReturnSuccess;": [
+     4027
+    ]
+   },
+   "fact_relied_on": "x86 performOperation(kIOMemoryIncoherentIOFlush/Store) walks physical segments and calls dcache_incoherent_io_flush64/store64; partial walk returns kIOReturnUnderrun.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "release_tag": "xnu-11417.140.69",
+   "path": "osfmk/x86_64/loose_ends.c",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/osfmk/x86_64/loose_ends.c",
+   "bytes": 22067,
+   "sha256": "2ea7faa4962d5691b2b31e18bc7ed6e4543fc48a01c17625b12e9ad51a2c76fb",
+   "git_blob": "456078c814f51baecf580b7f4e5f89d550db4dec",
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@)",
+   "anchors_line_numbers": {
+    "dcache_incoherent_io_store64(addr64_t pa, unsigned int count)": [
+     796
+    ],
+    "__asm__ volatile (\"clflush (%0)\" : : \"r\" (ptr));": [
+     792
+    ],
+    "__clflush(PHYSMAP_PTOV(pa));": [
+     804
+    ],
+    "return dcache_incoherent_io_store64(pa, count);": [
+     814
+    ]
+   },
+   "fact_relied_on": "x86_64 store64: mfence; clflush every cache line via physmap; mfence. flush64 == store64.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "release_tag": "xnu-11417.140.69",
+   "path": "iokit/Kernel/IOMapper.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOMapper.cpp",
+   "bytes": 9454,
+   "sha256": "de81e9e4874a973888cedb64a3fde9abaa0b443c546d89df931e987b13179a3c",
+   "git_blob": "ce9bfe840f199a890512bbb690d8acaecc10a721",
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@)",
+   "anchors_line_numbers": {
+    "IOMapper * IOMapper::gSystem = (IOMapper *) IOMapper::kUnknown;": [
+     64
+    ],
+    "IOMapper::gSystem = (IOMapper *) kHasMapper;": [
+     147
+    ],
+    "IOMapper::gSystem = (IOMapper *) kNoMapper;": [
+     150
+    ],
+    "obj = device->copyProperty(\"iommu-parent\");": [
+     181
+    ],
+    "IOService::waitForMatchingService(matching.get())": [
+     206
+    ]
+   },
+   "fact_relied_on": "gSystem states kUnknown/kHasMapper/kNoMapper/live; copyMapperForDevice resolves numeric iommu-parent through waitForMatchingService (not used).",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "release_tag": "xnu-11417.140.69",
+   "path": "iokit/Kernel/IOBufferMemoryDescriptor.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOBufferMemoryDescriptor.cpp",
+   "bytes": 25138,
+   "sha256": "84d2ba7b5f374f25dbb93790bd9e0f7d4fb83da3a8a58dd59677bd7c64d1674f",
+   "git_blob": "f780ba2743476bfcc18727192b5452c6acd55c06",
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@)",
+   "anchors_line_numbers": {
+    "if (physicalMask && (alignment <= 1)) {": [
+     241
+    ],
+    "alignment   = ((physicalMask ^ (-1ULL)) & (physicalMask - 1));": [
+     242
+    ],
+    "IOKernelAllocateWithPhysicalRestrict(kheap,": [
+     328
+    ]
+   },
+   "fact_relied_on": "inTaskWithPhysicalMask: page alignment derived from the mask's clear low bits; kernel buffer allocated with a physical restriction.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "release_tag": "xnu-11417.140.69",
+   "path": "iokit/IOKit/IODMACommand.h",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/IOKit/IODMACommand.h",
+   "bytes": 37801,
+   "sha256": "14cf81900488a4a11e676fc846e5ecf5fc915bbbfe67fcd9cd0ec3a551999e71",
+   "git_blob": "c9e75dc4df8b6446788c154a893a7c670d063fd1",
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@)",
+   "anchors_line_numbers": {
+    "kUnmapped     = kIODMAMapOptionUnmapped,": [
+     99
+    ]
+   },
+   "fact_relied_on": "MappingOptions enumerators (public header).",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "release_tag": "xnu-11417.140.69",
+   "path": "osfmk/i386/proc_reg.h",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/osfmk/i386/proc_reg.h",
+   "bytes": 28652,
+   "sha256": "ab147b80a93ebabfda641bca20f16c00a21df8a551d4f83aefa81102c7725ff7",
+   "git_blob": "62cd9b2fa57aef3ab376d0e895fe82b4b2554477",
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@)",
+   "anchors_line_numbers": {},
+   "fact_relied_on": "Fetched for reference; not relied on.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "release_tag": "xnu-11417.140.69",
+   "path": "config/IOKit.exports",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/IOKit.exports",
+   "bytes": 80064,
+   "sha256": "583729fdb8f58992e356ca19d5b5085abc07c23b57be99b137262c01ee3eae5e",
+   "git_blob": "f70f20f1108cf17b6d107d9829f1a331118f6179",
+   "license_header_evidence": "no per-file license header (export symbol list)",
+   "anchors_line_numbers": {
+    "__ZN8IOMapper7gSystemE": [
+     1403
+    ]
+   },
+   "fact_relied_on": "IOMapper::gSystem is exported KPI (source export list, not target BootKC).",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "release_tag": "xnu-11417.140.69",
+   "path": "config/IOKit.x86_64.exports",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/IOKit.x86_64.exports",
+   "bytes": 13354,
+   "sha256": "2d970900f4eafd2478f825ce7220ad11a8090a46b06af75ab0e3ca695ed0fbbe",
+   "git_blob": "c7a42640d058fa5e598b57ac2db1cc57d6c8d03d",
+   "license_header_evidence": "no per-file license header (export symbol list)",
+   "anchors_line_numbers": {
+    "__ZN24IOBufferMemoryDescriptor22inTaskWithPhysicalMaskEP4taskjyy": [
+     178
+    ],
+    "__ZN12IODMACommand17withSpecificationEPFbPS_NS_9Segment64EPvjEhyNS_14MappingOptionsEyjP8IOMapperS2_": [
+     39
+    ],
+    "__ZN18IOMemoryDescriptor16performOperationEjyy": [
+     117
+    ]
+   },
+   "fact_relied_on": "x86_64 KPI exports used by the object (source export list, not target BootKC).",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "release_tag": null,
+   "path": "drivers/gpu/drm/i915/i915_pci.c",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+   "bytes": 26723,
+   "sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1",
+   "git_blob": "2f03f95945f1b9a243a61db163576d0071d53e9c",
+   "license_header_evidence": "Leading per-file MIT-style permission and warranty grant; selected source observations only, not dependency closure approval.",
+   "anchors_line_numbers": {
+    "#define GEN9_LP_FEATURES": [
+     511
+    ],
+    ".dma_mask_size = 39,": [
+     416,
+     459,
+     521,
+     678,
+     687
+    ],
+    ".has_snoop = true,": [
+     88,
+     103,
+     136,
+     199,
+     241,
+     378,
+     464,
+     525
+    ],
+    ".has_coherent_ggtt = false,": [
+     89,
+     104,
+     147,
+     379,
+     465,
+     526,
+     607
+    ],
+    "static const struct intel_device_info glk_info = {": [
+     537
+    ]
+   },
+   "fact_relied_on": "GLK: GEN9_LP_FEATURES dma_mask_size 39, has_snoop, no coherent GGTT, has_llc unset.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "release_tag": null,
+   "path": "arch/x86/include/asm/barrier.h",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/arch/x86/include/asm/barrier.h",
+   "bytes": 2412,
+   "sha256": "6ecd98e6296c1131a90692a786713007bb260ede5965195638b9d9026e9015f1",
+   "git_blob": "e0e59da15748a304c0727070bcfb60415ff5d162",
+   "license_header_evidence": "SPDX-License-Identifier: GPL-2.0",
+   "anchors_line_numbers": {
+    "#define mb() asm volatile(ALTERNATIVE(\"lock addl $0,-4(%%esp)\", \"mfence\",": [
+     15
+    ],
+    "#define __dma_rmb()\tbarrier()": [
+     50
+    ]
+   },
+   "fact_relied_on": "x86_64 mb/rmb/wmb = mfence/lfence/sfence (ISA fact only).",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "release_tag": null,
+   "path": "drivers/gpu/drm/drm_cache.c",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/drm_cache.c",
+   "bytes": 9698,
+   "sha256": "de06f98ccc7fbadd08fbf2168c87c952eed0be1ad050942dac1c20c2a4ddd55d",
+   "git_blob": "2eed55b46e298f18efceee2ebe152b3a792ce197",
+   "license_header_evidence": "UNKNOWN in takeover audit: original metadata incorrectly labelled this non-export source as an export list. Fresh primary fetch was rate-limited; no license approval or code import is inferred.",
+   "anchors_line_numbers": {
+    "drm_clflush_sg(struct sg_table *st)": [
+     127
+    ]
+   },
+   "fact_relied_on": "i915 non-LLC CPU->GPU handoff uses clflush with full barriers (behavioral reference only).",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "release_tag": null,
+   "path": "drivers/gpu/drm/i915/gem/i915_gem_clflush.c",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gem/i915_gem_clflush.c",
+   "bytes": 3649,
+   "sha256": "ffae1b1d97b28351891ff38167540619c758d05b863f86cadd46cb698a15730e",
+   "git_blob": "7782ba44fabd8316392c2dc2eecf2e3ab8c3ed25",
+   "license_header_evidence": "SPDX-License-Identifier: MIT",
+   "anchors_line_numbers": {
+    "i915_gem_clflush_object": [
+     70
+    ]
+   },
+   "fact_relied_on": "Behavioral reference only.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "release_tag": null,
+   "path": "drivers/gpu/drm/i915/gem/i915_gem_shmem.c",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c",
+   "bytes": 19411,
+   "sha256": "8de6348288e8c71d540aac4d2e261cdf113cc727f52150e05d09d842c66b685b",
+   "git_blob": "ef94401662955aa94a8de3fb683e411ed83d952a",
+   "license_header_evidence": "SPDX-License-Identifier: MIT",
+   "anchors_line_numbers": {
+    "HAS_LLC": [
+     379,
+     589
+    ]
+   },
+   "fact_relied_on": "Behavioral reference only (cache level on non-LLC).",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "release_tag": null,
+   "path": "drivers/gpu/drm/i915/i915_gem_gtt.c",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_gem_gtt.c",
+   "bytes": 10114,
+   "sha256": "10e8c54a7fd918c3a9627ddca299c46fdafeb9e71b13583205bad1557313dc6b",
+   "git_blob": "25295eb626dca0ac955fb12158c6040e1af06102",
+   "license_header_evidence": "SPDX-License-Identifier: MIT",
+   "anchors_line_numbers": {
+    "dma_map_sg_attrs": [
+     31
+    ]
+   },
+   "fact_relied_on": "Behavioral reference only (DMA mapping of object pages).",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  }
+ ],
+ "implementation_attribution": {
+  "initial_author": "Claude GLK DMA author, stopped at session limit; before bytes preserved by parent/Codex handoff",
+  "codex_corrections": [
+   "removed independent DMAR/PMR-disabled callback",
+   "native kBypassed route with repeated actual identity/system-state checks",
+   "source-backed kBypassed shim and real production RED/GREEN regressions",
+   "host/fatal-sanitizer and native SDK15.5 object runner"
+  ],
+  "source_code_imported_from_reference": false,
+  "hardware_execution": false,
+  "hardware_qualified": false
+ }
+}
