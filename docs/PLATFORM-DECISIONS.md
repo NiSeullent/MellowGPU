@@ -12,7 +12,7 @@ Mellow의 방향은 **Metal 요청 → Mellow 객체/명령 그래프/MIR → �
 시스템 Metal 장치 등록, IOAccelerator, WindowServer, scanout은 각각 별도 승인 관문을 둔다.
 
 이 RFC는 [CONCEPT](CONCEPT.md), [AIR-ABI](AIR-ABI.md),
-[WORKLOAD-RUNTIME](WORKLOAD-RUNTIME.md), [ARCHITECTURE](ARCHITECTURE.md)의 설계 전제를 정정한다.
+[WORKLOAD-RUNTIME](WORKLOAD-RUNTIME.md), [ARCHITECTURE](architecture.md)의 설계 전제를 정정한다.
 해당 초안의 단정과 충돌하면 이 문서의 결정 및 실제 실험 기록을 따른다.
 `DECIDED`는 설계 선택이며 `IMPLEMENTED`, `GPU_PASS`, `SYSTEM_PASS`와 다른 상태다.
 문서 추가, 컴파일 성공, 인터페이스 이름 일치는 위 실행 상태를 자동 승격하지 않는다.

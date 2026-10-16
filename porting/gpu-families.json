@@ -1,6 +1,20 @@
 {
   "schema_version": 1,
   "families": {
+    "intel-glk": {
+      "vendor": "Intel",
+      "architecture": "Gen9 LP (Gemini Lake)",
+      "source_targets": [
+        "i915"
+      ],
+      "runtime_device_admission": false,
+      "physical_gpu_verified": false,
+      "source_scope_note": "Pinned i915 GLK source classification only; no runtime PCI admission, native execution or hardware support is inferred.",
+      "source_references": [
+        "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+        "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/pciids.h"
+      ]
+    },
     "intel-icl": {
       "vendor": "Intel",
       "architecture": "Gen11 (Ice Lake)",

@@ -1,0 +1,45 @@
+{
+  "schema": "mellowgpu.passive-kernel-observation/1",
+  "date": "2026-10-16",
+  "target": "15IGL7 /8086:3185 /24H32 /x86_64",
+  "boot_session": "6463B30F-5D2D-41E2-8964-748F237A07E8",
+  "source_log_sha256": "e235e09ca7f5592245b17c4a915ed1879a858440f3b6c4518adedee36193319c",
+  "query": "log show --last 2h --style json; kernel and PPS-or-NMX message predicate",
+  "clock_warning": "Wall clock adjustment reported; requested time window is not an elapsed-time guarantee",
+  "matching_log_entries": 13,
+  "probe_events_are_selected_subset": true,
+  "selected_probe_event_count": 4,
+  "pps_entries": [],
+  "current_nmxaccel_service_query_bytes": 0,
+  "current_nmxgpu_service_query_bytes": 0,
+  "probe_events": [
+    {
+      "timestamp": "2026-10-16 08:45:20.780605+0900",
+      "bootUUID": "6463B30F-5D2D-41E2-8964-748F237A07E8",
+      "eventMessage": "NMXAccel: probe(GFX0) score 100"
+    },
+    {
+      "timestamp": "2026-10-16 08:45:20.780615+0900",
+      "bootUUID": "6463B30F-5D2D-41E2-8964-748F237A07E8",
+      "eventMessage": "NMXAccel: probe(GFX0) score 100"
+    },
+    {
+      "timestamp": "2026-10-16 08:45:20.780628+0900",
+      "bootUUID": "6463B30F-5D2D-41E2-8964-748F237A07E8",
+      "eventMessage": "NMXAccel: NVIDIA display device 8086:3185 class 03.00 - claiming"
+    },
+    {
+      "timestamp": "2026-10-16 08:45:20.780635+0900",
+      "bootUUID": "6463B30F-5D2D-41E2-8964-748F237A07E8",
+      "eventMessage": "NMXAccel: NVIDIA display device 8086:3185 class 03.00 - claiming"
+    }
+  ],
+  "interpretation": "Existing NMX code emitted these selected probe events earlier in the recorded current boot. Probe log text is not an active GPU owner or Metal capability; NVIDIA wording does not change physical Intel PCI identity. Four selected probe events are retained from thirteen predicate matches. No PPS failure reproduced by this passive query.",
+  "driver_loaded_by_this_query": false,
+  "reboot_performed": false,
+  "boot_or_security_settings_changed": false,
+  "gpu_commands_submitted": false,
+  "metal3_verified": false,
+  "windowserver_verified": false,
+  "selection_rule": "Preserve source order; select all predicate matches whose eventMessage starts with NMXAccel: and contains probe(GFX0) or NVIDIA display device; retain timestamp, bootUUID and eventMessage only."
+}

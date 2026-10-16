@@ -121,6 +121,8 @@ public:
     QueueStatus expire(uint64_t now);
     // Stops admission before quiescing. Success invalidates this binding; a new
     // authoritative channel/epoch binding is required. Never resets GPU by guess.
+    // Returned tokens stay queryable until explicit retire(). Internal rollback
+    // records whose token never escaped are reclaimed only after full reset.
     QueueStatus reset();
     QueueStatus query(FenceToken, JobResult &) const;
     QueueStatus retire(FenceToken);
@@ -135,6 +137,7 @@ private:
         MellowNative::MemoryHandle held[MaxDataResources + 1] {};
         uint32_t heldCount {};
         bool ringPending {};
+        bool tokenIssued {};
     };
     MellowNative::MemoryOwner &memory_;
     QueueTransport transport_ {};

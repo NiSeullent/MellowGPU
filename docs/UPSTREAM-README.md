@@ -1,7 +1,7 @@
 > **Historical record — preserved unedited.** This document predates the MELLOW
 > re-architecture. It is retained because the record of what was known, and when, is itself
 > evidence. For the current concept and architecture see [CONCEPT.md](CONCEPT.md) and
-> [ARCHITECTURE.md](ARCHITECTURE.md); for what any of it is allowed to claim, see
+> [ARCHITECTURE.md](architecture.md); for what any of it is allowed to claim, see
 > [EVIDENCE-POLICY.md](EVIDENCE-POLICY.md).
 
 # Mellow
@@ -14,7 +14,7 @@ Mellow is an experimental Lilu plug-in for Intel Core Ultra integrated graphics.
 Mellow is intentionally **not** a drop-in replacement for NootedGreen. Its supported scope is Core Ultra iGPUs only; NPU/Intel AI Boost support and general Haswell-through-Raptor-Lake compatibility are out of scope.
 
 Current implementation evidence and the staged validation protocol are tracked
-in [porting status](docs/PORTING_STATUS.md), [architecture](docs/ARCHITECTURE.md),
+in [porting status](docs/PORTING_STATUS.md), [architecture](docs/architecture.md),
 the [Metal feature matrix](docs/METAL_FEATURE_MATRIX.md), and
 [experiments](docs/EXPERIMENTS.md). A build or visible desktop is not recorded
 as Metal acceleration evidence.

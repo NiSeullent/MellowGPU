@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NiSeullent/MellowGPU/spec/v1/capabilities.schema.json",
+  "title": "MellowGPU initial v1 capabilities",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "mellowgpu.capabilities"
+    },
+    "control_bits": {
+      "const": [
+        1,
+        2,
+        4
+      ]
+    },
+    "internal_metadata_binding": {
+      "const": true
+    },
+    "native_gpu_memory": {
+      "const": false
+    },
+    "native_gpu_submission": {
+      "const": false
+    },
+    "native_gpu_fences": {
+      "const": false
+    },
+    "metal3_required_inventory_complete": {
+      "const": false
+    },
+    "native_metal_registered": {
+      "const": false
+    },
+    "windowserver_gpu_composition": {
+      "const": false
+    },
+    "physical_scanout": {
+      "const": false
+    },
+    "qualification_authority_implemented": {
+      "const": false
+    },
+    "cpu_fallback_qualifies": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "control_bits",
+    "internal_metadata_binding",
+    "native_gpu_memory",
+    "native_gpu_submission",
+    "native_gpu_fences",
+    "metal3_required_inventory_complete",
+    "native_metal_registered",
+    "windowserver_gpu_composition",
+    "physical_scanout",
+    "qualification_authority_implemented",
+    "cpu_fallback_qualifies"
+  ],
+  "additionalProperties": false
+}

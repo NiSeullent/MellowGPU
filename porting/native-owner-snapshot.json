@@ -84,7 +84,8 @@
     "Approved host runner adds seven production-source suites and compiler-derived dependency hashes",
     "Cross-build resolves file-reference identity and source group paths; syntax/read review only, execution NOT_RUN",
     "Integration documentation updated separately",
-    "Exact XeMemoryIOKit context/owner/descriptor-extent resolver; explicit prepared/mapper/command identity checks; labeled shim length getter and production helper regressions"
+    "Exact XeMemoryIOKit context/owner/descriptor-extent resolver; explicit prepared/mapper/command identity checks; labeled shim length getter and production helper regressions",
+    "NVIDIA queue tokenIssued tracking; reclaim never-issued rollback records only after complete reset; injected hold-invariant recovery regressions. Original captured hashes above remain historical snapshots."
   ],
   "licenses": "Existing repository LICENSE; NVIDIA-derived copy encoder and CopyPushbuffer preserve MIT notices; existing packet encoder retains its original provenance",
   "physical_gpu_execution_verified": false,
@@ -96,6 +97,9 @@
     "Mellow/XeMemoryIOKit.hpp": "907134abf483875a70be1dc2a7c26594b7faca69d992c176b229f7216fff9566",
     "tests/xe_dma_completion_tests.cpp": "6786128f5a49c51009c73664ab94b36a4101f7783f1d5e4ec306ef6e1f16c8d0",
     "tests/native_memory_iokit_shim.hpp": "9df8e376b1c13859727fb2d637a4546eb01fedcc8c18d8867123776e9e5eb09c",
-    "docs/NATIVE-GPU-OWNER.md": "ace6220c50ba236caee7245dba5875492f724ab9004dd3a931c83bb451cf1983"
+    "docs/NATIVE-GPU-OWNER.md": "ace6220c50ba236caee7245dba5875492f724ab9004dd3a931c83bb451cf1983",
+    "Drivers/NativeNvidia/GpFifoQueue.cpp": "145461996c0587cce8cbdd1de7559fc20143063c2ab5d49e4db6ab5e7c438fcb",
+    "Drivers/NativeNvidia/GpFifoQueue.hpp": "dbc59a0e2f51f19578888afbe144401dc5df98bd4d975b751fe19bdb2ca46cb0",
+    "tests/native_nvidia_queue_tests.cpp": "808dc4b0d45c088cbc8eae8e935c2eb3aad4c1bfa4ddd8383067945a2b779113"
   }
 }

@@ -18,13 +18,13 @@ visible 결과는 창의 swap API 성공이며 물리 scanout·WindowServer 성�
 macOS native Xe/Metal 경로에는 `L`·`F`·`R` 기록이 없다. XeMemory는 이식한 PTE/PDE 함수를
 호출하며 실제 kext에 링크되지만, 하드웨어 GPU owner와 실행 경로는 아직 검증되지 않았다.
 AMD·NVIDIA GPU 실행 backend는 미구현이다. source-intake target은 driver 지원이 아니다.
-이 표는 계획이 아니라 **실적**을 기록한다. 계획은 [ROADMAP.md](ROADMAP.md)에 있다.
+이 표는 계획이 아니라 **실적**을 기록한다. 계획은 [ROADMAP.md](roadmap.md)에 있다.
 
 ---
 
 Status vocabulary and evidence levels are defined in [EVIDENCE-POLICY.md](EVIDENCE-POLICY.md).
 This document records **what has been achieved**, not what is intended. Intent lives in
-[ROADMAP.md](ROADMAP.md).
+[ROADMAP.md](roadmap.md).
 
 ## Summary
 

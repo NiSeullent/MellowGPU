@@ -125,3 +125,14 @@ Drivers/PortedNvidiaGsp; the copied NVIDIA copy encoder/sealer retain their
 per-file MIT notices. Existing repository and upstream notices remain controlling.
 No firmware payload, GPU initialization, native Metal registration or system
 WindowServer acceleration is established by software or kernel-object checks.
+
+Initial v1 specification and portable AMD packet unit, 2026-10-16
+----------------------------------------------------------------
+Adds original metadata-only three-vendor interfaces, versioned contracts, source
+consistency tooling and a public Objective-C runtime metadata helper. The GFX9
+PM4 packet encoder retains AMD notices, the MIT license and exact per-file
+provenance under Drivers/NativeAmd. No firmware image is redistributed, and
+complete upstream source/firmware/license closures remain unapproved. These
+portable units and metadata observations do not establish native GPU execution,
+Metal3 device registration or WindowServer acceleration. Existing notices and
+licenses remain unchanged for their covered material.

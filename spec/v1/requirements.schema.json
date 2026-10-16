@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NiSeullent/MellowGPU/spec/v1/requirements.schema.json",
+  "title": "MellowGPU initial v1 requirements",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "mellowgpu.requirements"
+    },
+    "required_feature_case_inventory_complete": {
+      "const": false
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^MG-[A-Z0-9-]+-001$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "applicability": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "status": {
+            "enum": [
+              "implemented-contract",
+              "partial-model",
+              "partial-native",
+              "research-only",
+              "partial-tooling"
+            ]
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "minItems": 1,
+            "maxItems": 128,
+            "uniqueItems": true
+          },
+          "implementation": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "minItems": 1,
+            "maxItems": 128,
+            "uniqueItems": true
+          },
+          "tests": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "minItems": 1,
+            "maxItems": 128,
+            "uniqueItems": true
+          },
+          "acceptance": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "host_result": {
+            "const": "TESTS_REFERENCED_NOT_AN_ATTESTATION"
+          },
+          "hardware_result": {
+            "const": "NOT_RUN"
+          },
+          "unsupported_behavior": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "applicability",
+          "status",
+          "source_refs",
+          "implementation",
+          "tests",
+          "acceptance",
+          "host_result",
+          "hardware_result",
+          "unsupported_behavior"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 19,
+      "maxItems": 19,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "required_feature_case_inventory_complete",
+    "requirements"
+  ],
+  "additionalProperties": false
+}

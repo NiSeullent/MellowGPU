@@ -160,6 +160,6 @@ Specifically, as of this document:
   platform bindings and GPU execution do not. See [IMPLEMENTATION-STATUS](IMPLEMENTATION-STATUS.md).
 - No executable AMD or NVIDIA GPU backend exists. Source-intake targets are not driver support.
 
-This document describes a target. [ROADMAP.md](ROADMAP.md) describes the order of approach, and
+This document describes a target. [ROADMAP.md](roadmap.md) describes the order of approach, and
 [GPU-SUPPORT-MATRIX.md](GPU-SUPPORT-MATRIX.md) records how far each GPU has actually come — which
 is, at present, no distance at all.

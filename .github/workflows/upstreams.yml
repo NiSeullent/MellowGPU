@@ -9,6 +9,9 @@ on:
       - porting/upstreams.lock.json
       - tests/test_mellow_upstreams.py
       - tests/test_mellow_candidate.py
+      - tests/test_mellow_intake_integrity.py
+      - tests/test_mellow_intake_boundaries.py
+      - tests/test_mellow_port.py
       - .github/workflows/upstreams.yml
   pull_request:
     paths:
@@ -18,6 +21,9 @@ on:
       - porting/upstreams.lock.json
       - tests/test_mellow_upstreams.py
       - tests/test_mellow_candidate.py
+      - tests/test_mellow_intake_integrity.py
+      - tests/test_mellow_intake_boundaries.py
+      - tests/test_mellow_port.py
       - .github/workflows/upstreams.yml
   workflow_dispatch:
   schedule:
@@ -42,6 +48,8 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_mellow_upstreams.py' -v
           python3 -m unittest discover -s tests -p 'test_mellow_port.py' -v
           python3 -m unittest discover -s tests -p 'test_mellow_candidate.py' -v
+          python3 -m unittest discover -s tests -p 'test_mellow_intake_integrity.py' -v
+          python3 -m unittest discover -s tests -p 'test_mellow_intake_boundaries.py' -v
       - name: Validate immutable lock and write current gap report
         run: |
           python3 Tools/mellow-upstream.py validate

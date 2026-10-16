@@ -299,6 +299,7 @@ QueueStatus GpFifoQueue::submit(const SubmitRequest &request, uint64_t now, Fenc
     // GP_PUT alone can expose work. Later rejection cannot unpublish consumed
     // commands; preserve holds even if the doorbell reports rejection.
     if (putResult != Operation::Done) {
+        job->tokenIssued = true;
         token = job->token;
         return uncertain(*job, newPut);
     }
@@ -307,6 +308,7 @@ QueueStatus GpFifoQueue::submit(const SubmitRequest &request, uint64_t now, Fenc
     if (status == QueueStatus::Ok)
         status = transport_.readCurrentToken(transport_.context, binding_, currentToken);
     if (status != QueueStatus::Ok || transport_.ringDoorbell(transport_.context, binding_, currentToken) != Operation::Done) {
+        job->tokenIssued = true;
         token = job->token;
         return uncertain(*job, newPut);
     }
@@ -315,6 +317,7 @@ QueueStatus GpFifoQueue::submit(const SubmitRequest &request, uint64_t now, Fenc
     put_ = newPut;
     ++pending_;
     nextSequence_ = job->token.sequence;
+    job->tokenIssued = true;
     token = job->token;
     return QueueStatus::Ok;
 }
@@ -403,6 +406,13 @@ QueueStatus GpFifoQueue::reset()
     const QueueStatus status = releaseBindingHolds();
     if (status != QueueStatus::Ok)
         return status;
+    // No native channel, ring/fence lease or job hold remains. A pre-PUT
+    // rollback failure returned no token, so its caller cannot acknowledge the
+    // internal record. Reclaim only those records after complete recovery;
+    // every issued Completed/Reset token still requires explicit retire().
+    for (auto &job : jobs_)
+        if (job.state != JobState::Free && !job.tokenIssued)
+            job = {};
     binding_ = {};
     ring_ = {};
     fence_ = {};

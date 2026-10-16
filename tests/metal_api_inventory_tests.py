@@ -203,7 +203,10 @@ class MetalInventory(unittest.TestCase):
             file = self.root / name; file.parent.mkdir(parents=True, exist_ok=True); file.write_text('// fixture\n')
         (self.root/names[0]).write_text('@interface NSObject @end\n@interface MMADevice:NSObject @end\n@implementation MMADevice\n- (void)commit {}\n@end\n')
         (self.root/names[1]).write_text('invalid render translation unit')
-        result = self.m.observe_repository(self.root, self.root, self.clang, self.m.inventory_report(self.records,'15.0'), facade='compute')
+        headers = self.fixture_sdk()
+        (headers/'Metal.h').write_text(HEADER)
+        inventory = self.m.capture(self.root, self.clang, '15.0')
+        result = self.m.observe_repository(self.root, self.root, self.clang, inventory, facade='compute')
         self.assertEqual(result['unobserved_facades'], ['render'])
         self.assertEqual(result['observed_method_body_count'], 1)
         self.assertEqual(result['verified_implementation_count'], 0)
@@ -269,6 +272,143 @@ class MetalInventory(unittest.TestCase):
             self.assertEqual(before['invocation']['sha256'], after['invocation']['sha256'])
             with self.assertRaisesRegex(ValueError, 'Compiler'):
                 self.m.verify_compiler_identity(before, driver, self.root, '15.8.1')
+
+    def fixture_sdk(self):
+        headers = self.root/'System/Library/Frameworks/Metal.framework/Headers'
+        headers.mkdir(parents=True)
+        (headers/'Metal.h').write_text('@interface MTLVisible @end\n#ifndef MTL_HIDE\n@interface MTLHidden @end\n#endif\n')
+        (self.root/'usr/include').mkdir(parents=True)
+        (self.root/'SDKSettings.plist').write_bytes(plistlib.dumps({'Version':'15.5'}))
+        return headers
+
+    def test_semantic_driver_environment_cannot_silently_hide_a_declaration(self):
+        self.fixture_sdk()
+        with patch.dict(os.environ, {'CCC_OVERRIDE_OPTIONS':'+-DMTL_HIDE=1'}):
+            with self.assertRaisesRegex(ValueError, 'CCC_OVERRIDE_OPTIONS'):
+                self.m.capture(self.root, self.clang, '15.8.1')
+
+    def test_effective_frontend_arguments_detect_changed_search_environment(self):
+        before = self.m.compiler_identity(self.clang, self.root, '15.8.1')
+        search = self.root/'extra-search'; search.mkdir()
+        with patch.dict(os.environ, {'CPATH':str(search)}):
+            with self.assertRaisesRegex(ValueError, 'Compiler'):
+                self.m.verify_compiler_identity(before, self.clang, self.root, '15.8.1')
+
+    def test_duplicate_inventory_keys_are_rejected_by_both_reading_commands(self):
+        self.fixture_sdk()
+        report = self.m.capture(self.root, self.clang, '15.8.1')
+        files = ['Userspace/AppleMetal/MellowAppleMetal.mm', 'Userspace/AppleMetal/MellowAppleRenderMetal.mm',
+                 'Userspace/AppleMetal/MellowAppleMetal.h', 'Userspace/AppleMetal/MellowAppleRenderMetal.h',
+                 'Runtime/MetalObjects.hpp', 'Runtime/MetalObjects.cpp', 'Runtime/RenderObjects.hpp', 'Runtime/RenderObjects.cpp']
+        for name in files:
+            file = self.root/name; file.parent.mkdir(parents=True, exist_ok=True); file.write_text('// fixture\n')
+        (self.root/files[0]).write_text('@interface NSObject @end\n@interface MMADevice:NSObject @end\n@implementation MMADevice\n- (void)commit {}\n@end\n')
+        valid = json.dumps(report)
+        variants = [valid.replace('"hardware_qualified": false', '"hardware_qualified": true, "hardware_qualified": false', 1),
+                    valid.replace('"effective_target":', '"effective_target": "forged", "effective_target":', 1)]
+        for index, encoded in enumerate(variants):
+            inventory = self.root/f'duplicate-{index}.json'; inventory.write_text(encoded)
+            for action in ('verify', 'observe-source'):
+                arguments = [sys.executable, str(TOOL), action, '--sdk', str(self.root), '--clang', self.clang, '--inventory', str(inventory)]
+                output = self.root/f'observation-{index}.json'
+                if action == 'observe-source':
+                    arguments += ['--repo',str(self.root),'--facade','compute','--out',str(output)]
+                process = subprocess.run(arguments, capture_output=True, text=True, timeout=30)
+                self.assertNotEqual(process.returncode, 0, (index, action, process.stdout))
+                self.assertIn('Duplicate JSON key', process.stderr)
+                self.assertFalse(output.exists())
+
+    def fixture_facades(self):
+        names = ['Userspace/AppleMetal/MellowAppleMetal.mm', 'Userspace/AppleMetal/MellowAppleRenderMetal.mm',
+                 'Userspace/AppleMetal/MellowAppleMetal.h', 'Userspace/AppleMetal/MellowAppleRenderMetal.h',
+                 'Runtime/MetalObjects.hpp', 'Runtime/MetalObjects.cpp', 'Runtime/RenderObjects.hpp', 'Runtime/RenderObjects.cpp']
+        for name in names:
+            file = self.root/name; file.parent.mkdir(parents=True, exist_ok=True); file.write_text('// fixture\n')
+        (self.root/names[0]).write_text('@interface NSObject @end\n@interface MMADevice:NSObject @end\n@implementation MMADevice\n- (int)unsupported { return 0; }\n@end\n')
+
+    def test_capture_and_both_readers_are_independent_of_cwd_and_pwd_alias(self):
+        self.fixture_sdk(); self.fixture_facades()
+        a,b = self.root/'cwd-a', self.root/'cwd-b'; a.mkdir(); b.mkdir()
+        alias=self.root/'cwd-alias'; alias.symlink_to(a, target_is_directory=True)
+        inv=self.root/'actual.json'
+        capture=[sys.executable,str(TOOL),'capture','--sdk',str(self.root),'--clang',self.clang,'--out',str(inv)]
+        result=subprocess.run(capture,cwd=a,capture_output=True,text=True,timeout=30)
+        self.assertEqual(result.returncode,0,result.stderr)
+        for index,cwd in enumerate([a,b,alias]):
+            env=dict(os.environ,PWD=str(cwd))
+            verify=[sys.executable,str(TOOL),'verify','--sdk',str(self.root),'--clang',self.clang,'--inventory',str(inv)]
+            result=subprocess.run(verify,cwd=cwd,env=env,capture_output=True,text=True,timeout=30)
+            self.assertEqual(result.returncode,0,(cwd,result.stderr))
+            observe=[sys.executable,str(TOOL),'observe-source','--sdk',str(self.root),'--clang',self.clang,'--inventory',str(inv),'--repo',str(self.root),'--facade','compute','--out',str(self.root/f'cwd-observe-{index}.json')]
+            result=subprocess.run(observe,cwd=cwd,env=env,capture_output=True,text=True,timeout=30)
+            self.assertEqual(result.returncode,0,(cwd,result.stderr))
+
+    def test_include_environment_is_rejected_at_capture_not_accepted_as_a_census(self):
+        headers=self.fixture_sdk()
+        (headers/'Metal.h').write_text('#include <MTLSupport.h>\n@interface MTLVisible @end\n#ifndef MTL_HIDE\n@interface MTLHidden @end\n#endif\n')
+        (self.root/'usr/include/MTLSupport.h').write_text('// normal support\n')
+        alternate=self.root/'alt';alternate.mkdir();(alternate/'MTLSupport.h').write_text('#define MTL_HIDE 1\n')
+        for variable in ('CPATH','C_INCLUDE_PATH','CPLUS_INCLUDE_PATH','OBJC_INCLUDE_PATH','OBJCPLUS_INCLUDE_PATH'):
+            with self.subTest(variable=variable),patch.dict(os.environ,{variable:str(alternate)}):
+                with self.assertRaisesRegex(ValueError,variable):
+                    self.m.capture(self.root,self.clang,'15.8.1')
+
+    def test_verification_rederives_declarations_and_counts_before_source_census(self):
+        self.fixture_sdk();self.fixture_facades()
+        original=self.m.capture(self.root,self.clang,'15.8.1')
+        mutations=[]
+        removed=copy.deepcopy(original);removed['declarations']=[r for r in removed['declarations'] if r['name']!='MTLHidden']
+        removed['classification_counts']={k:sum(r['target_classification']==k for r in removed['declarations']) for k in removed['classification_counts']};mutations.append(removed)
+        forged=copy.deepcopy(original);entry=copy.deepcopy(forged['declarations'][0]);entry.update(id='ObjCMethodDecl:MTLDevice:-unsupported',kind='ObjCMethodDecl',name='unsupported',owner='MTLDevice',instance=True,return_type='int',parameter_types=[]);forged['declarations'].append(entry)
+        forged['classification_counts']={k:sum(r['target_classification']==k for r in forged['declarations']) for k in forged['classification_counts']};mutations.append(forged)
+        counts=copy.deepcopy(original);counts['classification_counts']={k:999 for k in counts['classification_counts']};mutations.append(counts)
+        for index,changed in enumerate(mutations):
+            inv=self.root/f'tampered-{index}.json';inv.write_text(json.dumps(changed))
+            for action in ('verify','observe-source'):
+                output=self.root/f'tampered-{index}-observation.json'
+                argv=[sys.executable,str(TOOL),action,'--sdk',str(self.root),'--clang',self.clang,'--inventory',str(inv)]
+                if action=='observe-source':argv+=['--repo',str(self.root),'--facade','compute','--out',str(output)]
+                result=subprocess.run(argv,capture_output=True,text=True,timeout=30)
+                self.assertNotEqual(result.returncode,0,(index,action,result.stdout))
+                self.assertFalse(output.exists())
+
+    def test_source_reader_checks_generator_settings_and_dependencies_too(self):
+        self.fixture_sdk();self.fixture_facades()
+        original=self.m.capture(self.root,self.clang,'15.8.1')
+        for index,key in enumerate(('generator','settings','dependencies')):
+            report=copy.deepcopy(original)
+            if key=='generator':report['generator']['sha256']='0'*64
+            elif key=='settings':report['sdk']['settings_sha256']='0'*64
+            else:report['preprocessor_dependencies']['sdk']['invented.h']={'sha256':'0'*64,'bytes':1}
+            inv=self.root/f'wrong-input-{index}.json';inv.write_text(json.dumps(report))
+            output=self.root/f'wrong-input-{index}-out.json'
+            result=subprocess.run([sys.executable,str(TOOL),'observe-source','--sdk',str(self.root),'--clang',self.clang,'--inventory',str(inv),'--repo',str(self.root),'--facade','compute','--out',str(output)],capture_output=True,text=True,timeout=30)
+            self.assertNotEqual(result.returncode,0,(key,result.stdout));self.assertFalse(output.exists())
+
+    def test_verified_zero_count_is_an_integer_not_bool_or_float(self):
+        report=self.m.inventory_report(self.records,'15.8.1')
+        for value in (False,0.0):
+            changed=copy.deepcopy(report);changed['verified_implementation_count']=value
+            with self.subTest(value=value),self.assertRaises(ValueError):self.m.validate_inventory(changed)
+
+    def test_file_elision_tracks_nested_inherited_availability_before_next_root(self):
+        y=self.root/'MTLY.h'
+        y.write_text('#ifndef SECOND\nint MTLF(void) __attribute__((availability(macos,introduced=10.11)));\n#else\n@interface MTLFromY : NSObject\n- (void)fromY;\n@end\n#endif\n')
+        self.header.write_text('@interface NSObject @end\n#include "MTLY.h"\nint MTLF(void);\n#define SECOND 1\n#include "MTLY.h"\n')
+        records=self.m.extract_declarations(self.m.clang_ast(self.clang,self.header,FIXTURE_ARGUMENTS,name_filter=None),self.root,'15.8.1')
+        self.assertEqual({r['name']:r['source']['path'] for r in records if r['name'] in ('MTLFromY','fromY')},{'MTLFromY':'MTLY.h','fromY':'MTLY.h'})
+
+    def test_exact_ast_and_dependency_driver_commands_are_recorded(self):
+        self.fixture_sdk()
+        wrapper=self.compiler_wrapper("if '-ast-dump=json' in a: a=['-DMTL_HIDE=1',*a]")
+        report=self.m.capture(self.root,wrapper,'15.8.1')
+        self.assertNotIn('MTLHidden',{r['name'] for r in report['declarations']})
+        self.assertIn('compiler_commands',report)
+        self.assertIn('MTL_HIDE=1',report['compiler_commands']['ast']['normalized_tokens'])
+        self.assertNotIn('MTL_HIDE=1',report['compiler_commands']['dependencies']['normalized_tokens'])
+        self.assertFalse(report['required_inventory_complete'])
+        self.assertFalse(report['hardware_qualified'])
+        self.m.verify_inventory(report,self.root,wrapper)
 
 
 if __name__ == '__main__':

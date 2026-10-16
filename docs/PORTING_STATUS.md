@@ -134,7 +134,7 @@ Darwin ownership or Metal path.
 
 ## Phase gates
 
-Full sequencing in [ROADMAP.md](ROADMAP.md). The hardware bring-up order is unchanged:
+Full sequencing in [ROADMAP.md](roadmap.md). The hardware bring-up order is unchanged:
 
 1. **Environment** — pin macOS and build versions, retain a CI artifact, record a Mellow-disabled
    baseline, prove a known-good recovery boot.

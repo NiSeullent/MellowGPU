@@ -4,20 +4,27 @@
   "specification": "docs/MELLOWGPU-SPEC.md",
   "required_programming_model": "Metal3",
   "required_gates": [
-    "metal3_api_inventory", "shader_semantics", "native_resources",
-    "native_synchronization", "windowserver", "native_scanout",
-    "applications", "games", "lifecycle_recovery", "performance"
+    "metal3_api_inventory",
+    "shader_semantics",
+    "native_resources",
+    "native_synchronization",
+    "windowserver",
+    "native_scanout",
+    "applications",
+    "games",
+    "lifecycle_recovery",
+    "performance"
   ],
   "api_inventory_complete": false,
   "api_declaration_inventories": [
     {
       "path": "porting/metal-api-sdk15.5-macos15.8.1.json",
-      "sha256": "ad32e1881614b4dd506dad41000a5e94a49244d4539e32d8dee745e49ecc172d",
+      "sha256": "61d7a8eee20220a5cf94916462176501fc12e8fc90775e1255845b83f58d8a84",
       "role": "older-SDK declaration evidence; required-API review incomplete"
     },
     {
       "path": "porting/metal-api-sdk26.5-macos15.8.1.json",
-      "sha256": "c76e93ccd4cea44e493f83b0afc8cc92e9f186472e70984abb362cf0bcadb399",
+      "sha256": "d551cc13b5a85ce540362eaf070c10bd322d121b212b60271f6870f4eb82410d",
       "role": "newer-SDK comparison for target macOS 15.8.1; Metal4 is separate"
     }
   ],
@@ -34,9 +41,16 @@
   "cpu_pixel_transfers_qualify": false,
   "policy_unit_tests_are_hardware_evidence": false,
   "vendor_routes": {
-    "intel": ["i915/ANV", "xe/ANV"],
-    "amd": ["amdgpu/RADV"],
-    "nvidia": ["nouveau/NVK"]
+    "intel": [
+      "i915/ANV",
+      "xe/ANV"
+    ],
+    "amd": [
+      "amdgpu/RADV"
+    ],
+    "nvidia": [
+      "nouveau/NVK"
+    ]
   },
   "nvidia_open_rm": "Separate ABI research; no matching production userspace adapter yet",
   "normative_sources": [

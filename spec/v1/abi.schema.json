@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NiSeullent/MellowGPU/spec/v1/abi.schema.json",
+  "title": "MellowGPU initial v1 abi",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "mellowgpu.abi"
+    },
+    "control": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "const": 1
+        },
+        "minor": {
+          "const": 0
+        },
+        "request_bytes": {
+          "const": 64
+        },
+        "reply_bytes": {
+          "const": 128
+        },
+        "connect_type": {
+          "const": 1296498944
+        },
+        "mode": {
+          "const": "cpu-storage-only"
+        }
+      },
+      "required": [
+        "major",
+        "minor",
+        "request_bytes",
+        "reply_bytes",
+        "connect_type",
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "internal_backend": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "const": 1
+        },
+        "minor": {
+          "const": 0
+        },
+        "wire_compatible": {
+          "const": false
+        },
+        "metadata_only": {
+          "const": true
+        },
+        "threading": {
+          "const": "caller-serialized-single-owner"
+        }
+      },
+      "required": [
+        "major",
+        "minor",
+        "wire_compatible",
+        "metadata_only",
+        "threading"
+      ],
+      "additionalProperties": false
+    },
+    "kernel_architectures": {
+      "const": [
+        "x86_64",
+        "arm64",
+        "arm64e"
+      ]
+    },
+    "native_kernel_architectures": {
+      "const": [
+        "x86_64"
+      ]
+    },
+    "cpu_universal_build_is_gpu_support": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "control",
+    "internal_backend",
+    "kernel_architectures",
+    "native_kernel_architectures",
+    "cpu_universal_build_is_gpu_support"
+  ],
+  "additionalProperties": false
+}

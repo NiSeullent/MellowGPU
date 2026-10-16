@@ -1,0 +1,50 @@
+{
+  "build_identity": {
+    "compiler_sha256": "d2e4bf622758eee1bf7267c060497fb2c41e098d37b0fca8be73898dc7e14eda",
+    "compiler_version": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "scope": "Original universal helper build; executable not redistributed here",
+    "sdk_settings_sha256": "58a133735f0a55a624a1703067059f6e78925e51725ec6e1f966072e142c9c42",
+    "sdk_version": "15.5"
+  },
+  "complete_native_abi_verified": false,
+  "gpu_commands_submitted": false,
+  "helper": {
+    "executed_binary_sha256": "0f2194e3101c2be86a906c077e30764c37c5efd379424cb6f0e6f0e2d6979bc2",
+    "native_executed_architecture": "x86_64",
+    "original_build_source_name": "metal_runtime_metadata.mm",
+    "public_device_enumeration_called": false,
+    "source_path": "Tools/metal-runtime-metadata.mm",
+    "source_sha256": "3ffd32bae6cbdead34a9ccb3c51f1e88d5fd996fbbe380db584233b151c3ba91"
+  },
+  "metal3_verified": false,
+  "observation": {
+    "path": "spec/evidence/15igl7-metal-runtime-metadata.json",
+    "sha256": "fb33772998988b17a5ab88cb4011b60bb29137b1214504de8fde9abda7d99536"
+  },
+  "observation_date": "2026-10-16",
+  "operating_system_identity": {
+    "host_machine": "x86_64",
+    "kernel_release": "24.6.0",
+    "os_build": "24H32",
+    "os_product_version": "15.8.1",
+    "process_architecture": "x86_64"
+  },
+  "os_binary_sha256": null,
+  "os_identity_digest_scope": "SHA256 of the five recorded OS/architecture fields serialized with sorted keys and compact JSON separators, not a digest or attestation of OS binaries",
+  "os_identity_fields_sha256": "0b107bd8f344112defe88e4c713bf7d763f9ce8bb78479bc5a894bd2c01e8cea",
+  "performed_boot_or_display_change": false,
+  "performed_kernel_extension_load": false,
+  "private_initializers_invoked_directly": false,
+  "recorded_pci_identity": {
+    "device": "3185",
+    "revision": "06",
+    "scope": "Parent-collected designated-device identity; this metadata helper did not read PCI configuration",
+    "subsystem_device": "3E77",
+    "subsystem_vendor": "17AA",
+    "vendor": "8086"
+  },
+  "schema": "mellowgpu.metal-runtime-metadata-receipt/1",
+  "scope": "Actual target public Objective-C metadata only; source/binary/output identities are retained. No private initializer, return-value ownership, GPU device factory, submission or system composition behavior was tested.",
+  "user_designated_test_device": "15IGL7",
+  "windowserver_verified": false
+}

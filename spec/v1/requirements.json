@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "kind": "mellowgpu.requirements",
+  "required_feature_case_inventory_complete": false,
+  "requirements": [
+    {
+      "id": "MG-CORE-ABI-001",
+      "title": "Versioned ABI and explicit three-vendor unavailable operations",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "implemented-contract",
+      "source_refs": [
+        "mellowgpu-original-contract"
+      ],
+      "implementation": [
+        "Drivers/Core/MellowGPUABI.h",
+        "Drivers/Core/BackendInterfaces.hpp"
+      ],
+      "tests": [
+        "tests/control_protocol_tests.cpp",
+        "tests/backend_interface_tests.cpp"
+      ],
+      "acceptance": "Fixed 64/128-byte control messages; metadata binding does not admit native hardware",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-CORE-LIFETIME-001",
+      "title": "Device/context/queue/resource ownership",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "implemented-contract",
+      "source_refs": [
+        "mellowgpu-original-contract"
+      ],
+      "implementation": [
+        "Drivers/Core/DeviceLifecycle.hpp",
+        "Drivers/NativeGpu/MemoryOwner.cpp"
+      ],
+      "tests": [
+        "tests/gpu_lifecycle_tests.cpp",
+        "tests/native_gpu_memory_tests.cpp"
+      ],
+      "acceptance": "Externally serialized typed leases; no storage free until every relevant native owner retires",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-CORE-SYNC-001",
+      "title": "Queue publication and explicit retirement",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "partial-model",
+      "source_refs": [
+        "mellowgpu-original-contract",
+        "linux-nouveau"
+      ],
+      "implementation": [
+        "Drivers/Core/DeviceLifecycle.hpp",
+        "Drivers/NativeNvidia/GpFifoQueue.cpp"
+      ],
+      "tests": [
+        "tests/gpu_lifecycle_tests.cpp",
+        "tests/native_nvidia_queue_tests.cpp"
+      ],
+      "acceptance": "Completion observation, publication, DMA retirement and display retirement remain distinct",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-OS-XNU-001",
+      "title": "Native OS boundary",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "partial-native",
+      "source_refs": [
+        "mellowgpu-original-contract"
+      ],
+      "implementation": [
+        "Mellow/MellowGPUDevice.cpp"
+      ],
+      "tests": [
+        "tests/native_control_tests.cpp"
+      ],
+      "acceptance": "Native control CPU storage only; native GPU VM/IRQ/DMA and kernel isolation not implemented",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-CPU-X64-001",
+      "title": "First native x86_64 target",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "partial-native",
+      "source_refs": [
+        "mellowgpu-original-contract"
+      ],
+      "implementation": [
+        "Drivers/Core/BackendInterfaces.hpp"
+      ],
+      "tests": [
+        "tests/backend_interface_tests.cpp"
+      ],
+      "acceptance": "Actual 15IGL7 identity and safe metadata measured; a build does not prove GPU execution",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-CPU-ARM64-001",
+      "title": "Separate ARM64 feasibility",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "research-only",
+      "source_refs": [
+        "mellowgpu-original-contract"
+      ],
+      "implementation": [
+        "Drivers/Core/BackendInterfaces.hpp"
+      ],
+      "tests": [
+        "tests/backend_interface_tests.cpp"
+      ],
+      "acceptance": "Separate native ABI, PCIe/DMA/interrupt/platform-policy and Metal registration evidence required",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-CPU-ARM64E-001",
+      "title": "Separate ARM64e/PAC feasibility",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "research-only",
+      "source_refs": [
+        "mellowgpu-original-contract"
+      ],
+      "implementation": [
+        "Drivers/Core/BackendInterfaces.hpp"
+      ],
+      "tests": [
+        "tests/backend_interface_tests.cpp"
+      ],
+      "acceptance": "ARM64e kernel ABI/signing/PAC separately audited; ARM64 userspace binary cannot qualify it",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-GPU-INTEL-001",
+      "title": "Generation-specific Intel backend",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "partial-model",
+      "source_refs": [
+        "linux-i915",
+        "linux-xe",
+        "mesa-vulkan"
+      ],
+      "implementation": [
+        "Drivers/Core/BackendInterfaces.hpp",
+        "Mellow/XeContextExecution.cpp"
+      ],
+      "tests": [
+        "tests/backend_interface_tests.cpp",
+        "tests/xe_context_execution_tests.cpp"
+      ],
+      "acceptance": "GLK follows i915/ANV; Xe test state is not execution evidence for GLK",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-GPU-AMD-001",
+      "title": "Generation-specific AMD backend",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "partial-model",
+      "source_refs": [
+        "linux-amdgpu",
+        "mesa-radv"
+      ],
+      "implementation": [
+        "Drivers/Core/BackendInterfaces.hpp",
+        "Drivers/NativeAmd/PacketEncoding.cpp"
+      ],
+      "tests": [
+        "tests/backend_interface_tests.cpp",
+        "tests/native_amd_packet_tests.cpp"
+      ],
+      "acceptance": "Per-generation firmware/VM/queue/display/power implementations and physical AMD test required",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-GPU-NVIDIA-001",
+      "title": "Generation-specific NVIDIA backend",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "partial-model",
+      "source_refs": [
+        "linux-nouveau",
+        "mesa-nvk",
+        "nvidia-open-rm"
+      ],
+      "implementation": [
+        "Drivers/Core/BackendInterfaces.hpp",
+        "Drivers/NativeNvidia/GpFifoQueue.cpp",
+        "Drivers/NativeNvidia/QueueLifecycle.cpp"
+      ],
+      "tests": [
+        "tests/backend_interface_tests.cpp",
+        "tests/native_nvidia_queue_tests.cpp",
+        "tests/native_nvidia_lifecycle_tests.cpp"
+      ],
+      "acceptance": "Nouveau/NVK and openRM are separate native contracts, not interchangeable firmware/ABI",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-METAL-001",
+      "title": "Required Metal3 API and semantic contract",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "research-only",
+      "source_refs": [
+        "apple-metal-feature-tables",
+        "apple-metal3-programming-model"
+      ],
+      "implementation": [
+        "Drivers/Core/Metal3Profile.hpp",
+        "Tools/metal-api-inventory.py"
+      ],
+      "tests": [
+        "tests/metal3_profile_tests.cpp",
+        "tests/metal_api_inventory_tests.py"
+      ],
+      "acceptance": "Every applicable required feature needs real native semantics, negative tests and exact hardware receipt",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-SHADER-001",
+      "title": "AIR/IR/vendor shader compiler correctness",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "research-only",
+      "source_refs": [
+        "mesa-vulkan",
+        "mesa-radv",
+        "mesa-nvk"
+      ],
+      "implementation": [
+        "Runtime/AirDecoder.cpp"
+      ],
+      "tests": [
+        "tests/air_decoder_native_tests.cpp"
+      ],
+      "acceptance": "AIR input/version, IR legality, optimizer and ISA output checked on actual GPU; cached results bind compiler/device/OS hashes",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-WS-001",
+      "title": "Actual GPU WindowServer composition",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "research-only",
+      "source_refs": [
+        "nullmoth-reference",
+        "cobalt64-reference"
+      ],
+      "implementation": [
+        "Mellow/FullSystemQualification.hpp"
+      ],
+      "tests": [
+        "tests/full_system_qualification_tests.cpp"
+      ],
+      "acceptance": "Observe real WindowServer using MellowGPU resource/submit/fence/present path under sustained desktop load",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-DISPLAY-001",
+      "title": "Modeset/panel/present/vblank ownership",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "research-only",
+      "source_refs": [
+        "linux-i915",
+        "linux-amdgpu",
+        "cobalt64-reference"
+      ],
+      "implementation": [
+        "Mellow/FullSystemQualification.hpp"
+      ],
+      "tests": [
+        "tests/full_system_qualification_tests.cpp"
+      ],
+      "acceptance": "EDID/PPS/hotplug/present/flip retirement separately proved; optional HDR/VRR never inferred",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-SURFACE-001",
+      "title": "IOSurface multi-process synchronization",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "research-only",
+      "source_refs": [
+        "cobalt64-reference"
+      ],
+      "implementation": [
+        "Userspace/WindowServer/SurfaceSnapshot.cpp"
+      ],
+      "tests": [
+        "Userspace/WindowServer/SurfaceSnapshotTests.cpp"
+      ],
+      "acceptance": "CPU snapshot research is not same-page GPU import; actual per-process sharing and producer/consumer retirement required",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-RECOVERY-001",
+      "title": "Timeout/loss/reset/stop recovery",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "implemented-contract",
+      "source_refs": [
+        "mellowgpu-original-contract",
+        "linux-i915",
+        "linux-amdgpu"
+      ],
+      "implementation": [
+        "Drivers/Core/DeviceLifecycle.hpp"
+      ],
+      "tests": [
+        "tests/gpu_lifecycle_tests.cpp"
+      ],
+      "acceptance": "UNKNOWN retains backing; close admission, establish native quiescence, retire owners, then monotonically advance generation",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-PERF-001",
+      "title": "Comparable GPU performance and long-run stability",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "research-only",
+      "source_refs": [
+        "nullmoth-reference"
+      ],
+      "implementation": [
+        "Drivers/Core/Metal3Profile.hpp"
+      ],
+      "tests": [
+        "tests/metal3_profile_tests.cpp"
+      ],
+      "acceptance": "Same GPU/OS/power/quality baseline; CPU submit, GPU timing, copies, shader cold/warm, p95/p99 and sustained throughput",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-UPSTREAM-001",
+      "title": "Reviewable upstream change intake",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "partial-tooling",
+      "source_refs": [
+        "mellowgpu-original-contract"
+      ],
+      "implementation": [
+        "Tools/mellow_port/upstreams.py",
+        "Tools/mellow_port/candidate.py"
+      ],
+      "tests": [
+        "tests/test_mellow_upstreams.py",
+        "tests/test_mellow_candidate.py",
+        "tests/test_mellow_intake_integrity.py"
+      ],
+      "acceptance": "Discovery/impact/source staging implemented; auto adapter update/build/hardware/perf/PR/promotion remain unavailable",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    },
+    {
+      "id": "MG-PROVENANCE-001",
+      "title": "Source/license/firmware/ABI provenance",
+      "applicability": "mandatory for every declared support tuple",
+      "status": "partial-tooling",
+      "source_refs": [
+        "mellowgpu-original-contract"
+      ],
+      "implementation": [
+        "Tools/mellowgpu-spec.py",
+        "Tools/mellow_port/upstreams.py"
+      ],
+      "tests": [
+        "tests/specification_tests.py",
+        "tests/test_mellow_intake_integrity.py"
+      ],
+      "acceptance": "Source hashes and complete Git object path checked; full source/firmware/license closure remains UNKNOWN",
+      "host_result": "TESTS_REFERENCED_NOT_AN_ATTESTATION",
+      "hardware_result": "NOT_RUN",
+      "unsupported_behavior": "Fail explicitly; do not advertise capability or silently CPU-fallback"
+    }
+  ]
+}

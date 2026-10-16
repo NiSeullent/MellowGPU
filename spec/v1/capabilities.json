@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "mellowgpu.capabilities",
+  "control_bits": [
+    1,
+    2,
+    4
+  ],
+  "internal_metadata_binding": true,
+  "native_gpu_memory": false,
+  "native_gpu_submission": false,
+  "native_gpu_fences": false,
+  "metal3_required_inventory_complete": false,
+  "native_metal_registered": false,
+  "windowserver_gpu_composition": false,
+  "physical_scanout": false,
+  "qualification_authority_implemented": false,
+  "cpu_fallback_qualifies": false
+}
