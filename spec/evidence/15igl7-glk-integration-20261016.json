@@ -1,0 +1,135 @@
+{
+  "schema": "mellowgpu.15igl7-glk-integration-evidence/1",
+  "utc": "2026-10-16T06:22:28+00:00",
+  "source_commit": "e049abb373b49cbddc6bcf702688808540cf2448",
+  "source_tree": "236d1321514c479923162f82f8ce148081d676da",
+  "scope": "Static native build/link/signature/import eligibility plus read-only target observation and public-Metal enumeration; no GPU work",
+  "kext_development_artifact": {
+    "status": "built_signed_development_only",
+    "binary_sha256": "88d6fe69e0d06f4fa4cb6a54cb50d907d20616b3840243c1b558dd73c01e993e",
+    "uuid": "50625F6C-F192-3B59-85E5-58FFDEB3731F",
+    "architecture": "x86_64",
+    "signature": "ad-hoc, strict verification passed",
+    "glk_translation_units_linked": 20,
+    "installed": false,
+    "loaded": false,
+    "imports": 448,
+    "imports_statically_eligible": 448,
+    "unmatched_imports": [],
+    "kernel_collections": [
+      {
+        "sha256": "cd013c14a7f21dbb8181fb06c44e079de8646b6a674abe21f6e47f42e8979af3",
+        "uuid": "c371b331168574eadda62449ea42bf30",
+        "name": "BootKernelExtensions.kc"
+      },
+      {
+        "sha256": "2296155f1f12471e7b774020ba70d9fb487d02224c1f85d373130511969c2243",
+        "uuid": "32f6a74a0627d0f9604858af2f562e12",
+        "name": "SystemKernelExtensions.kc"
+      }
+    ],
+    "lilu": {
+      "version": "1.7.3",
+      "sha256": "e3f00df5aca98c70363489292514f088ae3b667417c9c5afdd33799ff09390bd"
+    },
+    "import_parser": "Tools/tahoe-abi.py read_kc/resolve_imports (sha256 4a3d7b9039dddfad98198701f78b2edf5d978feff0f9a16cdb424771ac75bc45)"
+  },
+  "standalone_passive_probe": {
+    "builder": "Tools/build-glk-passive-probe.py",
+    "bundle_identifier": "com.NiSeullent.MellowGPU.Probe",
+    "version": "0.1.0",
+    "binary_sha256": "45b9c2b3922ba3ceceede9c90a74c966f0563554669fe7acdff83d05ddfe2b1d",
+    "uuid": "20e448c703713c328898ec3e0971a0b5",
+    "bundle_file_sha256": {
+      "Contents/Info.plist": "ba8b24938ccba2dbfaa4c4c8aaa8cb6a3523b4097792818563eb56e6aa0647c7",
+      "Contents/MacOS/MellowGPUProbe": "45b9c2b3922ba3ceceede9c90a74c966f0563554669fe7acdff83d05ddfe2b1d",
+      "Contents/_CodeSignature/CodeResources": "6686de10a28a2fe11b36cbb86dcbacc827cfc4ea116b4dabf1845e5aee629e9b"
+    },
+    "reproduces_installed_target_binary": true,
+    "install_eligible_source": true,
+    "imports_statically_eligible": "304/304",
+    "role": "passive PCI/PM observer only; not MellowGPU, not an accelerator"
+  },
+  "target_observation": {
+    "method": "unprivileged read-only SSH; no installs, privileged commands, reboots or system writes",
+    "os": "15.8.1 (24H32)",
+    "architecture": "x86_64",
+    "cpu": "Intel(R) Celeron(R) N4120 CPU @ 1.10GHz",
+    "boot_session_uuid": "C5BBABA0-1906-4279-8ADA-59CC665B74F7",
+    "gpu_pci": {
+      "location": "00:02.0",
+      "vendor": "0x8086",
+      "device": "0x3185",
+      "revision": "0x06",
+      "subsystem_vendor": "0x17aa",
+      "subsystem": "0x3e77",
+      "registry_entry_id": 4294967824
+    },
+    "kernel_collection_sha256": {
+      "BootKernelExtensions.kc": "cd013c14a7f21dbb8181fb06c44e079de8646b6a674abe21f6e47f42e8979af3",
+      "SystemKernelExtensions.kc": "2296155f1f12471e7b774020ba70d9fb487d02224c1f85d373130511969c2243",
+      "AuxiliaryKernelExtensions.kc": "970c354802897d414938ad8df048b577d718c0ec9d5294653fcb3b7279294fad"
+    },
+    "kc_inputs_match_live_target": true,
+    "loaded_relevant_modules": [
+      "com.NiSeullent.MellowGPU.Probe (0.1.0) 20E448C7-0371-3C32-8898-EC3E0971A0B5 <18 7 6 3>",
+      "com.local.NMXSwapReserve (0.1.0) CE7671EE-48D7-307B-9595-DE838F2C10D1 <57 9 7 6 3 1>",
+      "org.nullmoth.NMXBurstPolicy (0.1.0) 529E5B77-F339-36A2-8862-680E6FF5A479 <9 7 6 3 1>"
+    ],
+    "ioaccelerator_services": 0,
+    "framebuffer": "IONDRVFramebuffer (firmware)",
+    "windowserver_unchanged_across_runs": true,
+    "boot_unchanged_across_runs": true
+  },
+  "device_lab_bench": {
+    "artifact_sha256": "4185da13a431e8e9264a2a88631f1e8d09af465e36ace221deaf2d28523d755e",
+    "uploaded_hash_verified_on_target": true,
+    "runs": 3,
+    "exit_codes": [
+      3,
+      3,
+      3
+    ],
+    "host_gate_passed": true,
+    "metal_device_count": [
+      0
+    ],
+    "result": "FAIL: no Metal device present (exit 3)",
+    "benchmark_numbers": null,
+    "not_run": [
+      "compute",
+      "render",
+      "blit",
+      "present/framebuffer probe (needs console GUI session and a Metal device)",
+      "WindowServer GPU compositing",
+      "apps",
+      "games"
+    ]
+  },
+  "host_validation": {
+    "host_suites": "43/43 PASS",
+    "validate_macho_identity_tests": "6/6 PASS (RED against previous validator)",
+    "component_runners_in_canonical": {
+      "interrupt": 388,
+      "ggtt": "857+476, 13/13 mutants",
+      "bcs": "547+112, 7 mutants",
+      "owner": "330, 21 mutants",
+      "render_wa": "688 (+98 adapter)",
+      "vbt": 735,
+      "opregion": "35/35 mutants",
+      "forcewake": "395+100, 18+7 mutants"
+    }
+  },
+  "runtime_gaps": [
+    "No GLK accelerator, personality or producer is activated; qualified profiles 0",
+    "No GPU command, MMIO, DMA, interrupt, forcewake or GGTT write has executed on hardware",
+    "NoMapper/D0 observations are not a durable PM/DMA lease",
+    "No actual VBT/OpRegion capture, fuse read or engine-PM observer",
+    "Main kext not installed; must not load alongside the standalone probe (shared MellowGlkPassiveProbe class)",
+    "Offline Mesa compiler ISA never executed",
+    "Metal 3, GPU IOSurface/WindowServer, scanout, apps/games, performance and recovery remain INCOMPLETE"
+  ],
+  "qualified_profiles": 0,
+  "hardware_qualified": false,
+  "metal3_qualified": false
+}
