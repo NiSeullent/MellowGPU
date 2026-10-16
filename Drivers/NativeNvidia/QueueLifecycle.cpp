@@ -112,7 +112,9 @@ QueueLifecycleResult QueueLifecycle::observe(QueueStatus status)
         result.status = Status::Ok;
         break;
     case QueueStatus::ClockRegression:
-        result.status = Status::Rejected; // The state check above distinguishes a new native transport fault.
+        // Open admission escalated a native NeedsReset above. During an already
+        // closed drain, native ClockRegression retains this result unchanged.
+        result.status = Status::Rejected;
         break;
     case QueueStatus::Busy:
         result.status = Status::Busy;

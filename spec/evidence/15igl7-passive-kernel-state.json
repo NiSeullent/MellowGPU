@@ -40,5 +40,6 @@
   "boot_or_security_settings_changed": false,
   "gpu_commands_submitted": false,
   "metal3_verified": false,
-  "windowserver_verified": false
+  "windowserver_verified": false,
+  "selection_rule": "Preserve source order; select all predicate matches whose eventMessage starts with NMXAccel: and contains probe(GFX0) or NVIDIA display device; retain timestamp, bootUUID and eventMessage only."
 }

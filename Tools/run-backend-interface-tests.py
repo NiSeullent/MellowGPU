@@ -7,9 +7,12 @@ import json
 import os
 import platform
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
+
+from sanitizer_policy import sanitizer_environment
 
 
 def main():
@@ -25,7 +28,7 @@ def main():
     if not args.cxx or out.exists() or out == root or out in root.parents:
         parser.error('compiler and fresh scratch directory required')
     names = ['Drivers/Core/BackendInterfaces.hpp', 'tests/backend_interface_tests.cpp',
-             'Tools/run-backend-interface-tests.py']
+             'Tools/run-backend-interface-tests.py', 'Tools/sanitizer_policy.py']
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     hashes = {name: digest(root / name) for name in names}
     out.mkdir(parents=True)
@@ -34,6 +37,8 @@ def main():
     build = common + [str(root / names[1]), '-o', str(binary)]
     if args.sanitize:
         build += ['-fsanitize=address,undefined', '-fno-sanitize-recover=all', '-fno-omit-frame-pointer', '-g']
+    environment, sanitizer_scope = (sanitizer_environment() if args.sanitize
+                                     else (dict(os.environ), None))
     header = out / 'freestanding.cpp'
     header.write_text('#include "' + str(root / names[0]) + '"\n' +
         'template class MellowGPUCore::Backend::MetadataInterfaceV1<0x8086>;\n' +
@@ -43,6 +48,7 @@ def main():
                 '-fno-rtti', '-fsyntax-only', str(header)]]
     report = {'schema': 'mellowgpu.backend-interface-tests/1', 'passed': False,
               'source_sha256': hashes, 'sanitizers': args.sanitize, 'commands': [],
+              'sanitizer_runtime_policy': sanitizer_scope,
               'host_platform': platform.platform(), 'process_architecture': platform.machine(),
               'compiler_version': subprocess.run([args.cxx, '--version'], capture_output=True,
                                                   text=True, check=True).stdout,
@@ -53,12 +59,19 @@ def main():
               'windowserver_verified': False}
     try:
         for i, command in enumerate(commands):
-            result = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=120)
+            result = subprocess.run(command, cwd=root, capture_output=True, text=True,
+                                    timeout=120, env=environment)
             (out / f'{i}.stdout').write_text(result.stdout)
             (out / f'{i}.stderr').write_text(result.stderr)
             report['commands'].append({'argv': command, 'exit_code': result.returncode})
             if result.returncode:
                 raise ValueError(result.stderr or result.stdout)
+            if i == 1:
+                summary = re.fullmatch(r'PASS ([1-9][0-9]{0,8}) internal three-vendor interface checks; '
+                                       r'native GPU operations unavailable\n', result.stdout)
+                if summary is None:
+                    raise ValueError('Missing or invalid backend interface check summary')
+                report['actual_checks'] = int(summary.group(1))
         if hashes != {name: digest(root / name) for name in names}:
             raise ValueError('source changed during tests')
         report.update(passed=True, binary_sha256=digest(binary))
