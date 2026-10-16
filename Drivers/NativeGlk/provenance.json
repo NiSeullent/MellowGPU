@@ -1,0 +1,41 @@
+{
+  "schema": "mellowgpu.glk-forcewake-provenance/1",
+  "revision": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+  "upstream_files": [
+    {
+      "path": "drivers/gpu/drm/i915/intel_uncore.c",
+      "bytes": 91692,
+      "sha256": "357d32c4980bd619d73aaea4f35136bed08762a1c2f718fedcf1c40a500ea47a",
+      "git_blob": "170e83a8c9fc3ad5ad3406790134416328b85cf6",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_uncore.c"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/intel_uncore.h",
+      "bytes": 16807,
+      "sha256": "f7eb9fab5de3ea62fa36f857f14d16a171fb8cc8e1034628e8552bfa8423b36a",
+      "git_blob": "fafc2ca9a237665307a3508419b23a772ea6207e",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_uncore.h"
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "bytes": 65593,
+      "sha256": "ccc7fb4c51e94ce99dc2695f9351284e00dddef7fded90bf0be169c6539d77ac",
+      "git_blob": "3ba9b2206b79812c4bb6ec2f0be7f90cdc08c945",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_regs.h"
+    },
+    {
+      "path": "include/drm/intel/pciids.h",
+      "bytes": 31897,
+      "sha256": "102d8f821c9464ad17c0160535a4e3811f49609f199f1b6d7268050d71d8e8f0",
+      "git_blob": "dff389b56eb3bf0ebcf9d8a81c2e76722a0ea54f",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/pciids.h"
+    }
+  ],
+  "license": "MIT (per-file upstream legacy MIT/SPDX notices); full dependency closure not approved",
+  "adaptation": "Original synchronous bounded Gen9 forcewake protocol. Explicit leases replace Linux delayed auto-release timer; timeouts/failures propagate rather than log-and-proceed. Native adapter maps only under supplied exclusive provider/power/reset authority.",
+  "limits": [
+    "No hardware ACK observation or GPU execution established",
+    "Provider open, retained owner and D0 snapshots do not replace external exclusive lifecycle/IOSF/reset coordination",
+    "No engine submission, DMA retirement, Metal or WindowServer support implied"
+  ]
+}

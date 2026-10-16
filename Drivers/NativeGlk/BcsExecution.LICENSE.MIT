@@ -1,0 +1,163 @@
+BcsExecution.hpp/.cpp are MIT licensed. They re-express facts and ordering from the Linux i915
+files below at torvalds/linux@0d9ff90a5422cc7509258aaaba1e7481df4d332a. Each file's leading notice is reproduced verbatim.
+Files carrying only an SPDX MIT identifier are covered by the MIT permission text reproduced
+in the intel_uncore.c notice. Copyright (c) 2026 Mellow contributors for the C++ expression.
+
+===== drivers/gpu/drm/i915/gt/intel_execlists_submission.c @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob e693b0c9d2a3e2ee0530b0cafbe39621038c0c20) =====
+// SPDX-License-Identifier: MIT
+/*
+ * Copyright © 2014 Intel Corporation
+ */
+
+===== drivers/gpu/drm/i915/gt/intel_engine_cs.c @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob c0fd349a4600c638306fec937ecc77538ed23245) =====
+// SPDX-License-Identifier: MIT
+/*
+ * Copyright © 2016 Intel Corporation
+ */
+
+===== drivers/gpu/drm/i915/gt/gen8_engine_cs.c @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob 071c1cc45257a78515f7c5c2e7dfb8951ff343af) =====
+// SPDX-License-Identifier: MIT
+/*
+ * Copyright © 2014 Intel Corporation
+ */
+
+===== drivers/gpu/drm/i915/gt/intel_reset.c @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob 6053f3e8aa27c1bcc6cb6ef0c38c14e8cdfa90a0) =====
+// SPDX-License-Identifier: MIT
+/*
+ * Copyright © 2008-2018 Intel Corporation
+ */
+
+===== drivers/gpu/drm/i915/gt/intel_engine_regs.h @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob 1c4784cb296c8b9fae1d2c732304b043a31f54a4) =====
+/* SPDX-License-Identifier: MIT */
+/*
+ * Copyright © 2022 Intel Corporation
+ */
+
+===== drivers/gpu/drm/i915/gt/intel_lrc_reg.h @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob 304000c7e34537be36b325f33ecca7feb40ce672) =====
+/* SPDX-License-Identifier: MIT */
+/*
+ * Copyright © 2014-2018 Intel Corporation
+ */
+
+===== drivers/gpu/drm/i915/gt/intel_engine.h @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob f6a98cf1e5a50cba37a9c8b8863ce93e6ecc6985) =====
+/* SPDX-License-Identifier: MIT */
+#ifndef _INTEL_RINGBUFFER_H_
+#define _INTEL_RINGBUFFER_H_
+
+#include <asm/cacheflush.h>
+#include <drm/drm_util.h>
+#include <drm/drm_cache.h>
+
+#include <linux/hashtable.h>
+#include <linux/irq_work.h>
+#include <linux/random.h>
+#include <linux/seqlock.h>
+
+#include "i915_pmu.h"
+#include "i915_request.h"
+#include "i915_selftest.h"
+#include "intel_engine_types.h"
+#include "intel_gt_types.h"
+#include "intel_timeline.h"
+#include "intel_workarounds.h"
+
+struct drm_printer;
+struct intel_context;
+struct intel_gt;
+struct lock_class_key;
+
+/* Early gen2 devices have a cacheline of just 32 bytes, using 64 is overkill,
+ * but keeps the logic simple. Indeed, the whole purpose of this macro is just
+ * to give some inclination as to some of the magic values used in the various
+ * workarounds!
+ */
+
+===== drivers/gpu/drm/i915/gt/intel_ring.h @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob 64b322e25f366a6bc6bdc76b4524fdd64d927d3b) =====
+/* SPDX-License-Identifier: MIT */
+/*
+ * Copyright © 2019 Intel Corporation
+ */
+
+===== drivers/gpu/drm/i915/gt/intel_ring.c @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob be7eeb95ff12bb1e872b5d81fc63d7159d51b280) =====
+// SPDX-License-Identifier: MIT
+/*
+ * Copyright © 2019 Intel Corporation
+ */
+
+===== drivers/gpu/drm/i915/i915_reg.h @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob 64e906380131a950e8ae96db9ed1a7a98dd3da72) =====
+/* Copyright 2003 Tungsten Graphics, Inc., Cedar Park, Texas.
+ * All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sub license, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the
+ * next paragraph) shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+ * IN NO EVENT SHALL TUNGSTEN GRAPHICS AND/OR ITS SUPPLIERS BE LIABLE FOR
+ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+===== drivers/gpu/drm/i915/intel_uncore.h @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob fafc2ca9a237665307a3508419b23a772ea6207e) =====
+/*
+ * Copyright © 2017 Intel Corporation
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ *
+ */
+
+===== drivers/gpu/drm/i915/intel_uncore.c @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob 170e83a8c9fc3ad5ad3406790134416328b85cf6) =====
+/*
+ * Copyright © 2013 Intel Corporation
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ */
+
+===== include/drm/intel/reg_bits.h @ 0d9ff90a5422cc7509258aaaba1e7481df4d332a (blob 2a9066e1d808c0d3b03ec2e043b2304f86ab8fb1) =====
+/* SPDX-License-Identifier: MIT */
+/* Copyright © 2026 Intel Corporation */

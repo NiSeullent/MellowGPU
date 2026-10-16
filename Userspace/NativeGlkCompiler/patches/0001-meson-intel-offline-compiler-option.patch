@@ -1,0 +1,35 @@
+diff --git a/meson.build b/meson.build
+index df0241e..fc8adff 100644
+--- a/meson.build
++++ b/meson.build
+@@ -388,7 +388,10 @@ with_intel_vk_rt = get_option('intel-rt') \
+                error_message: 'Intel Ray Tracing requires 64-bit architectures') \
+   .allowed()
+ 
++with_intel_offline_compiler = get_option('intel-offline-compiler')
++
+ with_any_intel = [
++  with_intel_offline_compiler,
+   with_gallium_crocus,
+   with_gallium_i915,
+   with_gallium_iris,
+diff --git a/meson.options b/meson.options
+index 3f437d0..d96145f 100644
+--- a/meson.options
++++ b/meson.options
+@@ -712,6 +712,15 @@ option(
+   description : 'Build Ray Tracing on supported hardware.'
+ )
+ 
++option(
++  'intel-offline-compiler',
++  type : 'boolean',
++  value : false,
++  description : 'Build the Intel compiler, device-info and ISL static ' +
++                'libraries for offline (host-only) shader compilation ' +
++                'without enabling any driver, kernel interface or tool.'
++)
++
+ option(
+   'intel-elk',
+   type : 'boolean',

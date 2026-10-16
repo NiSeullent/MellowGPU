@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Reviewed IOKitPersonalities fragment for MellowGlkPassiveProbe. NOT wired into
+  Mellow/Info.plist, Xcode, boot flags or any kernel collection by its author.
+  IOPCIFamily ANDs every present match key against the nub's saved config words:
+  vendor/device 8086:3185, subsystem 17aa:3e77, and class 030000 with revision 06
+  (explicit full mask). The separate IOMatchCategory leaves the firmware
+  framebuffer's IOFramebuffer category and every other GFX0 client untouched.
+  The class re-verifies registry and physical config identity, 00:02.0 and
+  Darwin 24 before publishing anything.
+-->
+<plist version="1.0">
+<dict>
+	<key>MellowGlkPassiveProbe</key>
+	<dict>
+		<key>CFBundleIdentifier</key>
+		<string>com.NiSeullent.MellowGPU</string>
+		<key>IOClass</key>
+		<string>MellowGlkPassiveProbe</string>
+		<key>IOProviderClass</key>
+		<string>IOPCIDevice</string>
+		<key>IOPCIPrimaryMatch</key>
+		<string>0x31858086</string>
+		<key>IOPCISecondaryMatch</key>
+		<string>0x3e7717aa</string>
+		<key>IOPCIClassMatch</key>
+		<string>0x03000006&amp;0xffffffff</string>
+		<key>IOMatchCategory</key>
+		<string>MellowGlkPassiveProbe</string>
+		<key>MellowGPUQualification</key>
+		<string>unqualified</string>
+	</dict>
+</dict>
+</plist>

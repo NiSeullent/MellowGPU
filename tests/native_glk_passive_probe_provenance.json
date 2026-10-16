@@ -1,0 +1,414 @@
+{
+ "component": "Mellow/GlkPassiveProbeIOKit.{hpp,cpp} + personality fragment + hosted tests/shim/runner",
+ "authorship": "Original Mellow source written for this component. No third-party source text, tables or code copied; only the facts listed below are relied on.",
+ "scope": "Per-file provenance for a passive observation service. No full-source, dependency, firmware or whole-closure clearance is inferred.",
+ "target_observation_not_proof": "Prior root read of 15IGL7 GFX0 (8086:3185 rev 06, 17aa:3e77, BDF 0:2:0) found no iommu-parent and no IOMemoryDescriptorOptions, and empty IOMapper/AppleVTD class queries. That neither reads gSystem nor proves the platform mapper state; registry entry IDs differ between boots (4294967813 then 4294967814).",
+ "target_iopcifamily_note": "Target kextstat reports com.apple.iokit.IOPCIFamily bundle version 2.9; the source tag IOPCIFamily-681.140.3 is the .140 release train matching xnu-11417.140.69 but exact binary/source correspondence is unverified.",
+ "sdk_15_5_headers": {
+  "Kernel.framework/Headers/IOKit/IOMapper.h": {
+   "sha256": "a100a9804bb4728c39805ac5a781baa57e549257e75fe9b3bcfd7a2d9c154644",
+   "anchors_line_numbers": {
+    "static IOMapper *gSystem;": [
+     86
+    ]
+   }
+  },
+  "Kernel.framework/Headers/IOKit/IOService.h": {
+   "sha256": "8c9d69d1b562e4f0b0df8d1fab437a373cd814773da2aa1187d47d46e1e44351",
+   "anchors_line_numbers": {
+    "virtual bool isOpen( const IOService * forClient = NULL ) const;": [
+     651
+    ],
+    "virtual UInt32 getBusyState( void );": [
+     743
+    ],
+    "virtual OSPtr<OSIterator> getClientIterator( void ) const;": [
+     1182
+    ]
+   }
+  },
+  "Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h": {
+   "sha256": "1d07805ca214f6903601a4ffca5e3b239bff766795852423fe635af333063a72",
+   "anchors_line_numbers": {
+    "#if __IOPCIDEVICE_INTERNAL__": [
+     471
+    ],
+    "UInt32 configRead32( IOByteCount offset ) { return (extendedConfigRead32(offset)); }": [
+     490
+    ],
+    "UInt16 configRead16( IOByteCount offset ) { return (extendedConfigRead16(offset)); }": [
+     498
+    ]
+   }
+  },
+  "Kernel.framework/Headers/IOKit/IOMemoryDescriptor.h": {
+   "sha256": "74ad1eb29c9e52ef3b457cad37ae8f8d789f22ef6c955edda00e7a7ffc3e4c0f",
+   "anchors_line_numbers": {
+    "kIOMemoryMapperNone         = 0x00000800": [
+     104
+    ]
+   }
+  },
+  "Kernel.framework/Headers/libkern/version.h": {
+   "sha256": "39aab888e3f6ae3943c6fe0426ff75e952c80012160cdb5c64c1e2767013d651",
+   "anchors_line_numbers": {
+    "extern const int version_major;": [
+     79
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "ref": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "iokit/IOKit/IOMapper.h",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/IOKit/IOMapper.h",
+   "bytes": 4927,
+   "sha256": "87e82d46c961fb3caadc076939f1eb8313e2de636682f6826f57e8db34ee95ad",
+   "git_blob": "c451225adac0ee7e1aa72c49ed6c0f1c7430c446",
+   "git_blob_verified": true,
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@ or APSL text)",
+   "anchors_line_numbers": {
+    "kNoMapper  = 0": [
+     67
+    ],
+    "kUnknown   = 1": [
+     68
+    ],
+    "kHasMapper = 2": [
+     69
+    ],
+    "kWaitMask  = 3": [
+     70
+    ],
+    "static IOMapper *gSystem;": [
+     93
+    ],
+    "if ((uintptr_t) gSystem & kWaitMask)": [
+     98
+    ]
+   },
+   "fact_relied_on": "gSystem sentinels 0/1/2 and wait mask 3; any other value is a live mapper pointer. checkForSystemMapper waits while wait bits are set, so the probe never calls it.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "ref": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "iokit/Kernel/IOMapper.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOMapper.cpp",
+   "bytes": 9454,
+   "sha256": "de81e9e4874a973888cedb64a3fde9abaa0b443c546d89df931e987b13179a3c",
+   "git_blob": "ce9bfe840f199a890512bbb690d8acaecc10a721",
+   "git_blob_verified": true,
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@ or APSL text)",
+   "anchors_line_numbers": {
+    "IOMapper * IOMapper::gSystem = (IOMapper *) IOMapper::kUnknown;": [
+     64
+    ],
+    "IOMapper::gSystem = this;": [
+     120
+    ],
+    "IOMapper::setMapperRequired(bool hasMapper)": [
+     144
+    ],
+    "IOMapper::gSystem = (IOMapper *) kHasMapper;": [
+     147
+    ],
+    "IOMapper::gSystem = (IOMapper *) kNoMapper;": [
+     150
+    ],
+    "while ((uintptr_t) IOMapper::gSystem & kWaitMask)": [
+     160
+    ],
+    "obj = device->copyProperty(\"iommu-parent\");": [
+     181
+    ]
+   },
+   "fact_relied_on": "Boot value Unknown; HasMapper/NoMapper from the platform; a started system mapper publishes itself; waitForSystemMapper sleeps without timeout; copyMapperForDevice reads iommu-parent and may wait for matching, so it is never called.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "ref": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "iokit/Kernel/IOPlatformExpert.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOPlatformExpert.cpp",
+   "bytes": 58335,
+   "sha256": "97958e2d9e455dd525cd21ee68a919aed13d2a475e6154ba68d32a91796fe787",
+   "git_blob": "d0149a6e8aa215d697ab2658e34b28311204f10f",
+   "git_blob_verified": true,
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@ or APSL text)",
+   "anchors_line_numbers": {
+    "IOMapper::setMapperRequired(NULL != getProperty(kIOPlatformMapperPresentKey));": [
+     157
+    ]
+   },
+   "fact_relied_on": "Platform expert decides HasMapper versus NoMapper from kIOPlatformMapperPresentKey.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "ref": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "config/IOKit.exports",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/IOKit.exports",
+   "bytes": 80064,
+   "sha256": "583729fdb8f58992e356ca19d5b5085abc07c23b57be99b137262c01ee3eae5e",
+   "git_blob": "f70f20f1108cf17b6d107d9829f1a331118f6179",
+   "git_blob_verified": true,
+   "license_header_evidence": "Apple build configuration (no license header)",
+   "anchors_line_numbers": {
+    "__ZN8IOMapper7gSystemE": [
+     1403
+    ],
+    "__ZNK9IOService6isOpenEPKS_": [
+     1784
+    ],
+    "__ZNK9IOService17getClientIteratorEv": [
+     1779
+    ],
+    "__ZN9IOService12getBusyStateEv": [
+     1444
+    ],
+    "__ZN15IORegistryEntry18getRegistryEntryIDEv": [
+     726
+    ],
+    "_IOLog": [
+     42,
+     43
+    ]
+   },
+   "fact_relied_on": "Declared com.apple.kpi.iokit exports used by the native import audit.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "ref": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "config/IOKit.x86_64.exports",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/IOKit.x86_64.exports",
+   "bytes": 13354,
+   "sha256": "2d970900f4eafd2478f825ce7220ad11a8090a46b06af75ab0e3ca695ed0fbbe",
+   "git_blob": "c7a42640d058fa5e598b57ac2db1cc57d6c8d03d",
+   "git_blob_verified": true,
+   "license_header_evidence": "Apple build configuration (no license header)",
+   "anchors_line_numbers": {
+    "__ZN9IOService15registerServiceEj": [
+     237
+    ]
+   },
+   "fact_relied_on": "x86_64-only IOKit KPI exports for the audit.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "ref": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "config/Libkern.exports",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/Libkern.exports",
+   "bytes": 25049,
+   "sha256": "4a30e36e16c965d7ddfc761cd47e6d54f96ae8d0a78bb7f7014683243cd82386",
+   "git_blob": "24b4f2039f75b0e638b7e09cf1f029686ced5367",
+   "git_blob_verified": true,
+   "license_header_evidence": "Apple build configuration (no license header)",
+   "anchors_line_numbers": {
+    "_version_major": [
+     854
+    ],
+    "__ZNK15OSMetaClassBase8metaCastEPKc": [
+     533
+    ],
+    "_kOSBooleanTrue": [
+     727
+    ],
+    "_memcpy": [
+     669,
+     777
+    ]
+   },
+   "fact_relied_on": "Declared com.apple.kpi.libkern exports used by the native import audit.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "ref": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "config/Libkern.x86_64.exports",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/config/Libkern.x86_64.exports",
+   "bytes": 296,
+   "sha256": "d7a66f639d0aaee9a5e69f5da2c62aff3d36b5760c674261ad5993e3c4fb3e57",
+   "git_blob": "95b57f43be2cc334b7e37a7e62de6206c56e8d60",
+   "git_blob_verified": true,
+   "license_header_evidence": "Apple build configuration (no license header)",
+   "anchors_line_numbers": {
+    "_": [
+     1,
+     2,
+     3,
+     4
+    ]
+   },
+   "fact_relied_on": "x86_64-only libkern KPI exports for the audit.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/IOPCIFamily",
+   "ref": "IOPCIFamily-681.140.3",
+   "path": "AppleVTD.cpp",
+   "url": "https://github.com/apple-oss-distributions/IOPCIFamily/blob/IOPCIFamily-681.140.3/AppleVTD.cpp",
+   "bytes": 77071,
+   "sha256": "8ba954e0670557968d889b29bb66ce67c5d62376beac90bf7dd9a739bb8f8bf0",
+   "git_blob": "44a182f4d4d11172671e8fb464098beab0db82ae",
+   "git_blob_verified": true,
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@ or APSL text)",
+   "anchors_line_numbers": {
+    "kIOPCIClassGraphics == (pciDevice->savedConfig[kIOPCIConfigRevisionID >> 2] >> 24)": [
+     728
+    ],
+    "device->setProperty(kIOMemoryDescriptorOptionsKey, kIOMemoryMapperNone, 32);": [
+     733
+    ],
+    "mapper = (typeof(mapper)) originator->copyProperty(\"iommu-parent\");": [
+     740
+    ]
+   },
+   "fact_relied_on": "With AppleVTD active, bus-0 Intel graphics gets IOMemoryDescriptorOptions = 32-bit OSNumber kIOMemoryMapperNone unless IG mapping is on; otherwise a device mapper may be published as iommu-parent. The probe reports, never synthesizes, either property.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/IOPCIFamily",
+   "ref": "IOPCIFamily-681.140.3",
+   "path": "IOKit/pci/IOPCIPrivate.h",
+   "url": "https://github.com/apple-oss-distributions/IOPCIFamily/blob/IOPCIFamily-681.140.3/IOKit/pci/IOPCIPrivate.h",
+   "bytes": 24500,
+   "sha256": "1a247ecaa918ea5b288f70f9b3e1265970bbb7c69bd74766ac5da43534ff9201",
+   "git_blob": "06a5355d7c8f44615cf82bdaf8048022b8188480",
+   "git_blob_verified": true,
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@ or APSL text)",
+   "anchors_line_numbers": {
+    "#define kIOMemoryDescriptorOptionsKey": [
+     445
+    ]
+   },
+   "fact_relied_on": "Exact property key string IOMemoryDescriptorOptions.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/IOPCIFamily",
+   "ref": "IOPCIFamily-681.140.3",
+   "path": "IOPCIDevice.cpp",
+   "url": "https://github.com/apple-oss-distributions/IOPCIFamily/blob/IOPCIFamily-681.140.3/IOPCIDevice.cpp",
+   "bytes": 113919,
+   "sha256": "4277be6b7300dd9759f7431a63815a0227afbc7cd880819678344149183b318d",
+   "git_blob": "bb1987ae12be47628283f693374fbadd3bdc676f",
+   "git_blob_verified": true,
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@ or APSL text)",
+   "anchors_line_numbers": {
+    "bool IOPCIDevice::configAccess(bool write)": [
+     1090
+    ],
+    "UInt32 IOPCIDevice::extendedConfigRead32( IOByteCount offset )": [
+     1149
+    ],
+    "UInt16 IOPCIDevice::extendedConfigRead16( IOByteCount offset )": [
+     1168
+    ],
+    "UInt8 IOPCIDevice::getBusNumber( void )": [
+     1258
+    ],
+    "UInt8 IOPCIDevice::getFunctionNumber( void )": [
+     1268
+    ]
+   },
+   "fact_relied_on": "Public config reads refuse with all-ones when the nub is inactive, in reset or protected; BDF accessors return the nub address without config access.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "apple-oss-distributions/IOPCIFamily",
+   "ref": "IOPCIFamily-681.140.3",
+   "path": "IOPCIBridge.cpp",
+   "url": "https://github.com/apple-oss-distributions/IOPCIFamily/blob/IOPCIFamily-681.140.3/IOPCIBridge.cpp",
+   "bytes": 236993,
+   "sha256": "9e9041feb69bd3d4f2edb97663d74df5a9486f2ba4e2ba8f94370781a4369667",
+   "git_blob": "8fe9b03b0871a03eda39a8e7bbf48e6b7131af9d",
+   "git_blob_verified": true,
+   "license_header_evidence": "APSL-2.0 header (@APPLE_OSREFERENCE_LICENSE_HEADER_START@ or APSL text)",
+   "anchors_line_numbers": {
+    "bool IOPCIBridge::checkProperties( IOPCIDevice * entry )": [
+     2741
+    ],
+    "bool IOPCIBridge::matchKeys( IOPCIDevice * nub, const char * keys,": [
+     4052
+    ],
+    "bool IOPCIBridge::pciMatchNub( IOPCIDevice * nub,": [
+     4084
+    ]
+   },
+   "fact_relied_on": "Identity properties are 4-byte OSData words that can override saved config; personality keys are ANDed and matched with value&mask against saved config words (class default mask 0xffffff00).",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "torvalds/linux",
+   "ref": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "path": "include/uapi/linux/pci_regs.h",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/uapi/linux/pci_regs.h",
+   "bytes": 75382,
+   "sha256": "51d2a1344da2a56e913e9d69b3b5d90eaaf4fb0bf96e672a5674ea819182c69b",
+   "git_blob": "facaa324bd86a73832d589c913a6d3c354ef9854",
+   "git_blob_verified": true,
+   "license_header_evidence": "SPDX GPL-2.0 WITH Linux-syscall-note",
+   "anchors_line_numbers": {
+    "#define PCI_HEADER_TYPE\t\t0x0e": [
+     78
+    ],
+    "#define  PCI_STATUS_CAP_LIST": [
+     56
+    ],
+    "#define PCI_CAPABILITY_LIST": [
+     122
+    ],
+    "#define  PCI_CAP_ID_PM": [
+     219
+    ],
+    "#define PCI_PM_PMC": [
+     246
+    ],
+    "#define PCI_PM_CTRL\t\t4": [
+     262
+    ],
+    "#define  PCI_PM_CTRL_STATE_MASK": [
+     263
+    ],
+    "#define  PCI_PM_CTRL_NO_SOFT_RESET": [
+     264
+    ],
+    "#define  PCI_PM_CTRL_PME_ENABLE": [
+     265
+    ],
+    "#define  PCI_PM_CTRL_PME_STATUS": [
+     268
+    ]
+   },
+   "fact_relied_on": "Register offsets and bit values (standard PCI facts) used as independently written constants.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  },
+  {
+   "repository": "torvalds/linux",
+   "ref": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "path": "drivers/pci/pci.h",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/pci/pci.h",
+   "bytes": 48300,
+   "sha256": "c5c284fea27f9b047c16c51fb11bb4f9f60e1c71bf7763e72cdc770983ee09da",
+   "git_blob": "ba3c3fddddc238dda3169ee7abf740ae98083551",
+   "git_blob_verified": true,
+   "license_header_evidence": "SPDX GPL-2.0",
+   "anchors_line_numbers": {
+    "#define PCI_FIND_CAP_TTL\t48": [
+     19
+    ],
+    "#define PCI_FIND_NEXT_CAP(read_cfg, start, cap, prev_ptr, args...)": [
+     139
+    ]
+   },
+   "fact_relied_on": "Capability walk bound of 48 entries, stop below the 64-byte header, align down to 4, stop at ID 0xff. Mellow's walk is original code and additionally rejects loops and a PM structure past 0xf8.",
+   "import_scope": "facts/semantics only; no source text copied into Mellow"
+  }
+ ],
+ "vtable_padding_imports": "Any IOService subclass vtable references _RESERVED<Class><n> padding slots of OSMetaClassBase/OSObject/IORegistryEntry/IOService. They are NOT listed in pinned XNU config/{IOKit,Libkern}{,.x86_64}.exports nor in config/Unused.exports (checked, sha256 d6ff66c8fc938a7c239077bb14db5cf2de3eb0faa56edf9558768efaed83f348). Their resolution by kext vtable patching against the target kernel collection is UNVERIFIED here and must be confirmed by root's kmutil/KC link on the target."
+}

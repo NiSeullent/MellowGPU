@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91448441B26EE1F72070EDCB /* GlkPassiveProbeIOKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C737E6D325E6FB840CA229 /* GlkPassiveProbeIOKit.cpp */; };
+		D843CF4856A1AD8FBE59593C /* OpRegionSnapshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DA30BB9FC1354773B48C08F /* OpRegionSnapshot.cpp */; };
+		690965ACD59C88F59D3B7A56 /* GlkOpRegionIOKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03D597D3E7D306748E6BBDCD /* GlkOpRegionIOKit.cpp */; };
+		6650B4140DBD9EA3B8FA4623 /* InterruptDecode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE116445F05C3D49BF096795 /* InterruptDecode.cpp */; };
+		904216D80F991BD8499110F9 /* GlkInterruptIOKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEC542949C89F92D01F89A6B /* GlkInterruptIOKit.cpp */; };
+		3AFDC9D19E7AA1520997846C /* GgttPublication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A38CFACFFB42314BEF76882 /* GgttPublication.cpp */; };
+		187E72DB75E24404A80985E4 /* GlkGgttIOKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14989AE4BC48729FDB4CA056 /* GlkGgttIOKit.cpp */; };
+		5C50404808976997A42BB054 /* BcsExecution.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A42931FC8C8EBD2E2944A82 /* BcsExecution.cpp */; };
+		F72E333A5EAC7F437FF19C41 /* GlkBcsIOKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81A7378553B785D978772C83 /* GlkBcsIOKit.cpp */; };
+		D122F4E6A57DB5971E9A5100 /* GlkPhysicalOwnerIOKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 085B10E778A49FB5D09A2CDF /* GlkPhysicalOwnerIOKit.cpp */; };
+		483B8146BB1B1292588839B2 /* RenderWorkarounds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05F7662A52C53933C222DF36 /* RenderWorkarounds.cpp */; };
+		5217546B2285E97D65F1E7CC /* GlkTopologyIOKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08071C33D2BE003DEAD416F4 /* GlkTopologyIOKit.cpp */; };
+		94E697BED6328F7DC31A205F /* VbtParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2092781302F6643A742EBCD6 /* VbtParser.cpp */; };
+		86EB73DB59227862FB58F338 /* GlkForcewakeIOKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470A926DE4AB6CDA539C2422 /* GlkForcewakeIOKit.cpp */; };
+		18274ED984E5E44306035AD5 /* Forcewake.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA22AEBEA515550200609649 /* Forcewake.cpp */; };
+		0814E6EE9E7BBE041EA47ECD /* Gen9CommandEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C2A5AF763F565314C28AE53E /* Gen9CommandEncoding.cpp */; };
+		8FC0D48DCA69D947ED73705A /* PageTableEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA1BD79346DAF99BE75C43D0 /* PageTableEncoding.cpp */; };
+		AA6E013FA9E395A4D1D7CD12 /* LrcImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1C429EAAF48C1AFF8C4DE11 /* LrcImage.cpp */; };
+		37E4A76DD74260C80BF87E33 /* PanelPower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5650F9E4B308DE476BCB7BA4 /* PanelPower.cpp */; };
+		0C180E0674D6573835E269E1 /* GlkDmaMemoryIOKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C1C0767848157CE4B5543 /* GlkDmaMemoryIOKit.cpp */; };
 		D1A625064D414700000000C3 /* MellowGPUDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1A625064D414700000000C1 /* MellowGPUDevice.cpp */; };
 		1EDD20260930C00000000001 /* FirmwareImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EDD20260930C00000000002 /* FirmwareImage.cpp */; };
 		1EDD20260930B00000000001 /* XeGuCRegionOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EDD20260930B00000000002 /* XeGuCRegionOwner.cpp */; };
@@ -76,6 +96,31 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D9C737E6D325E6FB840CA229 /* GlkPassiveProbeIOKit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GlkPassiveProbeIOKit.cpp; path = Mellow/GlkPassiveProbeIOKit.cpp; sourceTree = SOURCE_ROOT; };
+		4DA30BB9FC1354773B48C08F /* OpRegionSnapshot.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OpRegionSnapshot.cpp; path = Drivers/NativeGlk/OpRegionSnapshot.cpp; sourceTree = SOURCE_ROOT; };
+		03D597D3E7D306748E6BBDCD /* GlkOpRegionIOKit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GlkOpRegionIOKit.cpp; path = Mellow/GlkOpRegionIOKit.cpp; sourceTree = SOURCE_ROOT; };
+		AE116445F05C3D49BF096795 /* InterruptDecode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = InterruptDecode.cpp; path = Drivers/NativeGlk/InterruptDecode.cpp; sourceTree = SOURCE_ROOT; };
+		DEC542949C89F92D01F89A6B /* GlkInterruptIOKit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GlkInterruptIOKit.cpp; path = Mellow/GlkInterruptIOKit.cpp; sourceTree = SOURCE_ROOT; };
+		2A38CFACFFB42314BEF76882 /* GgttPublication.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GgttPublication.cpp; path = Drivers/NativeGlk/GgttPublication.cpp; sourceTree = SOURCE_ROOT; };
+		14989AE4BC48729FDB4CA056 /* GlkGgttIOKit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GlkGgttIOKit.cpp; path = Mellow/GlkGgttIOKit.cpp; sourceTree = SOURCE_ROOT; };
+		1A42931FC8C8EBD2E2944A82 /* BcsExecution.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BcsExecution.cpp; path = Drivers/NativeGlk/BcsExecution.cpp; sourceTree = SOURCE_ROOT; };
+		81A7378553B785D978772C83 /* GlkBcsIOKit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GlkBcsIOKit.cpp; path = Mellow/GlkBcsIOKit.cpp; sourceTree = SOURCE_ROOT; };
+		085B10E778A49FB5D09A2CDF /* GlkPhysicalOwnerIOKit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GlkPhysicalOwnerIOKit.cpp; path = Mellow/GlkPhysicalOwnerIOKit.cpp; sourceTree = SOURCE_ROOT; };
+		05F7662A52C53933C222DF36 /* RenderWorkarounds.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = RenderWorkarounds.cpp; path = Drivers/NativeGlk/RenderWorkarounds.cpp; sourceTree = SOURCE_ROOT; };
+		08071C33D2BE003DEAD416F4 /* GlkTopologyIOKit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GlkTopologyIOKit.cpp; path = Mellow/GlkTopologyIOKit.cpp; sourceTree = SOURCE_ROOT; };
+		2092781302F6643A742EBCD6 /* VbtParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = VbtParser.cpp; path = Drivers/NativeGlk/VbtParser.cpp; sourceTree = SOURCE_ROOT; };
+		470A926DE4AB6CDA539C2422 /* GlkForcewakeIOKit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GlkForcewakeIOKit.cpp; path = Mellow/GlkForcewakeIOKit.cpp; sourceTree = SOURCE_ROOT; };
+		BA22AEBEA515550200609649 /* Forcewake.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Forcewake.cpp; path = Drivers/NativeGlk/Forcewake.cpp; sourceTree = SOURCE_ROOT; };
+		C2A5AF763F565314C28AE53E /* Gen9CommandEncoding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Gen9CommandEncoding.cpp; path = Drivers/NativeGlk/Gen9CommandEncoding.cpp; sourceTree = SOURCE_ROOT; };
+		EA1BD79346DAF99BE75C43D0 /* PageTableEncoding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PageTableEncoding.cpp; path = Drivers/NativeGlk/PageTableEncoding.cpp; sourceTree = SOURCE_ROOT; };
+		B1C429EAAF48C1AFF8C4DE11 /* LrcImage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = LrcImage.cpp; path = Drivers/NativeGlk/LrcImage.cpp; sourceTree = SOURCE_ROOT; };
+		5650F9E4B308DE476BCB7BA4 /* PanelPower.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PanelPower.cpp; path = Drivers/NativeGlk/PanelPower.cpp; sourceTree = SOURCE_ROOT; };
+		7E5C1C0767848157CE4B5543 /* GlkDmaMemoryIOKit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GlkDmaMemoryIOKit.cpp; path = Mellow/GlkDmaMemoryIOKit.cpp; sourceTree = SOURCE_ROOT; };
+		184C909D4B2B3EDAAE01089B /* CommandEncoding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = CommandEncoding.hpp; path = Drivers/NativeGlk/CommandEncoding.hpp; sourceTree = SOURCE_ROOT; };
+		911F06B3D65B25D7D7EA2637 /* PageTableEncoding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PageTableEncoding.hpp; path = Drivers/NativeGlk/PageTableEncoding.hpp; sourceTree = SOURCE_ROOT; };
+		FB20BBD2873A5CB736D568AA /* LrcImage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = LrcImage.hpp; path = Drivers/NativeGlk/LrcImage.hpp; sourceTree = SOURCE_ROOT; };
+		DF89647D74F4C048DA7E6C13 /* PanelPower.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = PanelPower.hpp; path = Drivers/NativeGlk/PanelPower.hpp; sourceTree = SOURCE_ROOT; };
+		90A4800E3B353E52F8119CB6 /* GlkDmaMemoryIOKit.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = GlkDmaMemoryIOKit.hpp; path = Mellow/GlkDmaMemoryIOKit.hpp; sourceTree = SOURCE_ROOT; };
 		D1A625064D414700000000C1 /* MellowGPUDevice.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MellowGPUDevice.cpp; sourceTree = "<group>"; };
 		D1A625064D414700000000C2 /* MellowGPUDevice.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MellowGPUDevice.hpp; sourceTree = "<group>"; };
 		1EDD20260930C00000000002 /* FirmwareImage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FirmwareImage.cpp; path = Drivers/PortedNvidiaGsp/FirmwareImage.cpp; sourceTree = SOURCE_ROOT; };
@@ -189,6 +234,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BAB4D611227716FD31597637 /* NativeGlkSources */ = {
+			isa = PBXGroup;
+			children = (
+				BA22AEBEA515550200609649 /* Forcewake.cpp */,
+				470A926DE4AB6CDA539C2422 /* GlkForcewakeIOKit.cpp */,
+				D9C737E6D325E6FB840CA229 /* GlkPassiveProbeIOKit.cpp */,
+				4DA30BB9FC1354773B48C08F /* OpRegionSnapshot.cpp */,
+				03D597D3E7D306748E6BBDCD /* GlkOpRegionIOKit.cpp */,
+				AE116445F05C3D49BF096795 /* InterruptDecode.cpp */,
+				DEC542949C89F92D01F89A6B /* GlkInterruptIOKit.cpp */,
+				2A38CFACFFB42314BEF76882 /* GgttPublication.cpp */,
+				14989AE4BC48729FDB4CA056 /* GlkGgttIOKit.cpp */,
+				1A42931FC8C8EBD2E2944A82 /* BcsExecution.cpp */,
+				81A7378553B785D978772C83 /* GlkBcsIOKit.cpp */,
+				085B10E778A49FB5D09A2CDF /* GlkPhysicalOwnerIOKit.cpp */,
+				05F7662A52C53933C222DF36 /* RenderWorkarounds.cpp */,
+				08071C33D2BE003DEAD416F4 /* GlkTopologyIOKit.cpp */,
+				2092781302F6643A742EBCD6 /* VbtParser.cpp */,
+				C2A5AF763F565314C28AE53E /* Gen9CommandEncoding.cpp */,
+				EA1BD79346DAF99BE75C43D0 /* PageTableEncoding.cpp */,
+				B1C429EAAF48C1AFF8C4DE11 /* LrcImage.cpp */,
+				5650F9E4B308DE476BCB7BA4 /* PanelPower.cpp */,
+				7E5C1C0767848157CE4B5543 /* GlkDmaMemoryIOKit.cpp */,
+				184C909D4B2B3EDAAE01089B /* CommandEncoding.hpp */,
+				911F06B3D65B25D7D7EA2637 /* PageTableEncoding.hpp */,
+				FB20BBD2873A5CB736D568AA /* LrcImage.hpp */,
+				DF89647D74F4C048DA7E6C13 /* PanelPower.hpp */,
+				90A4800E3B353E52F8119CB6 /* GlkDmaMemoryIOKit.hpp */,
+			);
+			name = NativeGlkSources;
+			sourceTree = "<group>";
+		};
 		BFF974EEDBE2F7A8EFA151B3 /* NativeGpuSources */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,6 +296,7 @@
 			children = (
 				1EDD20260930000000000004 /* PortedNvidia */,
 				BFF974EEDBE2F7A8EFA151B3 /* NativeGpuSources */,
+				BAB4D611227716FD31597637 /* NativeGlkSources */,
 				1C748C291C21952C0024EED2 /* Mellow */,
 				CE405EC81E49DD7B00AA0B3D /* SDK */,
 				1C748C281C21952C0024EED2 /* Products */,
@@ -476,6 +554,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18274ED984E5E44306035AD5 /* Forcewake.cpp in Sources */,
+				86EB73DB59227862FB58F338 /* GlkForcewakeIOKit.cpp in Sources */,
+				91448441B26EE1F72070EDCB /* GlkPassiveProbeIOKit.cpp in Sources */,
+				D843CF4856A1AD8FBE59593C /* OpRegionSnapshot.cpp in Sources */,
+				690965ACD59C88F59D3B7A56 /* GlkOpRegionIOKit.cpp in Sources */,
+				6650B4140DBD9EA3B8FA4623 /* InterruptDecode.cpp in Sources */,
+				904216D80F991BD8499110F9 /* GlkInterruptIOKit.cpp in Sources */,
+				3AFDC9D19E7AA1520997846C /* GgttPublication.cpp in Sources */,
+				187E72DB75E24404A80985E4 /* GlkGgttIOKit.cpp in Sources */,
+				5C50404808976997A42BB054 /* BcsExecution.cpp in Sources */,
+				F72E333A5EAC7F437FF19C41 /* GlkBcsIOKit.cpp in Sources */,
+				D122F4E6A57DB5971E9A5100 /* GlkPhysicalOwnerIOKit.cpp in Sources */,
+				483B8146BB1B1292588839B2 /* RenderWorkarounds.cpp in Sources */,
+				5217546B2285E97D65F1E7CC /* GlkTopologyIOKit.cpp in Sources */,
+				94E697BED6328F7DC31A205F /* VbtParser.cpp in Sources */,
+				0814E6EE9E7BBE041EA47ECD /* Gen9CommandEncoding.cpp in Sources */,
+				8FC0D48DCA69D947ED73705A /* PageTableEncoding.cpp in Sources */,
+				AA6E013FA9E395A4D1D7CD12 /* LrcImage.cpp in Sources */,
+				37E4A76DD74260C80BF87E33 /* PanelPower.cpp in Sources */,
+				0C180E0674D6573835E269E1 /* GlkDmaMemoryIOKit.cpp in Sources */,
 				1EDD20260930000000000001 /* CommandEncoding.cpp in Sources */,
 				1EDD20260930B00000000001 /* XeGuCRegionOwner.cpp in Sources */,
 				28D26C4F9D28BAEF8DF7A6E0 /* MemoryOwner.cpp in Sources */,

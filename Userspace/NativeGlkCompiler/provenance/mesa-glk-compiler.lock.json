@@ -1,0 +1,149 @@
+{
+  "schema": "mellow-native-glk-compiler-lock/1",
+  "status": "experimental-provenance: host source compile only; not GPU, RCS, upload or Metal qualification; qualified_profiles=[]",
+  "mesa": {
+    "remote": "https://gitlab.freedesktop.org/mesa/mesa.git",
+    "commit": "f5cb8ee032adabef599ae892ec4e42d796b84da9",
+    "tree": "ce032e8ca81cc2ee6e56a73c2e6707cea78dce32",
+    "parent": "fe554882e4f06cdd2579a77b37b04de605111a28",
+    "version_file": "26.3.0-devel",
+    "commit_title": "gallivm: fix clamping of 32-bit unsigned pure integer image writes",
+    "committer_date": "2026-09-29T08:54:40+02:00",
+    "fetch": "git fetch --depth 1 origin f5cb8ee032adabef599ae892ec4e42d796b84da9 (authoritative identity = commit + tree object ids)",
+    "archive": {
+      "url": "https://gitlab.freedesktop.org/mesa/mesa/-/archive/f5cb8ee032adabef599ae892ec4e42d796b84da9/mesa-f5cb8ee032adabef599ae892ec4e42d796b84da9.tar.gz",
+      "file": "mesa-f5cb8ee032adabef599ae892ec4e42d796b84da9.tar.gz",
+      "sha256": "4bc5830a77c420e6fcd1d13d8edf12c8b17c95fa5c689ed27370b19c47cbae1d",
+      "size_bytes": 134219037,
+      "note": "GitLab renders archives on demand; recorded as observed 2026-10-16, git tree id remains authoritative"
+    },
+    "license_files": [
+      "docs/license.rst",
+      "licenses/MIT",
+      "licenses/BSL-1.0",
+      "licenses/Apache-2.0"
+    ]
+  },
+  "glk_support_evidence": {
+    "pci_id": "8086:3185",
+    "pci_ids_line": "include/pci_ids/iris_pci_ids.h: CHIPSET(0x3185, glk_2x6, \"GLK 2\", \"Intel(R) UHD Graphics 600\")",
+    "device_info": "src/intel/dev/intel_device_info.c: intel_device_info_glk(_2x6) .platform = INTEL_PLATFORM_GLK, GFX9 LP",
+    "backend": "src/intel/compiler/brw (gfx9+, brw_compile -> brw_compile_cs); ELK (gfx<=8) disabled via -Dintel-elk=false",
+    "not_xe_guc": "GLK is i915-era Gen9 LP with execlists; no Xe KMD/GuC submission is involved in offline compilation"
+  },
+  "patches": [
+    {
+      "path": "patches/0001-meson-intel-offline-compiler-option.patch",
+      "sha256": "9a5cd32447b003535d9e23e55aca545475790e38cfdf3f6d40ae9695b746789f",
+      "files": [
+        "meson.build",
+        "meson.options"
+      ],
+      "purpose": "Add -Dintel-offline-compiler so src/intel (dev, isl, genxml, common, compiler) is configured on Darwin without enabling a driver or the Linux-only intel tools; compiler sources are untouched"
+    },
+    {
+      "path": "patches/0002-nir-full-library-for-intel-offline-compiler.patch",
+      "sha256": "c314b3ecae3686aef80fb6211f7c842b5c480cee3a3caad0852d3d666fcb9c6b",
+      "files": [
+        "src/compiler/nir/meson.build"
+      ],
+      "purpose": "Without a gfx/compute driver Mesa selects with_nir_headers_only and builds libnir from nir_stub.c; the offline compiler needs the real upstream NIR library, so treat -Dintel-offline-compiler like a compute user"
+    }
+  ],
+  "python": {
+    "interpreter": "python3.13",
+    "wheels": [
+      {
+        "file": "mako-1.3.10-py3-none-any.whl",
+        "requirement": "mako==1.3.10",
+        "sha256": "baef24a52fc4fc514a0887ac600f9f1cff3d82c61d4d700a1fa84d597b88db59"
+      },
+      {
+        "file": "MarkupSafe-3.0.2-cp313-cp313-macosx_11_0_arm64.whl",
+        "requirement": "markupsafe==3.0.2",
+        "sha256": "f8b3d067f2e40fe93e1ccdd6b2e1d16c43140e76f02fb1319a05cf2b79d99430"
+      },
+      {
+        "file": "PyYAML-6.0.2-cp313-cp313-macosx_11_0_arm64.whl",
+        "requirement": "pyyaml==6.0.2",
+        "sha256": "50187695423ffe49e2deacb8cd10510bc361faac997de9efef88badc3bb9e2d1"
+      },
+      {
+        "file": "packaging-25.0-py3-none-any.whl",
+        "requirement": "packaging==25.0",
+        "sha256": "29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484"
+      },
+      {
+        "file": "meson-1.8.2-py3-none-any.whl",
+        "requirement": "meson==1.8.2",
+        "sha256": "274b49dbe26e00c9a591442dd30f4ae9da8ce11ce53d0f4682cd10a45d50f6fd"
+      }
+    ]
+  },
+  "meson_options": {
+    "wrap_mode": "nofallback",
+    "buildtype": "debugoptimized",
+    "b_ndebug": "false",
+    "intel-offline-compiler": "true",
+    "intel-elk": "false",
+    "intel-rt": "disabled",
+    "platforms": "",
+    "gallium-drivers": "",
+    "vulkan-drivers": "",
+    "opengl": "false",
+    "gles1": "disabled",
+    "gles2": "disabled",
+    "glx": "disabled",
+    "egl": "disabled",
+    "gbm": "disabled",
+    "llvm": "disabled",
+    "zstd": "disabled",
+    "expat": "disabled",
+    "valgrind": "disabled",
+    "libunwind": "disabled",
+    "lmsensors": "disabled",
+    "build-tests": "false",
+    "tools": "",
+    "video-codecs": "",
+    "shader-cache": "disabled",
+    "spirv-tools": "disabled",
+    "microsoft-clc": "disabled",
+    "gallium-rusticl": "false",
+    "xmlconfig": "disabled",
+    "perfetto": "false",
+    "html-docs": "disabled",
+    "glvnd": "disabled"
+  },
+  "ninja_targets": [
+    "src/intel/compiler/brw/libintel_compiler.a",
+    "src/intel/compiler/libintel_compiler_nir.a",
+    "src/intel/compiler/gen/libintel_compiler_gen.a",
+    "src/intel/isl/libisl.a",
+    "src/intel/isl/libisl_per_hw_ver40.a",
+    "src/intel/isl/libisl_per_hw_ver50.a",
+    "src/intel/isl/libisl_per_hw_ver60.a",
+    "src/intel/isl/libisl_per_hw_ver70.a",
+    "src/intel/isl/libisl_per_hw_ver75.a",
+    "src/intel/isl/libisl_per_hw_ver80.a",
+    "src/intel/isl/libisl_per_hw_ver90.a",
+    "src/intel/isl/libisl_per_hw_ver110.a",
+    "src/intel/isl/libisl_per_hw_ver120.a",
+    "src/intel/isl/libisl_per_hw_ver125.a",
+    "src/intel/isl/libisl_per_hw_ver200.a",
+    "src/intel/isl/libisl_per_hw_ver300.a",
+    "src/intel/isl/libisl_per_hw_ver350.a",
+    "src/intel/isl/libisl_tiled_memcpy.a",
+    "src/intel/dev/libintel_dev.a",
+    "src/intel/common/libintel_common.a",
+    "src/intel/mda/libmda.a",
+    "src/compiler/nir/libnir.a",
+    "src/compiler/spirv/libvtn.a",
+    "src/compiler/libcompiler.a",
+    "src/util/libmesa_util.a",
+    "src/util/libmesa_util_simd.a",
+    "src/util/blake3/libblake3.a",
+    "src/util/libparson.a",
+    "src/c11/impl/libmesa_util_c11.a"
+  ],
+  "adapter_flags_from": "src/intel/compiler/brw/brw_nir.c"
+}

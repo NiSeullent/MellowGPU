@@ -1,0 +1,681 @@
+{
+  "schema": "mellowgpu.glk-pte-provenance/1",
+  "revision": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+  "upstream_files": [
+    {
+      "path": "LICENSES/preferred/MIT",
+      "bytes": 1372,
+      "sha256": "323c587d0ccf10e376f8bf9a7f31fb4ca6078105194b42e0b1e0ee2bc9bde71f",
+      "git_blob": "f33a68ceb3ea00a533d2331a091ec7f2580bb4df",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/LICENSES/preferred/MIT",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/LICENSES/preferred/MIT",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": false
+    },
+    {
+      "path": "arch/x86/include/asm/pgtable_types.h",
+      "bytes": 18311,
+      "sha256": "09fcec591482bcb850a603eb16e19913a47f171e444ed1996e0eed775a13cd48",
+      "git_blob": "b1a669e775f4cb6bc80e484586baab682e3f17e5",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/arch/x86/include/asm/pgtable_types.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/arch/x86/include/asm/pgtable_types.h",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": false
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gem/i915_gem_object_types.h",
+      "bytes": 26443,
+      "sha256": "7f0289b6ccc02d35f45f4efee16a25fa1ab328bff62bdf6eb42730a4930852d6",
+      "git_blob": "969f6ea2b855c7bb801ac86d9ddd8ff078d49aab",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gem/i915_gem_object_types.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gem/i915_gem_object_types.h",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": false
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "bytes": 28015,
+      "sha256": "cc5e5a6747415049e3dbcf3623ddb1fbcad6db53ac7e0975e98d61c21a6b8b3f",
+      "git_blob": "cfa09b250a1b6ff793f40adde1087e15b1195eb2",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "bytes": 44506,
+      "sha256": "1735034708a4d7eb4623a229e721271ea57b37e3475d6e01c787d01cbf5678ce",
+      "git_blob": "64ca5bbc53c686b6c083459216aa30516e39ed83",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gt.c",
+      "bytes": 26405,
+      "sha256": "4d1441c4a15bb07200e8f89d545395a2e6b02955ff982af4c186fd5e206ffead",
+      "git_blob": "5c7f862f7100a054ed60bd73f9429ec843fe03b1",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt.c",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "bytes": 65593,
+      "sha256": "ccc7fb4c51e94ce99dc2695f9351284e00dddef7fded90bf0be169c6539d77ac",
+      "git_blob": "3ba9b2206b79812c4bb6ec2f0be7f90cdc08c945",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gtt.c",
+      "bytes": 21284,
+      "sha256": "87269ff9bd39cb11c44f73bc76c1bdaf494781d277f4f0822d196409b626ecad",
+      "git_blob": "afbc5c76930892fbc988766ca4ea8e164bd6e978",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gtt.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gtt.c",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "bytes": 21522,
+      "sha256": "89bc7d84423b2af56ba463239691c984dee74540cdd1902375a89e02ed583a22",
+      "git_blob": "b54ee4f25af1024952210a42b46f400142ff0d46",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/gt/intel_ppgtt.c",
+      "bytes": 6843,
+      "sha256": "e8ec707c55c40db0c59fecf7cb96fc9500ad6bc245dc70e2167cc4bbf25e3919",
+      "git_blob": "72d8473a448b9807dbc5158ba59b8609df90827a",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ppgtt.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/gt/intel_ppgtt.c",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": false
+    },
+    {
+      "path": "drivers/gpu/drm/i915/i915_drv.h",
+      "bytes": 21927,
+      "sha256": "9474f2666449dc78bb97c4b22a7e14279c3182b49c90d4a73df5a9b4c6b71620",
+      "git_blob": "844ed79e72114eafc0d6834d9f724ddd92813684",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_drv.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_drv.h",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": false
+    },
+    {
+      "path": "drivers/gpu/drm/i915/i915_pci.c",
+      "bytes": 26723,
+      "sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1",
+      "git_blob": "2f03f95945f1b9a243a61db163576d0071d53e9c",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": true
+    },
+    {
+      "path": "drivers/gpu/drm/i915/intel_device_info.c",
+      "bytes": 13221,
+      "sha256": "7b56603515011916ebdff65bc9dbd4e88812e3e81e9f0d693d993d5c6ad34ff9",
+      "git_blob": "bbe3a24fe3d9b26c91eafc795efe888b8f03e054",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_device_info.c",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_device_info.c",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": false
+    },
+    {
+      "path": "drivers/gpu/drm/i915/intel_device_info.h",
+      "bytes": 6802,
+      "sha256": "b76b68bd932192226ce5585cd8de58acf67f586200ed78d75decbf65526a2a47",
+      "git_blob": "9387385cb418daef09d2dcbdb251087296e25bfb",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_device_info.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/intel_device_info.h",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": false
+    },
+    {
+      "path": "include/drm/intel/i915_drm.h",
+      "bytes": 3735,
+      "sha256": "a9767c413372bc1f834e929db13d46f211a0befbf1f7f49483fa0c77445684de",
+      "git_blob": "1fdaabed14702072d32dce90a8146444c41d72fe",
+      "primary_source_url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/i915_drm.h",
+      "raw_url": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/i915_drm.h",
+      "fresh_primary_raw_bytes_verified": true,
+      "matches_parent_independent_verified_cache": false
+    }
+  ],
+  "oracle_fragments": [
+    {
+      "symbol": "I915_GTT_PAGE_SIZE_4K",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 45,
+      "sha256": "cc164f8a30919919760d8c268a5e051b13e46d2d1b81ef7383e35d7a40a9eb9b"
+    },
+    {
+      "symbol": "I915_GTT_PAGE_SIZE_64K",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 46,
+      "sha256": "0fe45d6e5cef1b025004a1c5e86954343ac11742f4550e5848ee698cde0bfe2e"
+    },
+    {
+      "symbol": "I915_GTT_PAGE_SIZE_2M",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 47,
+      "sha256": "1b6a43c3091c47a3b49498fbd8592029418a045bce0e7710c0aa6731fda2bcf1"
+    },
+    {
+      "symbol": "I915_GTT_PAGE_SIZE",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 49,
+      "sha256": "b35e1eaabb4a0b5d321770dd87c19198c482730ada7197169fe7696263e29685"
+    },
+    {
+      "symbol": "I915_PDES",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 68,
+      "sha256": "06af10d04c1a8422cbcc55026e95b17db9621cbfb50fb2597826c9028cb5006a"
+    },
+    {
+      "symbol": "I915_PDE_MASK",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 69,
+      "sha256": "3fef167399a62941052111274ebacc993190772884b6ff4c892d61128c29817e"
+    },
+    {
+      "symbol": "MTL_PPGTT_PTE_PAT3",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 91,
+      "sha256": "1d01490d91fde99615a33b5227068945ab38f357648983a4b98dc25eb7bba8b7"
+    },
+    {
+      "symbol": "GEN12_PPGTT_PTE_LM",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 92,
+      "sha256": "41604b1fa6920b6be9d171a3632d3263948a3232ba9583eb5cde7afc729d795f"
+    },
+    {
+      "symbol": "GEN12_PPGTT_PTE_PAT2",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 93,
+      "sha256": "8f69a958ca60cec076281484033b94b513858319ec6bcd6d86c870c76e3aa56d"
+    },
+    {
+      "symbol": "GEN12_PPGTT_PTE_PAT1",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 94,
+      "sha256": "2037a9c797a7437b506ebc41176f19131e3c49b9a4e7cb91898bba1ebafc1a74"
+    },
+    {
+      "symbol": "GEN12_PPGTT_PTE_PAT0",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 95,
+      "sha256": "ca28100c14957c72a92714189646397c6fca0c7d5fdcfcb55d7fc940ce8d1344"
+    },
+    {
+      "symbol": "GEN12_GGTT_PTE_LM",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 97,
+      "sha256": "954235b2f041f7018d0ca6436ea8813a8b3136819a77d8f31618e2cd43fca289"
+    },
+    {
+      "symbol": "MTL_GGTT_PTE_PAT0",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 98,
+      "sha256": "0c9d5587543becf218e86070344e7e0e013d3ca3395aa757bd6c32ce584b8ed7"
+    },
+    {
+      "symbol": "MTL_GGTT_PTE_PAT1",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 99,
+      "sha256": "dccd2df273baf44352c36e4794c70945b5871047d20d7f9cafcc0e98f3358e25"
+    },
+    {
+      "symbol": "GEN12_GGTT_PTE_ADDR_MASK",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 100,
+      "sha256": "6f5c5ee17b093954ff104e3cce0db5c3e6cddb631f091ac39b622e560deb51d2"
+    },
+    {
+      "symbol": "PPAT_UNCACHED",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 135,
+      "sha256": "25a31636a42acb15080dd3c37fc978e00abd531e09041b9394a53ace1bfb687c"
+    },
+    {
+      "symbol": "PPAT_CACHED_PDE",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 136,
+      "sha256": "cee304cb59af4971cd6a009fb2a618885165b0d45c30ce08f917aee7c6e50a2f"
+    },
+    {
+      "symbol": "PPAT_CACHED",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 137,
+      "sha256": "a8e56021ec2cef9780eb650a123846755b767b762f14ad2e9212039896ab615b"
+    },
+    {
+      "symbol": "PPAT_DISPLAY_ELLC",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 138,
+      "sha256": "e696b7284e50e6c810a6aef7f2552461b78f4499c9df22f86d915035089638e7"
+    },
+    {
+      "symbol": "CHV_PPAT_SNOOP",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 140,
+      "sha256": "e33881c572fd26e17cf28bad9540255feaa01760ad30771c9ddcefaeeb907eb4"
+    },
+    {
+      "symbol": "GEN8_PPAT_AGE",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 141,
+      "sha256": "f5a690a382bfb45d04aca7ec147b139f2a98448a0415220f67bc1d938f5bbbf0"
+    },
+    {
+      "symbol": "GEN8_PPAT_LLCeLLC",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 142,
+      "sha256": "37ef0d842c8316a4b754e0c7ce942ad52e82d41f19aab535828d09dd9d3b94cc"
+    },
+    {
+      "symbol": "GEN8_PPAT_LLCELLC",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 143,
+      "sha256": "2b02c5a2b73f9360fd631df302845ce5e26efb16ec314412110d0ed561f44ea5"
+    },
+    {
+      "symbol": "GEN8_PPAT_LLC",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 144,
+      "sha256": "481527479d6f898b7c0e26e78c691e61743eeb2c974870ae57a0d6a52554d1af"
+    },
+    {
+      "symbol": "GEN8_PPAT_WB",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 145,
+      "sha256": "10c15db4c9b952541b7310ad35da99abeccaee82b78701baf48a716c8e9ff8c8"
+    },
+    {
+      "symbol": "GEN8_PPAT_WT",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 146,
+      "sha256": "4cc6ce1ad4c7b4956bd5c2a429aae688361af989c2fa9247d55401c7eb893d03"
+    },
+    {
+      "symbol": "GEN8_PPAT_WC",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 147,
+      "sha256": "c12ba521ea73820cab7d1d714f80924e3f098169127845082491a5b4a38879c8"
+    },
+    {
+      "symbol": "GEN8_PPAT_UC",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 148,
+      "sha256": "8ebc8dbdaae7f637d17ac0b8fb22e64ec4a979c1bebce3780d0e347d446acfc9"
+    },
+    {
+      "symbol": "GEN8_PPAT_ELLC_OVERRIDE",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 149,
+      "sha256": "d6bbc4975cc6eccc8c3c0578cbd0867dbfdb64ce4f51ec31a37e8aff61f0866d"
+    },
+    {
+      "symbol": "GEN8_PPAT",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 150,
+      "sha256": "61722e7e2889de75df98d833b9a0f00b3e1d7d2898d695fd4a632ab076d08984"
+    },
+    {
+      "symbol": "GEN8_PAGE_PRESENT",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 152,
+      "sha256": "9617bb7ef28c3f49e9f09b9dfd6501cf8d7ee1e9f82a7d4699adb523859b5957"
+    },
+    {
+      "symbol": "GEN8_PAGE_RW",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 153,
+      "sha256": "511b0ffc8298556d84eca31cc8261b8788f4759d4c07e3c29d4e1cdf2d6e665e"
+    },
+    {
+      "symbol": "GEN8_PDE_IPS_64K",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 155,
+      "sha256": "95624359586bc494d4b8fa51601f9de043ba0c0032b35b40bf4ae28341ec915c"
+    },
+    {
+      "symbol": "GEN8_PDE_PS_2M",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 156,
+      "sha256": "c8d9e9a9596f59a08cc3ef44e8eacfbcacac2394d8f5657d721eab9bd838466a"
+    },
+    {
+      "symbol": "PTE_READ_ONLY",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 316,
+      "sha256": "e3fde18deb8aaf9cdc32c44705c41017d04aa1a2d9fa6c74242f61f8b0fcc043"
+    },
+    {
+      "symbol": "PTE_LM",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "line": 317,
+      "sha256": "eee1a471d21be3a00342d5ce34e1fb04ea059b955ff04eec4cf9ff757f4ef5d3"
+    },
+    {
+      "symbol": "GEN8_PAGE_SIZE",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "line": 137,
+      "sha256": "b93c7a4bff189aa4f64023db582837890f18e452aa32e97dfcab9080e16d2141"
+    },
+    {
+      "symbol": "GEN8_PTE_SHIFT",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "line": 138,
+      "sha256": "250eaadc4d2c3eff043a9b083f34c9051a93922a1cc25dd332cf4faa5ca8c1d6"
+    },
+    {
+      "symbol": "GEN8_PDES",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "line": 139,
+      "sha256": "ad9083628b9e43453a8857dddaeb3cb4efa005ca6ff87ed1a1047b4f56ea0eaf"
+    },
+    {
+      "symbol": "gen8_pd_shift",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "line": 140,
+      "sha256": "9441ec53b79f09f1ad7f42306edf6e1003430e186e1e40d9e7ee8e03a9f1d4fa"
+    },
+    {
+      "symbol": "gen8_pd_index",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "line": 141,
+      "sha256": "fe7c43c59a34ac2deda092c027fd782595ac891e7d93d0a7899ee67d7bfa3a28"
+    },
+    {
+      "symbol": "__gen8_pte_shift",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "line": 142,
+      "sha256": "35f2c030256954ca990d0ad485b4905ebb84d348ffae852883c5bee833167681"
+    },
+    {
+      "symbol": "__gen8_pte_index",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "line": 143,
+      "sha256": "918d4bba890ca4599cdb891947cd3c56ebbe2fca5535cc24ec3861cc536da3e5"
+    },
+    {
+      "symbol": "GEN8_PRIVATE_PAT_LO",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "line": 337,
+      "sha256": "b7a5bdbddcd44a778d07627884a3ef476ae6308e6638f8ea45467beb2035fd27"
+    },
+    {
+      "symbol": "GEN8_PRIVATE_PAT_HI",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/gt/intel_gt_regs.h",
+      "line": 338,
+      "sha256": "ca56dd70666a9524d108e24b69f41a7b9a5d1415052e12b51fe85a01ebdf4b46"
+    },
+    {
+      "symbol": "BDW_GMCH_GGMS_SHIFT",
+      "kind": "define",
+      "file": "include/drm/intel/i915_drm.h",
+      "line": 52,
+      "sha256": "79a2a47973176e5e2f950ba47502d79d1a596ebf990e1e8c2b2067b33f5f0ce7"
+    },
+    {
+      "symbol": "BDW_GMCH_GGMS_MASK",
+      "kind": "define",
+      "file": "include/drm/intel/i915_drm.h",
+      "line": 53,
+      "sha256": "d7cf24fa5b4daea3c2acee25a5fd505aae32c83151796171061f7e0119a21950"
+    },
+    {
+      "symbol": "IS_GEN9_LP",
+      "kind": "define",
+      "file": "drivers/gpu/drm/i915/i915_drv.h",
+      "line": 547,
+      "sha256": "13f484c6ab142ceddbb4e8ca68f8e1048c828aca638f16be09ac84872f4036c9"
+    },
+    {
+      "symbol": "i915_pde_index",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "start_line": 559,
+      "end_line": 562,
+      "sha256": "32b6028822fc9556ef4b4297cf9cb0bd2120ddb662b8ccad155f4212b9f39d8e"
+    },
+    {
+      "symbol": "i915_vm_is_4lvl",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.h",
+      "start_line": 427,
+      "end_line": 431,
+      "sha256": "8f53daa2846f89130a85cfd272299f93b2e26a8aa867564cbb09bc772a407438"
+    },
+    {
+      "symbol": "gen8_pde_encode",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "start_line": 19,
+      "end_line": 30,
+      "sha256": "8b513079e3f35d36be4f9c621a59a70ba3c05b2917c6171e4c1940a962aa3102"
+    },
+    {
+      "symbol": "gen8_pte_encode",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "start_line": 32,
+      "end_line": 59,
+      "sha256": "595a7329e7647c717595a980df2b93c74c1392132566d90d8afb683a4d895ef0"
+    },
+    {
+      "symbol": "gen12_pte_encode",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/gen8_ppgtt.c",
+      "start_line": 61,
+      "end_line": 86,
+      "sha256": "1a17497fc3ea8771fec42f9507a22c16cb8a7d419c2459ab039c65527805d747"
+    },
+    {
+      "symbol": "needs_wc_ggtt_mapping",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "start_line": 202,
+      "end_line": 215,
+      "sha256": "658bd429e8dff42e750ec114ee4762f5d9ee88c8edf5784f9c83d5c436bee032"
+    },
+    {
+      "symbol": "mtl_ggtt_pte_encode",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "start_line": 261,
+      "end_line": 279,
+      "sha256": "3e0cb60c649371b1ffaff6d743c8d09edddee467bb2817eb6300081662f3f15e"
+    },
+    {
+      "symbol": "gen8_ggtt_pte_encode",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "start_line": 281,
+      "end_line": 291,
+      "sha256": "b194dc62be9f25af6c44b6ee83ddb30a3184d1c969c81d6b830654f25dce1c29"
+    },
+    {
+      "symbol": "gen8_ggtt_pte_decode",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "start_line": 293,
+      "end_line": 299,
+      "sha256": "829a2f76e9184dada93df78cc04b36619dd847f28f352d05b8617b9d91a41ff0"
+    },
+    {
+      "symbol": "gen8_get_total_gtt_size",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "start_line": 1153,
+      "end_line": 1167,
+      "sha256": "f2e7b4ceabbe20ca54d67353a54243260c0048e85b0afb479e4939f0e9831e59"
+    },
+    {
+      "symbol": "gen6_gttmmadr_size",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "start_line": 1180,
+      "end_line": 1188,
+      "sha256": "3e9632f0d0f7d90fcb142990909ee4c33a9608bade32df0a8d46b76a66326f3c"
+    },
+    {
+      "symbol": "gen6_gttadr_offset",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_ggtt.c",
+      "start_line": 1190,
+      "end_line": 1193,
+      "sha256": "35edb6705c5edbbf71747622dc70decbad753e67e75c05a499aacd9b69d77350"
+    },
+    {
+      "symbol": "intel_ggtt_update_needs_vtd_wa",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.c",
+      "start_line": 31,
+      "end_line": 34,
+      "sha256": "ab5563c17492f78d1b554a4eee3164208f0567f82a8d5c12317ef11b7c608be5"
+    },
+    {
+      "symbol": "intel_vm_no_concurrent_access_wa",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.c",
+      "start_line": 36,
+      "end_line": 39,
+      "sha256": "28d22f38b209d4aa8d766b1978e6855e1d3364a779bb91609a73b64d22562d47"
+    },
+    {
+      "symbol": "bdw_setup_private_ppat",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.c",
+      "start_line": 609,
+      "end_line": 630,
+      "sha256": "b33439f02dba97040d01a3331239672dbbdab030c0e2c73f8ab6661be87bbfd8"
+    },
+    {
+      "symbol": "chv_setup_private_ppat",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.c",
+      "start_line": 632,
+      "end_line": 666,
+      "sha256": "9a2f35be35e4fe69e4bd0f9b10d47e628db03efcfdb2b73014696cfb7a2367d1"
+    },
+    {
+      "symbol": "setup_private_pat",
+      "kind": "function",
+      "file": "drivers/gpu/drm/i915/gt/intel_gtt.c",
+      "start_line": 668,
+      "end_line": 692,
+      "sha256": "c7c596d8f61fc64e1faea5fb23af4b579fca7f61b225fe2c60d1eea764bbb684"
+    }
+  ],
+  "note": "Source provenance only; actual test results are in the bound wave5 completion report.",
+  "upstream_selection": {
+    "glk_info": {
+      ".dma_mask_size": "39",
+      ".__runtime.ppgtt_size": "48",
+      ".max_pat_index": "3",
+      ".has_snoop": "true",
+      ".has_coherent_ggtt": "false",
+      ".__runtime.page_sizes": "I915_GTT_PAGE_SIZE_4K | I915_GTT_PAGE_SIZE_64K"
+    },
+    "included_macros": [
+      "GEN(9)",
+      "GEN9_DEFAULT_PAGE_SIZES",
+      "GEN_DEFAULT_REGIONS",
+      "LEGACY_CACHELEVEL"
+    ]
+  },
+  "production_implementation": "Claude-authored original pure value encoding; completion agent independently validates numeric rules. No Linux runtime/locking/mapping implementation copied.",
+  "scope": "Pure GLK 39-bit DMA,48-bit PPGTT entry values,indices,PAT and LE byte images. No native mapping,MMIO,GPU or Metal qualification.",
+  "license_observation": {
+    "mit_fragments": "MIT functions/defines compiled only into hosted oracle; preserve per-file copyright notices and MIT license.",
+    "gpl_numeric_facts_only": "arch/x86/include/asm/pgtable_types.h bit positions parsed as numeric facts; no source text copied to production or oracle.",
+    "dependency_closure_approved": false
+  },
+  "claude_authored_before_sha256": {
+    "Drivers/NativeGlk/PageTableEncoding.hpp": "378c55617ebcd693290fa1ba87001ffe261a024d9f1502cf747c70d861466b8e",
+    "Drivers/NativeGlk/PageTableEncoding.cpp": "21629a44864ab2448d49ee658b473acf5414f800c000bf4d1d5764e0a4289d44",
+    "tests/native_glk_pte_tests.cpp": "e3c096761e9eced992a898310f7f9fb72e6fd948f94f5d6a6231e384d0bd0e24",
+    "Tools/run-native-glk-pte-tests.py": "a09bb414f50659c1265d5fae95cad8d6e3760ea0f48ab1f2c2174e7664bd4617"
+  },
+  "debug_kernel_import": {
+    "symbol": "_memset",
+    "target": "macOS 15.8.1 Darwin 24H32 x86_64",
+    "primary_boot_kc_sha256": "cd013c14a7f21dbb8181fb06c44e079de8646b6a674abe21f6e47f42e8979af3",
+    "symbol_sets_sha256": "0cee84f8619a19348cbdb380ffe265252ce0450b4385fa4023f2298f79d22939",
+    "eligibility": {
+      "symbol": "_memset",
+      "static_declared_provider_match": true,
+      "candidates": [
+        {
+          "provider": "com.apple.kpi.libkern",
+          "evidence": "kernel __LINKINFO,__symbolsets whitelist plus nlist definition",
+          "alias_target": "_memset",
+          "target_defined": true,
+          "target_address": 18446743523954790592,
+          "version_range_satisfied": true
+        }
+      ]
+    },
+    "reason": "-mkernel Debug emits compiler aggregate zero-initialization. Release and no-SIMD O3 remain import-free. Static export eligibility does not attest a loaded/link-tested kext."
+  }
+}

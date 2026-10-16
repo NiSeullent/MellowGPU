@@ -1,0 +1,548 @@
+{
+  "schema": "mellowgpu.native-glk-implementation/1",
+  "scope": "Twenty real compiled GLK translation units linked into the kext target, no activated GLK accelerator",
+  "reference_linux_commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+  "requirement_ids": [
+    "MG-CORE-LIFETIME-001",
+    "MG-CORE-SYNC-001",
+    "MG-OS-XNU-001",
+    "MG-CPU-X64-001",
+    "MG-GPU-INTEL-001",
+    "MG-DISPLAY-001",
+    "MG-RECOVERY-001"
+  ],
+  "units": [
+    {
+      "role": "glk_pte_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude production header/body/tests preserved byte-exact; Codex completed provenance and runner checks.",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/PageTableEncoding.hpp": "378c55617ebcd693290fa1ba87001ffe261a024d9f1502cf747c70d861466b8e",
+        "Drivers/NativeGlk/PageTableEncoding.cpp": "21629a44864ab2448d49ee658b473acf5414f800c000bf4d1d5764e0a4289d44",
+        "Drivers/NativeGlk/PageTableEncoding.provenance.json": "7e9b0b5c00838126bcd53cb033016c4db3bebb7ca875eb0a8763c8066c8b5633",
+        "tests/native_glk_pte_tests.cpp": "e3c096761e9eced992a898310f7f9fb72e6fd948f94f5d6a6231e384d0bd0e24",
+        "Tools/run-native-glk-pte-tests.py": "e1cf42d72a432e2df5f1c0cd52ea1d30834d11f3481b79000762fcbdd33657a6"
+      },
+      "validation": {
+        "pinned_oracle_vectors_per_mode": 769458,
+        "host_checks_per_mode": 1629358,
+        "modes": [
+          "native arm64 hosted",
+          "native fatal ASan/UBSan hosted",
+          "translated x86_64 hosted values"
+        ],
+        "production_mutations_rejected": 18,
+        "kernel_compile_variants": 3
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_commands_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude production header/body/tests; Codex completed Invalid/null-observation handling, runner/provenance, and renamed the source to avoid NVIDIA Xcode object collision.",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/CommandEncoding.hpp": "acc512f85530420f842b7d5f44d640906f7769d1d1f2d35f64a8b4aeb7a27a62",
+        "Drivers/NativeGlk/Gen9CommandEncoding.cpp": "d7cac962b0cf36cd20ea4087f5df6a1907088a8b4e91443f7fc715f4d957d48b",
+        "Drivers/NativeGlk/CommandEncoding.provenance.json": "f27107d5fe509edbaaa000dd53ce66c42dc27f054b6ba447e4ac46f5cc160724",
+        "Drivers/NativeGlk/CommandEncoding.LICENSE.MIT": "87f7601f0859ad5a70c04a71940bd6cbaf8d7f1f40d9396ffb865095aa0e302b",
+        "tests/native_glk_command_tests.cpp": "84a8552e254cfba9f143c323318bb943509ab0e53995aa05b69ba1148fab5857",
+        "Tools/run-native-glk-command-tests.py": "b0bd3bd1963a91d23d61d50ba167e1d6653f6e291e8955ea47db97eb3a6a1fc6"
+      },
+      "validation": {
+        "host_checks": 226926,
+        "fatal_asan_ubsan_checks": 226926,
+        "native_x86_64_kernel_object": "PASS"
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_lrc_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude header/tests; Codex wrote missing production body, completed numeric/layout/context-ID checks and provenance; parent independently reran actual body tests.",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/LrcImage.hpp": "2b113d0b2d26df22408322b8cea6f1002460d3d128937fb932549d2b898c8105",
+        "Drivers/NativeGlk/LrcImage.cpp": "656dd1ce90bfceb0309a606abfa45e486f5e6885f1e4b28b31092eeec1315416",
+        "tests/native_glk_lrc_tests.cpp": "3dd7bf3e6ef04beb909065f1b6c28bcb7dec69a1d97ee3252221ccabc2d78e8b",
+        "Tools/run-native-glk-lrc-tests.py": "8fa6d7716f7c712c80c83358c4ce0f49fbbbf179b4f765d0a6dc5425e94d0bd9",
+        "LRC-IMPLEMENTATION-REPORT.md": "4a9284ce62f71a80b1d597e89b13c1c0593807dbabb24bc00dada6cccda8bcfa"
+      },
+      "validation": {
+        "host_checks": 327,
+        "fatal_asan_ubsan": true,
+        "whole_pinned_gen9_offset_tables_compared": true,
+        "native_x86_64_kernel_object": "PASS",
+        "production_mutations_rejected": 2
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_panel_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude production protocol/header/tests; Codex added permanent native-owner/epoch revocation, reference ownership, reentrancy protection, corrected clock-regression fixture and completed bounded fatal tests/provenance.",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/PanelPower.hpp": "5b9e7d9bc485120a4bd5890847be21e3b202490c185c35cb990aed2f9d4375c2",
+        "Drivers/NativeGlk/PanelPower.cpp": "dbba3bd5c63540c0859f6a8b6694f18958e7652d3eee92743e912bd215324e2f",
+        "Drivers/NativeGlk/PanelPower.provenance.json": "7e2998721721daddd8472598ef6f6ed458ad501301e054530a66703ada7835dd",
+        "Drivers/NativeGlk/PanelPower.LICENSE.MIT": "73a58ccdfe23670cc34654a5e134fdf9cd927e2cec0ef838c2d702d680f5e233",
+        "Drivers/NativeGlk/PanelPower.NOTES.md": "105a8df238fb8803f875a2c64532e635753b449fbce6b6696f8816861dbc55ab",
+        "tests/native_glk_panel_power_tests.cpp": "10b04f1dab5fd0e1455ea3346af15b932dac2561c0225deb04dfd38c07931aac",
+        "tests/native_glk_panel_power_test.py": "6455036ec0bfa1f45243f5a32c20222121ee2f6f5841de41692cff2166ef1cdc"
+      },
+      "validation": {
+        "host_checks": 136240,
+        "fatal_asan_ubsan_checks": 136240,
+        "production_mutations_rejected": 19,
+        "bounded_timeout_mutations": 1,
+        "native_x86_64_kernel_object": "PASS"
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_dma_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude original native implementation/tests; Codex completed actual kBypassed/no-system-mapper route, native rechecks and fault tests. Parent added Windows-only aligned allocation/free in hosted shim; production body unchanged.",
+      "canonical_file_sha256": {
+        "Mellow/GlkDmaMemoryIOKit.hpp": "06ef913d61fc7a65cbc009ebbab6321c0f6adb2a1aa36e3565176265ccc5a9aa",
+        "Mellow/GlkDmaMemoryIOKit.cpp": "b66787e3489c659c13815305ef51a83f879cdee70cffc66198d7ff4c71442db9",
+        "tests/native_glk_dma_iokit_tests.cpp": "23e864d86260eef22c851f378088dbb095c5099ba80bc899f7b6ffd6d9245ccf",
+        "tests/native_glk_dma_iokit_shim.hpp": "b0bfd9cf412cd37e57d9ae7f03eb4a545316b21cc03251d9c0f458ebea4bae85",
+        "tests/native_glk_dma_iokit_provenance.json": "f26c6f28d4c71037ae601f3b0c30eaf92ee0e088176acd75066fd9f1686a50ca",
+        "Tools/run-glk-dma-tests.py": "376f53194a20bd49412fdadc7c55979a2dd2dfbfcd879c7a973a8e79002ca4a2",
+        "tests/native_glk_dma_shim/IOKit/IOBufferMemoryDescriptor.h": "1f14b8d4b0b62a59ab590066a070bdc6de48b36bff57e9610c5b3678f5ca68db",
+        "tests/native_glk_dma_shim/IOKit/IODMACommand.h": "1f14b8d4b0b62a59ab590066a070bdc6de48b36bff57e9610c5b3678f5ca68db",
+        "tests/native_glk_dma_shim/IOKit/IOLib.h": "1f14b8d4b0b62a59ab590066a070bdc6de48b36bff57e9610c5b3678f5ca68db",
+        "tests/native_glk_dma_shim/IOKit/IOMapper.h": "1f14b8d4b0b62a59ab590066a070bdc6de48b36bff57e9610c5b3678f5ca68db",
+        "tests/native_glk_dma_shim/IOKit/pci/IOPCIDevice.h": "3a3998559d145df82e307c113c5062110f570c80c53b7309e708d2b8ba09bfdf",
+        "tests/native_glk_dma_shim/libkern/libkern.h": "1f14b8d4b0b62a59ab590066a070bdc6de48b36bff57e9610c5b3678f5ca68db"
+      },
+      "validation": {
+        "host_checks": 17324,
+        "focused_direct_route_cases": 2,
+        "fatal_asan_ubsan": true,
+        "native_sdk155_x86_64_kernel_object": "PASS"
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_forcewake_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude original Forcewake core/adapter/tests; Codex owner-retain/authority fixes.",
+      "frozen_manifest_sha256": "c9fb5b924b99577a31da05ea107472c824991b7992256f1e1cee733125dd166e",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/Forcewake.cpp": "7f6ec42c22098cf3fe91216f1186d1e1d0970587cd9245103e3f7d1cd922dd98",
+        "Drivers/NativeGlk/Forcewake.hpp": "d68087796639c4527d4417d9b1b3c3799e92e3b9e47cff809a123bed456d6084",
+        "Drivers/NativeGlk/LICENSE.MIT": "4ba06b10e216cf1170b1053bda56c1006d45b3599439bbdff2ebbcb93f5233e5",
+        "Drivers/NativeGlk/provenance.json": "4db5c06d6ba3db3e0e1b87fa7b1676f8bf7d668a11ebe910f724839f0039e4cf",
+        "Mellow/GlkForcewakeIOKit.cpp": "b10b06b4fc3c3391f3f9c546bbcc1d4d4759c4b97ec7164d7638ea50f64c5662",
+        "Mellow/GlkForcewakeIOKit.hpp": "fd9ba9fb7f67594ff45dea712f96aedff32e2eb6e5dc989b48378a0fac9519dd",
+        "Mellow/HardwareAccess.hpp": "c468ef423a37b575244c7040f055ff05596d8072f6aee1e52e5beb960cd2eefc",
+        "Tools/run-native-glk-forcewake-tests.py": "4fcc15a785dc8b99d685df449720d7a9825623246486255a288b7fe161e0b54d",
+        "tests/glk_forcewake_iokit_shim.hpp": "b04d1bfdd6833c119b15292fbd28d7d9582a9546f54514678aba2bf143d3dfaa",
+        "tests/glk_forcewake_shim/IOKit/IOLib.h": "43dc8233e6823260987fbd46d021b8bef0ee015e7cce34615ce8f423ebbc530c",
+        "tests/glk_forcewake_shim/IOKit/pci/IOPCIDevice.h": "b1f6e2d1a84db87b259955c397a1f128f59e855004503d88e52463946aec0ed6",
+        "tests/glk_forcewake_shim/kern/clock.h": "43dc8233e6823260987fbd46d021b8bef0ee015e7cce34615ce8f423ebbc530c",
+        "tests/glk_forcewake_shim/libkern/c++/OSArray.h": "b1f6e2d1a84db87b259955c397a1f128f59e855004503d88e52463946aec0ed6",
+        "tests/native_glk_forcewake_iokit_tests.cpp": "bcfde00bd61ae57ac775819cedc3e07cb186f638fe93856d07d5225988678901",
+        "tests/native_glk_forcewake_tests.cpp": "9142ae0227708e625c96d3d8f27d26ddede79642b5f725f013ae04972850b933"
+      },
+      "validation": {
+        "canonical_runner": "Tools/run-native-glk-forcewake-tests.py",
+        "host_checks": 395,
+        "iokit_checks": 100,
+        "mutants_rejected": "18 core + 7 adapter",
+        "kernel_units": 4,
+        "primary_oracle": "PASS",
+        "report_sha256": "f1d5efcf5b098ae0fc31f79b50884e44cb01b5a6d63b5ca365ad009fa5953068"
+      },
+      "gpu_execution": "NOT_RUN",
+      "canonical_adaptations": [
+        "Drivers/NativeGlk/LICENSE.MIT: whitespace-only, removed trailing blank line at EOF for git diff --check (b99eef65b9d81edb9429652e26391bf308065d4f1ce45c1973d9b5076105d78e -> 4ba06b10e216cf1170b1053bda56c1006d45b3599439bbdff2ebbcb93f5233e5)"
+      ]
+    },
+    {
+      "role": "glk_passive_probe_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude actual passive IOService/header/tests byte-identical; Codex runner/provenance review.",
+      "frozen_manifest_sha256": "5fca8025932d860fccaae29527caf884c2447d34a981d41e59dd66489d323fd3",
+      "canonical_file_sha256": {
+        "Mellow/GlkPassiveProbeIOKit.cpp": "447303477afadb1b9103ebf692a029925d86fc09b5958ff9178f512de2b79d0d",
+        "Mellow/GlkPassiveProbeIOKit.hpp": "513931e9af5d5095088027ee301285eeea92cd22e8dcc9a7365992b8635a6095",
+        "Mellow/GlkPassiveProbeIOKit.personality.plist": "e1d299c52865726e0b2b16801d1168d376a39e1eb5d791d903cd091e77dc5aab",
+        "Tools/run-glk-passive-probe-tests.py": "d1101305e953249700356edd66f22df5014a2b5609a6a80dbd532e953b33653a",
+        "tests/native_glk_passive_probe_provenance.json": "6d5cc828f4459de09046f9006c69c8a621dbfdfc0002c26e6f0dabbca0fe3e3a",
+        "tests/native_glk_passive_probe_shim.hpp": "8043f7b50005de7b59468a779f15783df6c490b56452cfa04c9869f4180399eb",
+        "tests/native_glk_passive_probe_shim/IOKit/IOLib.h": "5577b3859c21a6aa64d4030dcbb496b4289965da223ef04517b5f1c529375c71",
+        "tests/native_glk_passive_probe_shim/IOKit/IOMapper.h": "5577b3859c21a6aa64d4030dcbb496b4289965da223ef04517b5f1c529375c71",
+        "tests/native_glk_passive_probe_shim/IOKit/IOMemoryDescriptor.h": "5577b3859c21a6aa64d4030dcbb496b4289965da223ef04517b5f1c529375c71",
+        "tests/native_glk_passive_probe_shim/IOKit/IOService.h": "5577b3859c21a6aa64d4030dcbb496b4289965da223ef04517b5f1c529375c71",
+        "tests/native_glk_passive_probe_shim/IOKit/pci/IOPCIDevice.h": "71ab7356cfdb4728630e18261553505e2f205835c0c8a47f7bfe4e9b9e9cabae",
+        "tests/native_glk_passive_probe_shim/libkern/c++/OSBoolean.h": "71ab7356cfdb4728630e18261553505e2f205835c0c8a47f7bfe4e9b9e9cabae",
+        "tests/native_glk_passive_probe_shim/libkern/c++/OSData.h": "71ab7356cfdb4728630e18261553505e2f205835c0c8a47f7bfe4e9b9e9cabae",
+        "tests/native_glk_passive_probe_shim/libkern/c++/OSDictionary.h": "71ab7356cfdb4728630e18261553505e2f205835c0c8a47f7bfe4e9b9e9cabae",
+        "tests/native_glk_passive_probe_shim/libkern/c++/OSIterator.h": "71ab7356cfdb4728630e18261553505e2f205835c0c8a47f7bfe4e9b9e9cabae",
+        "tests/native_glk_passive_probe_shim/libkern/c++/OSNumber.h": "71ab7356cfdb4728630e18261553505e2f205835c0c8a47f7bfe4e9b9e9cabae",
+        "tests/native_glk_passive_probe_shim/libkern/c++/OSString.h": "71ab7356cfdb4728630e18261553505e2f205835c0c8a47f7bfe4e9b9e9cabae",
+        "tests/native_glk_passive_probe_shim/libkern/version.h": "5577b3859c21a6aa64d4030dcbb496b4289965da223ef04517b5f1c529375c71",
+        "tests/native_glk_passive_probe_tests.cpp": "c42e16e3c771a0a5321cb3815d763876bfa49cee5c2512d2e2ac431699513cbd"
+      },
+      "validation": {
+        "host_checks": 1806,
+        "mutants_rejected": 16,
+        "actual_target_public_imports": 304,
+        "note": "canonical final runner PASS recorded by root; unchanged bytes",
+        "standalone_rebuild": "Tools/build-glk-passive-probe.py reproduces installed binary 45b9c2b3922ba3ceceede9c90a74c966f0563554669fe7acdff83d05ddfe2b1d"
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_irq_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude header/decoder/tests; Codex native IOFilterInterruptEventSource/work-loop lifetime implementation and corrections.",
+      "frozen_manifest_sha256": "717e1d7ae098bfcc02d0fb842edcc9c6e64b56746958a54cda52d021178d0a80",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/InterruptDecode.cpp": "ee58ce2bda4e2c1966df9efa1f391a5be81cc02c657eed1608b0956d66ad394d",
+        "Drivers/NativeGlk/InterruptDecode.hpp": "9811ef31a274f4e2d9972c09af163a0d455994332e19d9949082d7295e1cebcf",
+        "Drivers/NativeGlk/interrupt-provenance.json": "faa3c4d506d9fa6c8bff658e1bb634bdb86a6fb079f2540c5611f81b47129f2a",
+        "Mellow/GlkInterruptIOKit.cpp": "c61ac322e32b644cb0611629fc79d30d888bb51fb6ff7f0a851be43816111000",
+        "Mellow/GlkInterruptIOKit.hpp": "6020462e2f62c03956007c25a93991d116de37923b03946f2696285af6e3cc48",
+        "Tools/run-glk-interrupt-tests.py": "e1f0a525bf7edb186e8d3c82d0e93312c2c8708f45e15200c24ca89d97801c03",
+        "tests/native_glk_interrupt_shim/GlkIOKitShim.hpp": "77dc7ef41cc6fa3fb1e4d5b4e9f21569a557b70099aca8441c4286c9c187f591",
+        "tests/native_glk_interrupt_shim/IOKit/IOFilterInterruptEventSource.h": "ff8f95929f41d6bb61c8085657f1621fb8ce6a9135779d90f7cda59c15e93c55",
+        "tests/native_glk_interrupt_shim/IOKit/IOWorkLoop.h": "ff8f95929f41d6bb61c8085657f1621fb8ce6a9135779d90f7cda59c15e93c55",
+        "tests/native_glk_interrupt_shim/IOKit/pci/IOPCIDevice.h": "c3d6078a85fd6423d5e1fd5d2a7af222aa405d8f82404da4106f5001d0e9dde9",
+        "tests/native_glk_interrupt_tests.cpp": "406ea4ddc4aa07f4defaae81975edbce234c2fd11c56f2e57012ccb99b78bb3e"
+      },
+      "validation": {
+        "canonical_runner": "Tools/run-glk-interrupt-tests.py --sanitize --sdk",
+        "fatal_checks": 388,
+        "native_sdk155_objects": 2,
+        "report_sha256": "31f65de660be70bcd5a821bfe6dbd186f50ec9b99149b4c2a97c98904725bafd"
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_ggtt_native_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude GGTT publication core/adapter/tests; Codex owner use-after-free fix and mandatory held awake-engines callback.",
+      "frozen_manifest_sha256": "bcf1136e476e8d30147aa7d5ad24bc5051fa9c0b2a873c599ec9d2ac6a76f2fa",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/GgttPublication.LICENSE.MIT": "a0616a6587a55d71511474f874e2a5180719c177132ec80e8ec275aac858ee27",
+        "Drivers/NativeGlk/GgttPublication.cpp": "610d7ce36a66b6f9a9726b6b2663382e3ec225425fcf15d2bf87de0e3fbf55ad",
+        "Drivers/NativeGlk/GgttPublication.hpp": "8f9816bdfd942731c261a026846b83b034c2d02a720f0c59481ff461c1c65466",
+        "Drivers/NativeGlk/GgttPublication.provenance.json": "255c2ab4578e5f2a3af5737a4ad564ad87f38f95100bd5b5e8f3e6367d8d213b",
+        "Mellow/GlkGgttIOKit.cpp": "0ebd22273fa9d7c05c2f23c97819f3938028c74020fc5910f28eefbd0fc6add3",
+        "Mellow/GlkGgttIOKit.hpp": "d7137c77e804e564e0ca6cc13923cb366df102aeca4e161f6e4717973c81cd87",
+        "Tools/run-native-glk-ggtt-tests.py": "bfbcc3f4587969de42f497fe0c7575a57d1cb37bbc556e78931f39ba90e985c2",
+        "tests/native_glk_ggtt_iokit_shim.hpp": "3e2680dd4d3ed507b45e860846259546a36be1de6068f709ce00cac446ee2b5b",
+        "tests/native_glk_ggtt_iokit_tests.cpp": "7e58ea0de3a3a6677fb646900adfcbdcb346447d802d07cba04830e2066132a6",
+        "tests/native_glk_ggtt_publication_tests.cpp": "9a787abbc4da3bfdc3fae9853831c82958b20624cf3cc13a87be02f3926d042b",
+        "tests/native_glk_ggtt_shim/IOKit/IOLib.h": "f6245d35ce18a3d4f1f786efca4365121839468010b55302bc78bc5229a3e85b",
+        "tests/native_glk_ggtt_shim/IOKit/IOMapper.h": "f6245d35ce18a3d4f1f786efca4365121839468010b55302bc78bc5229a3e85b",
+        "tests/native_glk_ggtt_shim/IOKit/IOMemoryDescriptor.h": "f6245d35ce18a3d4f1f786efca4365121839468010b55302bc78bc5229a3e85b",
+        "tests/native_glk_ggtt_shim/IOKit/pci/IOPCIDevice.h": "b7c526e23eb131edd34d9aa43b9478100c584e6e72076478fb51cb517c238edb",
+        "tests/native_glk_ggtt_shim/kern/clock.h": "f6245d35ce18a3d4f1f786efca4365121839468010b55302bc78bc5229a3e85b"
+      },
+      "validation": {
+        "canonical_runner": "Tools/run-native-glk-ggtt-tests.py --sdk --upstream (6 hash-verified pinned roots)",
+        "core_checks": 857,
+        "adapter_checks": 476,
+        "mutants_rejected": 13,
+        "primary_files_verified": 14,
+        "report_sha256": "0f61e14351935b8b72491c6c4c82f64cc6ae47460e63356430cd69bec4b7a426",
+        "superseded_red": "single cache root left 7 pinned files unlocated (runs/ggtt), preserved"
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_bcs_native_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude BCS engine/adapter/tests; Codex independent stop-proof correction and regression.",
+      "frozen_manifest_sha256": "ce228eea5791745ac49549cb52ac49569c5a32a8cc8fb2624eac156a2030a432",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/BcsExecution.LICENSE.MIT": "99a1ec0d9622749623ca5292a32075096c239b582ee30c5858f58dc9bae7b441",
+        "Drivers/NativeGlk/BcsExecution.cpp": "277df8700ffe73860904e27e060f14367fcfd282a7877d533944bb48accbed4a",
+        "Drivers/NativeGlk/BcsExecution.hpp": "bb45f4504666c55967dc6983923db7f60ec5a017a09f0ccc832a60df786c9c3a",
+        "Drivers/NativeGlk/BcsExecution.provenance.json": "228ca205dcd86f41457e553f1bccc34fdaf4a15c1dc54fb76a8d4bf5ca0d06c4",
+        "Mellow/GlkBcsIOKit.cpp": "d97cdfd666689ae354d38d6227f1444be66d4395e31c958453193b982895030a",
+        "Mellow/GlkBcsIOKit.hpp": "19b6a0989c9208e8864e16447b2fbf12c19474a644e8b2c19d021d6d12779fd6",
+        "Tools/run-native-glk-bcs-tests.py": "647ec04c6d0439d7b5ca5b9339de32dad7154e2b9fffbfae59445182eeec3a09",
+        "tests/native_glk_bcs_iokit_shim.hpp": "249ab60bab864a60976888da489d44837a44936d4e091a970c4a84943d9d37ed",
+        "tests/native_glk_bcs_iokit_tests.cpp": "aaeaf9384a10548b537d00a11d61e799d7099c0f91abbfa3b8de4bd90a517255",
+        "tests/native_glk_bcs_shim/IOKit/IOLib.h": "cd2820dd21cf2ec708054442ad028f2e1e7a764f0b5aa1a52d51eda1c4cb420b",
+        "tests/native_glk_bcs_shim/IOKit/IOMemoryDescriptor.h": "cd2820dd21cf2ec708054442ad028f2e1e7a764f0b5aa1a52d51eda1c4cb420b",
+        "tests/native_glk_bcs_shim/IOKit/pci/IOPCIDevice.h": "348154d7d6b99116e40b3ac269db099aba794d38623c88e7850226fdf9d44cae",
+        "tests/native_glk_bcs_tests.cpp": "393fa38909275fafde2c67b1d0757a648897b3e3f3497620278897e99a4743e2"
+      },
+      "validation": {
+        "canonical_runner": "Tools/run-native-glk-bcs-tests.py --linux-i915 --sdk",
+        "engine_checks": 547,
+        "iokit_checks": 112,
+        "mutants_rejected": 7,
+        "report_sha256": "e0e8f99760e54179b319f931c16993f71c5df1533bfa7c9918935ac877e57ef3"
+      },
+      "gpu_execution": "NOT_RUN",
+      "canonical_adaptations": [
+        "Tools/run-native-glk-bcs-tests.py: SEEDED/ENGINE use canonical Gen9CommandEncoding.cpp (renamed from CommandEncoding.cpp to avoid the NVIDIA object collision)"
+      ]
+    },
+    {
+      "role": "glk_native_owner_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude physical owner/tests; Codex recursive-quiesce, OSObject lifetime anchor and active-action drain fixes.",
+      "frozen_manifest_sha256": "3b127c7950400f6d755b1eef044f03632ebebf9897189370ccf522807aed636d",
+      "canonical_file_sha256": {
+        "Mellow/GlkPhysicalOwnerIOKit.cpp": "2cab6d5a17c433643f9f1b78fe17ea811956efffeed7aa4f8e35e68f5f0a8a64",
+        "Mellow/GlkPhysicalOwnerIOKit.hpp": "968a04a5e8b1223072b433c73fce4fda9563ce534966abd8cb18249273e19796",
+        "Tools/run-native-glk-owner-tests.py": "e2cc2e0eea44eb2c2ff59ccb08588f02026b8f677e23c802b523e0ec58569237",
+        "tests/native_glk_owner_iokit_provenance.json": "6e2d804d6e0834d01bba0d3e7e223170fbc31eae42e5276e18b2ee25eb4fe9d9",
+        "tests/native_glk_owner_iokit_shim.hpp": "51f48a95000cedf922938dab355280625f75d42aaf50c0fe4337a4d914d808d8",
+        "tests/native_glk_owner_iokit_tests.cpp": "326fa306996ef911e0568c2135b7a13b0ddd5443c1f92a9ad71daf08490e3109",
+        "tests/native_glk_owner_shim/IOKit/IOBufferMemoryDescriptor.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/IOKit/IOCommandGate.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/IOKit/IODMACommand.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/IOKit/IOLib.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/IOKit/IOMapper.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/IOKit/IOMessage.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/IOKit/IOService.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/IOKit/IOTimerEventSource.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/IOKit/IOWorkLoop.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/IOKit/pci/IOPCIDevice.h": "cb0789b9054847bf136c7267bb47b383ec673e5c823be78e850f47341b7ddf56",
+        "tests/native_glk_owner_shim/IOKit/pwr_mgt/IOPM.h": "cb0789b9054847bf136c7267bb47b383ec673e5c823be78e850f47341b7ddf56",
+        "tests/native_glk_owner_shim/IOKit/pwr_mgt/IOPMpowerState.h": "cb0789b9054847bf136c7267bb47b383ec673e5c823be78e850f47341b7ddf56",
+        "tests/native_glk_owner_shim/kern/clock.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/libkern/libkern.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b",
+        "tests/native_glk_owner_shim/libkern/version.h": "2c151d5d0a3e68dec40282493925afc20848d701c587b103b33c29da2d15a28b"
+      },
+      "validation": {
+        "canonical_runner": "Tools/run-native-glk-owner-tests.py --sdk",
+        "checks": 330,
+        "mutants_rejected": 21,
+        "rerun_after_canonical_adaptation": true,
+        "report_sha256": "8ebf10400a9933faa65b250cfd632359375e2e145bda03772dda9e06e3db212a"
+      },
+      "gpu_execution": "NOT_RUN",
+      "canonical_adaptations": [
+        "Mellow/GlkPhysicalOwnerIOKit.cpp: SDK-neutral bus-lead helper. The kext target compiles with MacKernelSDK, which lacks kIOPCICommandBusLead/setBusLeadEnable; SDK15.5 and hosted builds still call non-virtual setBusLeadEnable, MacKernelSDK falls back to virtual setBusMasterEnable for the same 0x4 command bit (frozen 336feebf77912bdafd6483068b3b1f03a01e6a7ea242f01090c557ccbb60cab0 -> canonical 2cab6d5a17c433643f9f1b78fe17ea811956efffeed7aa4f8e35e68f5f0a8a64)"
+      ]
+    },
+    {
+      "role": "glk_render_wa_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude producers/adapter/tests (688+30); Codex held-operation/lifetime/epoch checks and bool release/endAccess unknown-cleanup path.",
+      "frozen_manifest_sha256": "822a26871dce67d73fc75aa30b5c918f42b34ccef5f58ce93c6e515bc679e046",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/RenderWorkarounds.LICENSE.MIT": "dbdfbca8ec1589bdee421b95d535082bb1b5bea72e36057800601507b76f0a9f",
+        "Drivers/NativeGlk/RenderWorkarounds.cpp": "541407635b302d3c5c9e849f7b16172c302a7e32b14ae7b5b99c023373f8cef5",
+        "Drivers/NativeGlk/RenderWorkarounds.hpp": "7dfbc6005cba212a2b631fc44e07b5f13385068c9b7b128b0e4e897fa254a686",
+        "Drivers/NativeGlk/RenderWorkarounds.provenance.json": "53036ad9ed3548a19eb7c271cfc93ca80f99eba3d8dc719673d11692f6c584b3",
+        "Mellow/GlkTopologyIOKit.cpp": "48fcc682298c3eb3601ced743d19339e88127ede07c5a2d1b5d9b855b52c5735",
+        "Mellow/GlkTopologyIOKit.hpp": "c081cf1920c6ea96486afa9fa3c2404008f84a6722f09ca00583848337318bef",
+        "Tools/run-native-glk-render-wa-tests.py": "bba5938842df06e36a0cb4681fe4c4659ec1d419657ebe12ee567b2ee3341a5a",
+        "tests/native_glk_render_wa_shim/IOKit/pci/IOPCIDevice.h": "259e87fc7b418282a065f478f959f37125c939d2217aadb283c9747cccccd272",
+        "tests/native_glk_render_wa_tests.cpp": "21b6a7fd485e99f3c58618b3b7366545f5a85c42fece5e88f34f3ea89049df01",
+        "tests/native_glk_topology_iokit_tests.cpp": "14e7d352c505f33406de36ef57d7a58c55178b7a9a56cdf0b971f3bba8af36f1"
+      },
+      "validation": {
+        "canonical_runner": "Tools/run-native-glk-render-wa-tests.py --linux-root x2 --kernel-sdk",
+        "pure_checks": 688,
+        "adapter_checks": 98,
+        "report_sha256": "0353e9d1228f5ad9fd03a85ab6590a78fcf40d0275b2503172612663c69fb31c",
+        "superseded_red": "single cache root lacked intel_sseu.c (runs/render-wa), preserved"
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_vbt_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude header/tests (interrupted before implementation); Codex driver_research parser bodies/runner; Codex framebuffer_review LegacyBefore191 peer correction.",
+      "frozen_manifest_sha256": "663327a531660a633ce8e86a45e8562864c2863c87236b24ee6de66d7587b2f8",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/VbtParser.COMPLETION.md": "621264182b00a7866d3341ba50b31f1954f58b331da7ca01ad1cce257bc6b19d",
+        "Drivers/NativeGlk/VbtParser.LICENSE.MIT": "e38f313ada1c0b69e647b20882095318c029a05303456569791075f7c6aa4749",
+        "Drivers/NativeGlk/VbtParser.cpp": "f5978f58122335238061671a26d025f76164946141a10cd834103ef99b1cf631",
+        "Drivers/NativeGlk/VbtParser.hpp": "b853f990e9e7cf552da33f8b74963759595106609c1f0a9b60692260cf9dd51d",
+        "Drivers/NativeGlk/VbtParser.provenance.json": "49e628f862e2e0de5fc47bcbb30b3958f3e3164eeb8f8b664dc5ab074f58b5dc",
+        "Tools/run-native-glk-vbt-tests.py": "0a8d1ad0649fa2420d3002a734bccbae7ee20ea25924de8970cd0aca7e5c38f0",
+        "tests/native_glk_vbt_tests.cpp": "4f6020c0c42f88a972c57db8a57512fe5f85b5b047655c572dca66c429f6c28c"
+      },
+      "validation": {
+        "canonical_runner": "Tools/run-native-glk-vbt-tests.py",
+        "checks": 735,
+        "mutation_cases": 4000,
+        "primary_bitfield_byte_checks": 814,
+        "report_sha256": "69367ab831b647890dc3d027da3f12639693db55dea8f14ab6a063ae8fc118d4"
+      },
+      "gpu_execution": "NOT_RUN",
+      "canonical_adaptations": [
+        "VBT-COMPLETION.md stored byte-identical as Drivers/NativeGlk/VbtParser.COMPLETION.md",
+        "Drivers/NativeGlk/VbtParser.LICENSE.MIT generated from the three hash-verified pinned primary file notices"
+      ]
+    },
+    {
+      "role": "glk_device_lab_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude Swift compute/render/blit/present bench, identity gate, orchestrator, staging, build and tests.",
+      "frozen_manifest_sha256": "76f46505ae4d79fa76c926d9d8f347b184192758e10dd9af3872a33845f5d280",
+      "canonical_file_sha256": {
+        "Tools/device-lab/NOTES.md": "5976e6d31dc9ae9af4cc5e1d7074f9e0edca7743a871772e22879edf9745622b",
+        "Tools/device-lab/build/build-glk-device-lab.py": "ca6a45ffe615101b497183f4c89a47787736f86832666a057f355b5ed1c17528",
+        "Tools/device-lab/orchestrate/run-glk-device-lab.py": "f38fe2c58fdde5b131416db8201ccaf658f59bbddaa1e10f9fde80a1e7bb5115",
+        "Tools/device-lab/provenance.json": "8513f0c654512124bbd954d0470b314eef1840cb03b7ac9d2543faf5f27fa1de",
+        "Tools/device-lab/shaders/GlkWorkloads.metal": "3e30c7ce4fb9c5924870c6bc99f5379402c8afb108f54b4149486c242d7bf627",
+        "Tools/device-lab/src/GlkDeviceIdentity.swift": "af7d015ba7eab42282977a6250534414b127e43067f8e3f044bc406e070fe02d",
+        "Tools/device-lab/src/GlkFramebufferProbe.swift": "fa942d6c2cd8b5d345da429544202196a13da6074a3b2aa3b1a93f205adfe448",
+        "Tools/device-lab/src/GlkMetalBench.swift": "87c9d711742d08a199bfc8ef4be3d382f5442dc8ffc6ad82342a2e10fa22f5c2",
+        "Tools/device-lab/staging/stage-glk-device-lab.py": "8f239aa7e3d5713bc723092341b699ddf84af8f192c2ebad2b63e97bbfc14810",
+        "Tools/device-lab/tests/glk_oracle_tests.cpp": "ebb3f2dd07e11a8d653a0982a8ceb42ba7c82f2c9708bd65ea7f4624ae82422b",
+        "Tools/device-lab/tests/test_device_lab_host.py": "c3929f00f39c652605c14de9ebfed201f128501f692d215cbf0d400782b5d3e1"
+      },
+      "validation": {
+        "host_tests": "113/113 (author)",
+        "canonical_build": "bit-identical glk-metal-bench 4185da13a431e8e9264a2a88631f1e8d09af465e36ace221deaf2d28523d755e and glk-framebuffer-probe f8fdcbe4f2f59f03796ac9e0fce941d157b6662730d7f05584b1d71ef7cdf3eb",
+        "target_bench": "exit 3 x3, device_count 0, host gate passed; no benchmark numbers"
+      },
+      "gpu_execution": "NOT_RUN (no Metal device on target)"
+    },
+    {
+      "role": "glk_opregion_native_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude OpRegion snapshot core, IOKit adapter, shim, tests and runner.",
+      "frozen_manifest_sha256": "519d81e5b022f96f934f0648e134a44c59e3e977bc9a6959b990772064dbf517",
+      "canonical_file_sha256": {
+        "Drivers/NativeGlk/OpRegionSnapshot.LICENSE.MIT": "84601d4ddab28cd0ab801b18cffcec02496693be6039a9cffd2580c96d81a02c",
+        "Drivers/NativeGlk/OpRegionSnapshot.cpp": "a24bf579777560bac3d403aa86f46f115246030117debb0b42415d52262cdd8b",
+        "Drivers/NativeGlk/OpRegionSnapshot.hpp": "c9236f5f8b080e9659817599396c7e47c42e62649485c86c053e69cdabf027ed",
+        "Drivers/NativeGlk/OpRegionSnapshot.provenance.json": "884cbd0082cc161da620bf46d5deeebf08a19517cceed93a98991aa8b3522a5b",
+        "Mellow/GlkOpRegionIOKit.cpp": "209245faf6ec0152c2d384762a2657b7df0c132e8a3d381bddacf8ba034b12e2",
+        "Mellow/GlkOpRegionIOKit.hpp": "b40ead5186117ad27e24714d1fdc35a2d04536ef229153ca443478d5d8ab3599",
+        "tests/native_glk_opregion_shim/IOKit/IOCommandGate.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/IOLib.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/IOMapper.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/IOMemoryDescriptor.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/IOMessage.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/IOService.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/IOTimerEventSource.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/IOWorkLoop.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/pci/IOPCIDevice.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/pwr_mgt/IOPM.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/IOKit/pwr_mgt/IOPMpowerState.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/glk_opregion_shim.hpp": "26486011d75369e2417bd2918bd133c1568891e3ab4ac1e169d0c9c35ba5a6f3",
+        "tests/native_glk_opregion_shim/kern/clock.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_shim/libkern/version.h": "b25e5734f0aeb89cc757bda0722095c7937023715d04603387670c296597b9a9",
+        "tests/native_glk_opregion_tests.cpp": "ec87829a191aea673d331b64550b901770d41f73617c248661da265f8c0b1197",
+        "tests/run_native_glk_opregion.py": "33573da4f544a82a7db0d75931ced9224576b414c9fa9bbbb1d61350282a428f"
+      },
+      "canonical_adaptations": [
+        "Mellow/GlkOpRegionIOKit.cpp: extern \"C\" IOMallocData/IOFreeData declarations for the MacKernelSDK kext build only (not hosted); identical to SDK15.5 IOLib.h (frozen 777794b2199bcb2247582282b1c876a359230a9383d21f62afbeba4828653aed -> canonical 209245faf6ec0152c2d384762a2657b7df0c132e8a3d381bddacf8ba034b12e2)"
+      ],
+      "validation": {
+        "canonical_runner": "tests/run_native_glk_opregion.py <repo> <out> <pinned xnu config>",
+        "hosted_green": true,
+        "mutants_rejected": 35,
+        "kernel_compiled_sdk155": true,
+        "unresolved_symbols": 0,
+        "forbidden_symbols": 0,
+        "host_suite_groups": 57,
+        "report_sha256": "ae0adf5084348c6c4d031d53c600a45ae965aff9c8a967422735c2dcec098a41",
+        "rerun_after_canonical_adaptation": true
+      },
+      "gpu_execution": "NOT_RUN"
+    },
+    {
+      "role": "glk_shader_compiler_author",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude NativeGlkCompiler adapter, mglk-compile CLI, tests, locked Mesa patches/provenance and build/test runners.",
+      "frozen_manifest_sha256": "012d4a2296fc9851491089d6917ae5739248f5c4b158f5c3d6842db78afafb36",
+      "canonical_file_sha256": {
+        "Tools/build-glk-shader-compiler.py": "258f2370f4d50fe015f731687eb9490761d6e758511574cedae87a7bad1521a4",
+        "Tools/run-glk-shader-compiler-tests.py": "a28b236581e15c6a51617d653de675c685c086d9aefaa5edf6a60e3132fa0fe4",
+        "Userspace/NativeGlkCompiler/README.md": "cbaac30672a469e6bb3286c99f9473d5e97794baf45e5f1b29900db9155f6b3b",
+        "Userspace/NativeGlkCompiler/include/mellow_glk_compiler.h": "351e7c73b2f58329a58abdd604896ff7b8a587df225b67eae11578d041127b32",
+        "Userspace/NativeGlkCompiler/patches/0001-meson-intel-offline-compiler-option.patch": "9a5cd32447b003535d9e23e55aca545475790e38cfdf3f6d40ae9695b746789f",
+        "Userspace/NativeGlkCompiler/patches/0002-nir-full-library-for-intel-offline-compiler.patch": "c314b3ecae3686aef80fb6211f7c842b5c480cee3a3caad0852d3d666fcb9c6b",
+        "Userspace/NativeGlkCompiler/provenance/mesa-glk-compiler.lock.json": "909f6bcbb21e468e3bacc1274381d50fb45f4c3bf0dbb0ee7bb774d5fa013a10",
+        "Userspace/NativeGlkCompiler/src/mellow_glk_compiler.c": "50ee39e3fd27d4ab6e85725a5f202886cce5b342b492ea2563838346ffade6ea",
+        "Userspace/NativeGlkCompiler/tests/glk_compiler_tests.c": "e4c4b058830e5544dfda5a2abfdffaad679f3bc9ca48f9996ecd5e6d760a2236",
+        "Userspace/NativeGlkCompiler/tools/mglk_compile.c": "8d9b9be58fe3d7aa2602ef31fbc9baebd454f4f08cf18e144c9db40490a9ec13"
+      },
+      "upstream_pin": {
+        "mesa_commit": "f5cb8ee032adabef599ae892ec4e42d796b84da9",
+        "lock_sha256": "909f6bcbb21e468e3bacc1274381d50fb45f4c3bf0dbb0ee7bb774d5fa013a10"
+      },
+      "validation": {
+        "author_host_checks": 301,
+        "author_cases": 41,
+        "author_cli_runs": 29,
+        "author_report_sha256": "9a5790eb96db25b743c08c8115de8601eb275cb4e826b8d527e6784083c33250",
+        "canonical_rerun": "NOT_RUN: the test runner writes into the author Mesa work tree, and the downloaded Mesa build/venv is deliberately not in the repository"
+      },
+      "gpu_execution": "NOT_RUN (offline host compiler; produced ISA never uploaded or executed; not GPU evidence)"
+    },
+    {
+      "role": "glk_canonical_integrator",
+      "initialized_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "observed_effort_value": null,
+      "authorship": "Claude canonical integration: Xcode wiring, SDK-composition fixes, host suites, standalone probe builder, validator regression tests; root added validate-macho identity keywords.",
+      "canonical_file_sha256": {
+        "Tools/build-glk-passive-probe.py": "e87a9ee3643de3b8cdd725e077c95128be97809cf4291f60b3d6d7d6adcd8a41",
+        "tests/validate_macho_identity_tests.py": "4af495a1f3e86aeefa3ef33293d4d33c4d2bd9778fb92d824127de8dd7e43c4a",
+        "Tools/validate-macho.py": "9b3339b026f3ff4aa2ef6d778066a9cf1d739995c380bc2aa7eb613411626113",
+        "Tools/run-host-tests.py": "5e0eba59903639c03d5a9394f148a27a26be0bf6c145c5d9bc54f95765f03b28",
+        "Drivers/NativeGlk/README.md": "adb5e09487b65f50902040e087769f68e03fdb199bd4f4f93ac7c5e3924c97db",
+        ".github/workflows/build.yml": "c3c65e53a4402ebfa321c5048147e55f41bb46cf66be56e217e5025d7256a2a3"
+      },
+      "validation": {
+        "validate_macho_identity_tests": "6/6 PASS; 4 errors against HEAD validator (RED)",
+        "host_suites": "43/43 PASS",
+        "native_xcode_preview": "Release build succeeded; 20 GLK translation units in link list; 448/448 imports statically eligible against live-matched 24H32 Boot/System KC + target Lilu 1.7.3",
+        "standalone_probe": "Tools/build-glk-passive-probe.py reproduced installed binary, Info.plist and CodeResources byte-identically; 304/304 imports eligible"
+      },
+      "gpu_execution": "NOT_RUN"
+    }
+  ],
+  "xcode_source_units_added": 20,
+  "new_cpp_or_native_boundary_suites": 17,
+  "native_preview": "Actual x86_64 Xcode Release compile/link of all 20 GLK units; 448 imports statically eligible against 24H32 Boot/System KC (live target hashes equal the inputs, boot C5BBABA0-1906-4279-8ADA-59CC665B74F7) and actual target Lilu 1.7.3. Runtime linkage/load/execution NOT_RUN. Clean-commit build receipt and audit are in spec/evidence/15igl7-glk-integration-20261016.json.",
+  "hardware_qualified_profiles": 0,
+  "metal3_windowserver_apps_games": "INCOMPLETE",
+  "source_firmware_dependency_closure": "UNKNOWN",
+  "terminal_cli_result_is_not_source_adoption": true,
+  "host_suites_total": 43,
+  "changed_host_dma_fixture_independently_rechecked": true,
+  "pending_unfrozen_roles": [
+    "glk_ppgtt_native_author"
+  ]
+}

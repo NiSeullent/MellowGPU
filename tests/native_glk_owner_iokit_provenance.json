@@ -1,0 +1,364 @@
+{
+ "component": "Mellow/GlkPhysicalOwnerIOKit.{hpp,cpp}",
+ "scope": "Primary-source facts used by the GLK physical PCI owner. No code imported; register offsets and API semantics only. No full-source, dependency or firmware clearance inferred.",
+ "target": "user-designated Lenovo 15IGL7, Intel N4120 GLK 8086:3185 rev 06 subsystem 17aa:3e77, x86_64 macOS 15.8.1 (24H32)",
+ "target_observation_not_proof": "registry 4294967813 was observed on the target once; registry IDs are per boot and are bound at start, never compiled in.",
+ "sdk": {
+  "path": "/Library/Developer/CommandLineTools/SDKs/MacOSX15.5.sdk",
+  "version": "15.5",
+  "sdk_settings_sha256": "58a133735f0a55a624a1703067059f6e78925e51725ec6e1f966072e142c9c42",
+  "headers": {
+   "IOKit/IOService.h": {
+    "sha256": "8c9d69d1b562e4f0b0df8d1fab437a373cd814773da2aa1187d47d46e1e44351",
+    "anchors_line_numbers": {
+     "UInt32 getPowerState( void );": [
+      1893
+     ],
+     "the call will return the index to the device's off state": [
+      1890
+     ],
+     "IOReturn acknowledgeSetPowerState( void );": [
+      1705
+     ],
+     "virtual void PMstop( void );": [
+      1642
+     ],
+     "virtual bool didTerminate(": [
+      439
+     ]
+    }
+   },
+   "IOKit/pci/IOPCIDevice.h": {
+    "sha256": "1d07805ca214f6903601a4ffca5e3b239bff766795852423fe635af333063a72",
+    "anchors_line_numbers": {
+     "bool setBusLeadEnable( bool enable );": [
+      1093
+     ],
+     "kIOPCIConfigSubSystemVendorID": [
+      55
+     ]
+    }
+   },
+   "IOKit/IOCommandGate.h": {
+    "sha256": "c5157bbcc68d92246f9b300ed6a4733f9db7180c54b05a9bd1c20081c42359c3",
+    "anchors_line_numbers": {
+     "virtual IOReturn commandSleep(void *event,": [
+      210,
+      236
+     ]
+    }
+   },
+   "IOKit/IOTimerEventSource.h": {
+    "sha256": "5a714232fc47d1998bf7e6c8a596b13e796f30907d3ad765d360115c4a671fd0",
+    "anchors_line_numbers": {
+     "virtual IOReturn setTimeoutUS(UInt32 us);": [
+      225
+     ]
+    }
+   },
+   "IOKit/pwr_mgt/IOPMpowerState.h": {
+    "sha256": "66e19c7c0544e2523d1dc3617cbf436f0b0b7eff7205651b9f36c3798516a424",
+    "anchors_line_numbers": {
+     "struct IOPMPowerState {": [
+      56
+     ]
+    }
+   },
+   "libkern/version.h": {
+    "sha256": "39aab888e3f6ae3943c6fe0426ff75e952c80012160cdb5c64c1e2767013d651",
+    "anchors_line_numbers": {
+     "extern const int version_major;": [
+      79
+     ]
+    }
+   }
+  }
+ },
+ "sources": [
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "iokit/Kernel/IOService.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOService.cpp",
+   "bytes": 245277,
+   "sha256": "20b213234fc060ee8ffafcbde41a87479058ebb7e9b4e4e5ac173cf2e2d28876",
+   "git_blob": "39f62c75584cec52a494137168f1ebca4d5daf08",
+   "license_notice_line": [
+    "* Copyright (c) 1998-2021 Apple Inc. All rights reserved.",
+    "* @APPLE_OSREFERENCE_LICENSE_HEADER_START@"
+   ],
+   "anchors_line_numbers": {
+    "IOService::didTerminate( IOService * provider, IOOptionBits options, bool * defer )": [
+     2958
+    ],
+    "message( kIOMessageServiceIsRequestingClose, provider, (void *)(uintptr_t) options );": [
+     2971
+    ],
+    "IOService::close(  IOService *     forClient,": [
+     3561
+    ],
+    "forClient->scheduleStop( this );": [
+     3582
+    ],
+    "victim->messageClients( kIOMessageServiceIsTerminated, (void *)(uintptr_t) options );": [
+     3029
+    ],
+    "client->didTerminate( victim, options, &defer );": [
+     3039
+    ],
+    "client->stop( provider );": [
+     3156
+    ],
+    "provider->close( client );": [
+     3158
+    ]
+   },
+   "fact_relied_on": "didTerminate asks an opening client to close and schedules stop only when it no longer holds the provider; close() after termination phase 3 schedules stop; kIOMessageServiceIsTerminated precedes didTerminate without the victim's arbitration lock; actionStop calls stop() before force-closing.",
+   "import_scope": "facts/semantics only; no source text copied"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "iokit/Kernel/IOServicePM.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOServicePM.cpp",
+   "bytes": 284767,
+   "sha256": "6dbaea61dd83dcf9c0cca8fae785a32587a87136fa74c295d6a8a0957e66b4f1",
+   "git_blob": "fe889408973462e233f26dc6566a128b65411851",
+   "license_notice_line": [
+    "* Copyright (c) 1998-2020 Apple Inc. All rights reserved.",
+    "* @APPLE_OSREFERENCE_LICENSE_HEADER_START@"
+   ],
+   "anchors_line_numbers": {
+    "IOService::PMstop( void )": [
+     695
+    ],
+    "waitForPMDriverCall();": [
+     715
+    ],
+    "IOService::acknowledgeSetPowerState( void )": [
+     1665
+    ],
+    "// driver acked while setPowerState() call is in-flight.": [
+     1695
+    ],
+    "#define kMaxTimeRequested": [
+     194
+    ],
+    "timed out after %d ms": [
+     5557,
+     5576,
+     5591,
+     5608,
+     5639
+    ],
+    "// Unblock state machine and pretend driver has acked.": [
+     5615
+    ],
+    "IOService::getPowerState( void )": [
+     3550
+    ]
+   },
+   "fact_relied_on": "PMstop waits for in-flight driver calls (never call it holding the gate); acknowledgeSetPowerState only queues a request and may arrive before setPowerState returns; requested time is clamped at 30 s; a tardy third-party setPowerState is logged and treated as acked on release macOS (panic only for first-party kexts or kIOLogDebugPower).",
+   "import_scope": "facts/semantics only; no source text copied"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "iokit/Kernel/IOCommandGate.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOCommandGate.cpp",
+   "bytes": 8588,
+   "sha256": "99e2ac31e11e1df5bc7d67ed847d6e395b89a103714adae85b8d1aed13faeba6",
+   "git_blob": "bfed9965d930b96b3ebde7cd112e0efb56c70435",
+   "license_notice_line": [
+    "* Copyright (c) 1998-2000, 2009-2010 Apple Inc. All rights reserved.",
+    "* @APPLE_OSREFERENCE_LICENSE_HEADER_START@"
+   ],
+   "anchors_line_numbers": {
+    "IOCommandGate::runAction(Action inAction,": [
+     196
+    ],
+    "IOCommandGate::commandSleep(void *event, AbsoluteTime deadline, UInt32 interruptible)": [
+     326
+    ],
+    "IOCommandGate::commandWakeup(void *event, bool oneThread)": [
+     337
+    ]
+   },
+   "fact_relied_on": "runAction serializes on the work-loop gate; commandSleep releases it while sleeping until wakeup or deadline.",
+   "import_scope": "facts/semantics only; no source text copied"
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "iokit/Kernel/IOWorkLoop.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOWorkLoop.cpp",
+   "bytes": 18539,
+   "sha256": "10f6d04e18a5fb60fda7782b13c5b551d7e27bb191e798ad1011429c0ef66bc3",
+   "git_blob": "1d93f463c39d7bb688d7311ef411ed5ef916a147",
+   "license_notice_line": [
+    "* Copyright (c) 1998-2010 Apple Inc. All rights reserved.",
+    "* @APPLE_OSREFERENCE_LICENSE_HEADER_START@"
+   ],
+   "anchors_line_numbers": {
+    "IOWorkLoop::inGate() const": [
+     483
+    ],
+    "IOWorkLoop::sleepGate(void *event, AbsoluteTime deadline, UInt32 interuptibleType)": [
+     535
+    ]
+   },
+   "fact_relied_on": "inGate reports whether the calling thread holds the gate; the gate is the owner's shared sleepable lock.",
+   "import_scope": "facts/semantics only; no source text copied",
+   "cached_copy": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/claude-swarm-20261016/wave5-results/glk_irq_author/fetch-xnu/IOWorkLoop.cpp",
+   "cached_sha256_equal": true
+  },
+  {
+   "repository": "apple-oss-distributions/xnu",
+   "commit": "43a90889846e00bfb5cf1d255cdc0a701a1e05a4",
+   "path": "iokit/Kernel/IOTimerEventSource.cpp",
+   "url": "https://github.com/apple-oss-distributions/xnu/blob/43a90889846e00bfb5cf1d255cdc0a701a1e05a4/iokit/Kernel/IOTimerEventSource.cpp",
+   "bytes": 14305,
+   "sha256": "97ddf1e91351f4e034250412c81e8e6541c95a64435ef28a2529c316492b1141",
+   "git_blob": "0ee1fe90653d0babb85e71c84d35ad8db8160fdf",
+   "license_notice_line": [
+    "* Copyright (c) 1998-2000, 2009-2010 Apple Inc. All rights reserved.",
+    "* @APPLE_OSREFERENCE_LICENSE_HEADER_START@"
+   ],
+   "anchors_line_numbers": {
+    "IOTimerEventSource::setTimeoutUS(UInt32 us)": [
+     435
+    ],
+    "IOTimerEventSource::cancelTimeout()": [
+     386
+    ]
+   },
+   "fact_relied_on": "Drain deadline delivered on the owner's work loop with the gate closed.",
+   "import_scope": "facts/semantics only; no source text copied"
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "path": "include/drm/intel/pciids.h",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/pciids.h",
+   "bytes": 31897,
+   "sha256": "102d8f821c9464ad17c0160535a4e3811f49609f199f1b6d7268050d71d8e8f0",
+   "git_blob": "dff389b56eb3bf0ebcf9d8a81c2e76722a0ea54f",
+   "license_notice_line": [
+    "* Copyright 2013 Intel Corporation",
+    "* Permission is hereby granted, free of charge, to any person obtaining a"
+   ],
+   "anchors_line_numbers": {
+    "INTEL_GLK_IDS": [
+     406
+    ],
+    "0x3185": [
+     408
+    ],
+    "#define INTEL_VGA_DEVICE": [
+     34
+    ]
+   },
+   "fact_relied_on": "0x3185 is a Gemini Lake ID; i915 matching constrains display base class 0x03.",
+   "import_scope": "facts/semantics only; no source text copied",
+   "cached_copy": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/include/drm/intel/pciids.h",
+   "cached_sha256_equal": true
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "path": "drivers/gpu/drm/i915/i915_pci.c",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+   "bytes": 26723,
+   "sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1",
+   "git_blob": "2f03f95945f1b9a243a61db163576d0071d53e9c",
+   "license_notice_line": [
+    "* Copyright \u00a9 2016 Intel Corporation",
+    "* Permission is hereby granted, free of charge, to any person obtaining a"
+   ],
+   "anchors_line_numbers": {
+    "if (PCI_FUNC(pdev->devfn))": [
+     991
+    ],
+    "INTEL_GLK_IDS": [
+     835
+    ]
+   },
+   "fact_relied_on": "i915 binds PCI function 0 only; GLK uses i915 (not Xe).",
+   "import_scope": "facts/semantics only; no source text copied",
+   "cached_copy": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/i915_pci.c",
+   "cached_sha256_equal": true
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "path": "drivers/gpu/drm/i915/i915_driver.c",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_driver.c",
+   "bytes": 49942,
+   "sha256": "ade562191b40f2329eab125ddaaba2dd0c0825965be2a095da154c62daac1ffd",
+   "git_blob": "ce6d20958320c1f91a50678230eb96f88f0b357b",
+   "license_notice_line": [
+    "* Copyright 2003 Tungsten Graphics, Inc., Cedar Park, Texas.",
+    "* Permission is hereby granted, free of charge, to any person obtaining a"
+   ],
+   "anchors_line_numbers": {
+    "pci_set_master(pdev);": [
+     537
+    ],
+    "pci_disable_device(pdev);": [
+     826,
+     927
+    ]
+   },
+   "fact_relied_on": "i915 enables bus mastering at hardware probe; owner enables it only when firmware left it clear and restores only its own change.",
+   "import_scope": "facts/semantics only; no source text copied",
+   "cached_copy": "/Users/skyhype/Documents/Codex/2026-10-15/sp/work/glk-next-native-primitives/linux/drivers/gpu/drm/i915/i915_driver.c",
+   "cached_sha256_equal": true
+  },
+  {
+   "repository": "torvalds/linux",
+   "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+   "path": "include/uapi/linux/pci_regs.h",
+   "url": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/uapi/linux/pci_regs.h",
+   "bytes": 75382,
+   "sha256": "51d2a1344da2a56e913e9d69b3b5d90eaaf4fb0bf96e672a5674ea819182c69b",
+   "git_blob": "facaa324bd86a73832d589c913a6d3c354ef9854",
+   "license_notice_line": [
+    "/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */",
+    "*\tCopyright 1994, Drew Eckhardt",
+    "*\tCopyright 1997--1999 Martin Mares <mj@ucw.cz>"
+   ],
+   "anchors_line_numbers": {
+    "#define PCI_HEADER_TYPE": [
+     78
+    ],
+    "#define  PCI_HEADER_TYPE_MASK": [
+     79
+    ],
+    "#define PCI_CAPABILITY_LIST": [
+     122
+    ],
+    "#define  PCI_STATUS_CAP_LIST": [
+     56
+    ],
+    "#define  PCI_CAP_ID_PM": [
+     219
+    ],
+    "#define PCI_PM_CTRL\t": [
+     262
+    ],
+    "#define  PCI_PM_CTRL_STATE_MASK": [
+     263
+    ],
+    "#define  PCI_COMMAND_MEMORY": [
+     42
+    ],
+    "#define  PCI_COMMAND_MASTER": [
+     43
+    ]
+   },
+   "fact_relied_on": "Register offsets/masks for the read-only header, capability walk, PMCSR D0 and command checks.",
+   "import_scope": "facts/semantics only; no source text copied"
+  }
+ ],
+ "hosted_shim_semantics": "tests/native_glk_owner_iokit_shim.hpp re-implements only the cited XNU behaviors (didTerminate/close/stop scheduling, gate/commandSleep/wakeup, kBypassed rejection) in original test code."
+}
