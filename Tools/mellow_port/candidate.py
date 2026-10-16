@@ -3,7 +3,6 @@
 SPDX-License-Identifier: MIT
 Original MellowGPU tooling; existing repository/component licenses are unchanged.
 """
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -12,7 +11,7 @@ import stat
 import tempfile
 
 from . import upstreams as u
-from .core import PortError, canonical, digest, license_facts, no_links, reject_json_constant, unique_json_object
+from .core import PortError, canonical, digest, license_facts, no_links, paths_overlap, reject_json_constant, unique_json_object
 
 MAX_SOURCE_BYTES = 128 * 1024 * 1024
 MAX_LOCAL_BYTES = 32 * 1024 * 1024
@@ -43,8 +42,11 @@ def _snapshot_lock(path):
 
 
 def _write(path, data, mode=0o444):
-    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, mode)
+    directory = u.open_directory(path.parent, create=True)
+    try:
+        fd = os.open(path.name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, mode, dir_fd=directory)
+    except BaseException:
+        os.close(directory); raise
     identity = os.fstat(fd)
     try:
         view = memoryview(data)
@@ -53,18 +55,16 @@ def _write(path, data, mode=0o444):
             u.require(size > 0, 'Incomplete candidate write')
             view = view[size:]
         os.fsync(fd)
-        directory = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-        try: os.fsync(directory)
-        finally: os.close(directory)
+        os.fsync(directory)
     except BaseException:
         # Remove only this call's incomplete file; preserve an unexpected replacement.
         try:
-            now = path.lstat()
-            if (now.st_dev, now.st_ino) == (identity.st_dev, identity.st_ino): path.unlink()
+            now = os.stat(path.name, dir_fd=directory, follow_symlinks=False)
+            if (now.st_dev, now.st_ino) == (identity.st_dev, identity.st_ino): os.unlink(path.name, dir_fd=directory)
         except OSError: pass
         raise
     finally:
-        os.close(fd)
+        os.close(fd); os.close(directory)
 
 
 def _json(path, value):
@@ -74,24 +74,15 @@ def _json(path, value):
 def _project_inputs(component, root):
     head = u.git(['rev-parse', '--verify', 'HEAD'], root).decode().strip()
     u.object_id(head)
-    u.require(u.git(['cat-file', '-t', head], root).strip() == b'commit', 'Project HEAD must be a commit')
-    records, data, total = [], {}, 0
+    records, data, total, objects = [], {}, 0, {}
+    u.verified_git_object(root, head, 'commit', objects)
     for kind in ('patches', 'configuration'):
         for item in component[kind]:
             name = _safe_path(item['path'])
-            row = u.git(['ls-tree', '-z', head, '--', name], root)
-            try:
-                header, filename = row.rstrip(b'\0').split(b'\t')
-                mode, object_type, oid = header.decode().split()
-            except ValueError as error:
-                raise PortError('Project input is not a tracked Git blob') from error
-            u.require(filename.decode() == name and mode in ('100644', '100755') and object_type == 'blob', 'Project input mode/membership mismatch')
-            size = u.git(['cat-file', '-s', head + ':' + name], root).strip()
-            u.require(size.isdigit() and int(size) <= u.MAX_BYTES, 'Project input exceeds bound')
-            blob = u.git(['cat-file', 'blob', head + ':' + name], root)
-            hasher = hashlib.sha1 if len(oid) == 40 else hashlib.sha256
-            u.require(hasher(b'blob ' + str(len(blob)).encode() + b'\0' + blob).hexdigest() == oid and digest(blob) == item['sha256'], 'Project input Git blob/digest mismatch')
+            mode, oid, blob = u.verified_git_blob(root, head, name, objects)
+            u.require(digest(blob) == item['sha256'], 'Project input Git blob/digest mismatch')
             u.require(u.read_file(root, name) == blob, 'Project input worktree differs from HEAD')
+            u.reject_reference_bytes(blob)
             total += len(blob)
             u.require(total <= MAX_LOCAL_BYTES, 'Project input aggregate bound exceeded')
             if name in data: u.require(data[name] == blob, 'Conflicting project input')
@@ -102,18 +93,52 @@ def _project_inputs(component, root):
 
 def _tree(root, maximum=MAX_PATCHED_BYTES):
     result = {}
-    for current, directories, files in os.walk(root, followlinks=False):
-        for name in directories + files:
-            file = Path(current) / name
-            info = file.lstat()
-            relative = file.relative_to(root).as_posix()
+    def walk(directory, prefix):
+        info = os.fstat(directory)
+        u.require(info.st_mode & 0o500 == 0o500, 'Unreadable candidate directory rejected')
+        names = sorted(os.listdir(directory))
+        for name in names:
+            info = os.stat(name, dir_fd=directory, follow_symlinks=False)
+            relative = prefix + name
             _safe_path(relative)
             u.require(stat.S_ISREG(info.st_mode) or stat.S_ISDIR(info.st_mode), 'Candidate contains a link or special file')
-            if stat.S_ISREG(info.st_mode):
-                u.require(not info.st_mode & 0o111 and info.st_size <= u.MAX_BYTES, 'Candidate file mode/size rejected')
-                result[relative] = u.read_file(root, relative)
+            if stat.S_ISDIR(info.st_mode):
+                child = os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=directory)
+                try:
+                    opened = os.fstat(child)
+                    u.require((opened.st_dev, opened.st_ino) == (info.st_dev, info.st_ino), 'Candidate directory changed')
+                    u.require(walk(child, relative + '/'), 'Empty/unlisted candidate directory rejected')
+                finally: os.close(child)
+            else:
+                u.require(info.st_nlink == 1 and not info.st_mode & 0o111 and info.st_size <= u.MAX_BYTES,
+                          'Candidate file link/mode/size rejected')
+                child = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
+                try:
+                    opened = os.fstat(child)
+                    u.require((opened.st_dev, opened.st_ino) == (info.st_dev, info.st_ino), 'Candidate file changed')
+                    result[relative] = u.read_regular(child)
+                finally: os.close(child)
+        return bool(names)
+    directory = u.open_directory(root)
+    try:
+        walk(directory, '')
+    except OSError as error:
+        raise PortError('Cannot enumerate complete candidate tree: ' + str(error)) from error
+    finally: os.close(directory)
     u.require(sum(len(data) for data in result.values()) <= maximum, 'Candidate aggregate bound exceeded')
     return result
+
+
+def _readonly(root, name, expected):
+    directory = u.open_directory(root / Path(name).parent)
+    try:
+        fd = os.open(Path(name).name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
+        try:
+            u.require(os.fstat(fd).st_nlink == 1 and u.read_regular(fd) == expected,
+                      'Candidate changed before read-only conversion')
+            os.fchmod(fd, 0o444); os.fsync(fd)
+        finally: os.close(fd)
+    finally: os.close(directory)
 
 
 def _manifest(contents):
@@ -136,7 +161,7 @@ def _expected_patch(contents, patch):
     except UnicodeError as error: raise PortError('Patch must be UTF-8') from error
     lines = _lines(patch)
     starts = [i for i, line in enumerate(lines) if line.startswith(b'diff --git ')]
-    u.require(starts, 'Git text diff headers required')
+    u.require(starts and starts[0] == 0, 'Patch must start with a Git text diff header; preamble rejected')
     result = dict(contents); changed = set()
     for index, start in enumerate(starts):
         block = lines[start:(starts[index + 1] if index + 1 < len(starts) else len(lines))]
@@ -190,13 +215,21 @@ def _expected_patch(contents, patch):
 
 
 def _apply_patch(staged, patch_file, contents, git_dir):
-    u.require(_tree(staged) == contents, 'Staged source changed before apply')
+    # Public output names are never a Git working tree. A swapped output root
+    # therefore cannot redirect Git's writes into the original checkout.
+    u.require(not staged.exists(), 'Patched source exposed before complete validation')
     patch_bytes = u.read_file(patch_file.parent, patch_file.name)
     expected = _expected_patch(contents, patch_bytes)
-    prefix = ['--git-dir=' + str(git_dir), '--work-tree=' + str(staged), 'apply']
-    u.git(prefix + ['--check', '--whitespace=error-all', str(patch_file)], staged)
-    u.git(prefix + ['--whitespace=error-all', str(patch_file)], staged)
-    actual = _tree(staged)
+    for data in expected.values(): u.reject_reference_bytes(data)
+    with tempfile.TemporaryDirectory(prefix='apply-', dir=git_dir.parent) as temporary:
+        private = Path(temporary).resolve()
+        work = private / 'work'; work.mkdir(mode=0o700)
+        for name, data in contents.items(): _write(work / name, data, 0o644)
+        captured_patch = private / 'input.patch'; _write(captured_patch, patch_bytes)
+        prefix = ['--git-dir=' + str(git_dir), '--work-tree=' + str(work), 'apply']
+        u.git(prefix + ['--check', '--whitespace=error-all', str(captured_patch)], work)
+        u.git(prefix + ['--whitespace=error-all', str(captured_patch)], work)
+        actual = _tree(work)
     u.require(actual == expected, 'Actual Git result differs from exact line/context result')
     return actual, {'patch_sha256': digest(patch_bytes), 'check_exit_code': 0, 'apply_exit_code': 0,
                     'exact_line_context_verified': True, 'before': _manifest(contents), 'after': _manifest(actual)}
@@ -207,7 +240,7 @@ def stage_candidate(lock_path, component_id, source_root, output, project_root=N
     target = no_links(output); lock_path = no_links(lock_path)
     u.require(not target.exists() and target.parent.is_dir(), 'Candidate output must be fresh with an existing parent')
     for root in (source, project):
-        u.require(not target.is_relative_to(root) and not root.is_relative_to(target), 'Candidate output/source/project overlap rejected')
+        u.require(not paths_overlap(target, root), 'Candidate output/source/project overlap rejected')
     lock, lock_raw = _snapshot_lock(lock_path)
     entries = [entry for entry in lock['components'] if entry['id'] == component_id]
     u.require(len(entries) == 1, 'Unknown candidate component')
@@ -220,7 +253,10 @@ def stage_candidate(lock_path, component_id, source_root, output, project_root=N
     for item in entry['files']:
         name = _safe_path(item['path']); data = u.read_file(source, name)
         u.require(digest(data) == item['sha256'], 'Source changed before materialization'); raw[name] = data
-    target.mkdir(mode=0o700)
+    directory = u.open_directory(target.parent)
+    try:
+        os.mkdir(target.name, mode=0o700, dir_fd=directory); os.fsync(directory)
+    finally: os.close(directory)
     try:
         intent = {'schema': 'mellowgpu.candidate-intent/1', 'component': component_id,
             'commit': entry['commit'], 'lock_sha256': digest(lock_raw), 'ready': False, 'build_eligible': False,
@@ -229,7 +265,6 @@ def stage_candidate(lock_path, component_id, source_root, output, project_root=N
         _write(target / 'inputs.lock.json', lock_raw)
         for name, data in raw.items():
             _write(target / 'source-raw' / name, data)
-            _write(target / 'source-patched' / name, data, 0o644)
         for name, data in local.items(): _write(target / 'project-inputs' / name, data)
         apply_records = []; current = dict(raw)
         with tempfile.TemporaryDirectory(prefix='mellow-candidate-git-') as temporary:
@@ -238,6 +273,10 @@ def stage_candidate(lock_path, component_id, source_root, output, project_root=N
             for patch in entry['patches']:
                 current, record = _apply_patch(target / 'source-patched', target / 'project-inputs' / patch['path'], current, git_dir)
                 record['path'] = patch['path']; apply_records.append(record)
+        for data in current.values(): u.reject_reference_bytes(data)
+        # Every patch result is already independently byte-checked against Git.
+        # The no-follow writer materializes it without asking Git to touch output.
+        for name, data in current.items(): _write(target / 'source-patched' / name, data)
         # Revalidate all originals, project membership, captured inputs and staged outputs.
         u.require(_snapshot_lock(lock_path) == (lock, lock_raw), 'Lock changed during candidate staging')
         u.require(u.read_file(target, 'inputs.lock.json') == lock_raw and u.load_lock(target / 'inputs.lock.json') == lock, 'Captured lock bytes/reparse mismatch')
@@ -249,21 +288,29 @@ def stage_candidate(lock_path, component_id, source_root, output, project_root=N
         for prefix, contents in (('source-raw/', raw), ('source-patched/', current), ('project-inputs/', local)):
             expected_bundle.update({prefix + name: data for name, data in contents.items()})
         u.require(_tree(target, MAX_BUNDLE_BYTES) == expected_bundle, 'Unexpected or altered candidate bundle files')
-        facts = {}
-        for name, data in current.items():
-            if name.endswith(('.c', '.h', '.cc', '.cpp', '.hpp', '.inc', '.sh')):
-                facts[name] = license_facts(data.decode('utf-8'))
+        def observations(data):
+            try: return license_facts(data.decode('utf-8'))
+            except UnicodeError:
+                return {'utf8_text': False, 'license_compatibility_determined': False}
+        facts = {name: observations(data) for name, data in current.items()}
+        notice_paths = {item['path'] for item in entry['files'] if item['kind'] == 'notice'}
+        notice_paths.update(name for name in current if any(part.lower().startswith(
+            ('license', 'licence', 'copying', 'notice', 'copyright')) for part in Path(name).parts))
+        license_changes = sorted(name for name, data in current.items() if name not in raw or
+            observations(raw[name]) != facts[name] or (name in notice_paths and raw[name] != data))
         try:
             u.check_abi(entry, current); abi_matches = True
         except PortError:
             abi_matches = False
-        for name in current: (target / 'source-patched' / name).chmod(0o444)
+        for name, data in current.items(): _readonly(target / 'source-patched', name, data)
+        u.require(_tree(target, MAX_BUNDLE_BYTES) == expected_bundle, 'Candidate changed before completion')
         result = {'schema': 'mellowgpu.candidate-intake/1', 'status': 'evidence_intake_unapproved',
             'component': component_id, 'remote': entry['remote'], 'commit': entry['commit'], 'profile': entry['profile'],
             'lock_sha256': digest(lock_raw), 'project_commit': project_head, 'project_inputs': project_records,
             'source_verification': verification, 'raw_sources': _manifest(raw), 'patched_sources': _manifest(current),
             'patches': apply_records, 'patches_applied_exactly': True, 'patched_abi_checks_match': abi_matches,
-            'post_patch_license_observations': facts, 'license_review': entry['license_review'], 'license_review_accepted': False,
+            'post_patch_license_observations': facts, 'post_patch_license_changed_paths': license_changes,
+            'license_review': entry['license_review'], 'license_review_accepted': False,
             'blocking_gaps': ['Unapproved complete dependency/license closure', 'Build and native imports not executed',
                               'Full Metal3/WindowServer/apps/games hardware conformance unavailable'] +
                              ([] if abi_matches else ['Patched source ABI does not match locked exact assertions']),

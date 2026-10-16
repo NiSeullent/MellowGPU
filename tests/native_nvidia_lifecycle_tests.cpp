@@ -56,7 +56,8 @@ struct Physical {
     ChannelBinding claimed {};
     Operation claimResult {Operation::Done}, putResult {Operation::Done}, bellResult {Operation::Done};
     Operation releaseResult {Operation::Done};
-    QueueStatus afterResult {QueueStatus::Ok}, tokenResult {QueueStatus::Ok};
+    QueueStatus beforeResult {QueueStatus::Ok}, afterResult {QueueStatus::Ok}, tokenResult {QueueStatus::Ok};
+    QueueStatus fenceResult {QueueStatus::Ok};
     Hook onPut {Hook::None}, onQuiesce {Hook::None};
     bool channelClaimed {}, channelStopped {}, quiesceResult {true}, syncFails {}, otherConsumerActive {};
     uint32_t gpPut {}, gpGet {}, executed {}, workToken {0x5150}, rung {}, released {}, violations {};
@@ -151,8 +152,9 @@ QueueStatus seal(void *opaque, const ChannelBinding &binding, const MemoryView &
 }
 QueueStatus beforePut(void *opaque, const ChannelBinding &)
 {
-    physical(opaque).record('B');
-    return QueueStatus::Ok;
+    auto &p = physical(opaque);
+    p.record('B');
+    return p.beforeResult;
 }
 Operation writePut(void *opaque, const ChannelBinding &, uint32_t value)
 {
@@ -196,6 +198,8 @@ QueueStatus readFence(void *opaque, const ChannelBinding &binding, const MemoryV
     p.record('F');
     if (!p.channelClaimed || p.channelStopped)
         ++p.violations;
+    if (p.fenceResult != QueueStatus::Ok)
+        return p.fenceResult;
     const uint32_t value = le(fence.pin.cpu + binding.fenceOffset);
     if (value != p.released)
         return QueueStatus::InvalidFence;
@@ -951,6 +955,121 @@ bool channel_identity_cannot_evict_released_generation()
     return f.finish();
 }
 
+// The actual queue makes ANY non-Ok native fence read NeedsReset, including
+// Busy and ClockRegression. A status alone cannot distinguish that fault from
+// a pre-native clock refusal or a safely rolled-back publication.
+bool native_fence_status_respects_queue_reset_state()
+{
+    const QueueStatus statuses[] {QueueStatus::Ok, QueueStatus::Unavailable, QueueStatus::Invalid,
+        QueueStatus::UnsupportedClass, QueueStatus::UnsupportedChannel, QueueStatus::Ownership,
+        QueueStatus::MemoryFailure, QueueStatus::Capacity, QueueStatus::Busy,
+        QueueStatus::TransportFailure, QueueStatus::PublicationUnknown, QueueStatus::StaleToken,
+        QueueStatus::InvalidFence, QueueStatus::SequenceExhausted, QueueStatus::TimedOut,
+        QueueStatus::ClockRegression, QueueStatus::QuiesceFailed};
+    for (const auto native : statuses) {
+        Fixture f;
+        REQUIRE(f.init() && f.adapter.attach(f.binding).status == S::Ok);
+        FenceToken job;
+        REQUIRE(f.adapter.submit(f.request(0), 1, job).status == S::Ok);
+        f.physical.fenceResult = native;
+        uint32_t mark = f.physical.length;
+        auto r = f.adapter.poll(0); // Clock validation occurs before native read.
+        REQUIRE(r.status == S::Rejected && r.queue == QueueStatus::ClockRegression);
+        REQUIRE(f.queue.state() == QueueState::Ready && f.physical.since(mark, ""));
+        REQUIRE(f.lifecycle.snapshot().admissionOpen && !f.lifecycle.snapshot().unknownLeases);
+        r = f.adapter.poll(2); // Actual production QueueTransport injection.
+        REQUIRE(r.queueCalled && r.queue == native && f.physical.since(mark, "F"));
+        auto state = f.lifecycle.snapshot();
+        if (native == QueueStatus::Ok) {
+            REQUIRE(r.status == S::Ok && f.queue.state() == QueueState::Ready);
+            REQUIRE(state.admissionOpen && state.phase == DevicePhase::Running && !state.unknownLeases);
+        } else {
+            REQUIRE(r.status == (native == QueueStatus::TimedOut ? S::TimedOut : S::QueueFault));
+            REQUIRE(f.queue.state() == QueueState::NeedsReset && state.phase == DevicePhase::ResetPending);
+            REQUIRE(!state.admissionOpen && state.leases == 2 && state.unknownLeases == 2);
+            REQUIRE(!state.nativeQuiescenceAcknowledged && !state.quiescenceActive && state.generation == 1);
+            REQUIRE(f.adapter.channelHeld() && f.adapter.jobLeases() == 1 && f.holds(f.commands[0]) == 1);
+            f.physical.fenceResult = QueueStatus::Ok;
+            mark = f.physical.length;
+            r = f.adapter.poll(3); // A successful drain read does not clear NeedsReset.
+            REQUIRE(r.status == S::Ok && r.queue == QueueStatus::Ok && f.physical.since(mark, "F"));
+            REQUIRE(f.queue.state() == QueueState::NeedsReset && !f.lifecycle.snapshot().admissionOpen);
+            REQUIRE(f.lifecycle.snapshot().unknownLeases == 2 && f.lifecycle.snapshot().leases == 2);
+            mark = f.physical.length;
+            REQUIRE(f.adapter.expire(4).status == S::Ok && f.physical.since(mark, ""));
+            REQUIRE(!f.lifecycle.snapshot().admissionOpen && !f.lifecycle.snapshot().nativeQuiescenceAcknowledged);
+            FenceToken refused {9, 9};
+            r = f.adapter.submit(f.request(1), 5, refused);
+            REQUIRE(r.status == S::AdmissionClosed && !r.queueCalled && !refused.generation && f.physical.since(mark, ""));
+            REQUIRE(f.run(1)); // Only this simulated GPU release retires the job.
+            REQUIRE(f.adapter.poll(6).status == S::Ok && !f.adapter.jobLeases());
+            REQUIRE(f.lifecycle.snapshot().leases == 1 && f.lifecycle.snapshot().unknownLeases == 1);
+            REQUIRE(f.queue.state() == QueueState::NeedsReset && f.adapter.channelHeld());
+        }
+        REQUIRE(f.finish()); // Only explicit authoritative close releases the channel.
+    }
+    // A first adapter observation can also be Ok while an earlier queue-owner
+    // operation left NeedsReset. That state must still close open admission.
+    for (const bool expiry : {false, true}) {
+        Fixture f;
+        REQUIRE(f.init() && f.adapter.attach(f.binding).status == S::Ok);
+        FenceToken job;
+        REQUIRE(f.adapter.submit(f.request(0), 1, job).status == S::Ok);
+        f.physical.fenceResult = QueueStatus::Busy;
+        REQUIRE((expiry ? f.queue.expire(100) : f.queue.poll(2)) ==
+            (expiry ? QueueStatus::TimedOut : QueueStatus::Busy));
+        REQUIRE(f.queue.state() == QueueState::NeedsReset && f.lifecycle.snapshot().admissionOpen);
+        f.physical.fenceResult = QueueStatus::Ok;
+        const uint32_t mark = f.physical.length;
+        const auto r = expiry ? f.adapter.expire(101) : f.adapter.poll(3);
+        REQUIRE(r.status == S::QueueFault && r.queue == QueueStatus::Ok && r.queueCalled);
+        REQUIRE(f.physical.since(mark, expiry ? "" : "F"));
+        const auto state = f.lifecycle.snapshot();
+        REQUIRE(state.phase == DevicePhase::ResetPending && !state.admissionOpen);
+        REQUIRE(state.leases == 2 && state.unknownLeases == 2 && !state.nativeQuiescenceAcknowledged);
+        REQUIRE(f.holds(f.commands[0]) == 1 && f.adapter.channelHeld());
+        REQUIRE(f.finish());
+    }
+    for (const auto hook : {Hook::RequestStop, Hook::LoseDevice}) {
+        Fixture f;
+        REQUIRE(f.init() && f.adapter.attach(f.binding).status == S::Ok);
+        FenceToken job;
+        REQUIRE(f.adapter.submit(f.request(0), 1, job).status == S::Ok);
+        f.physical.fenceResult = QueueStatus::Busy;
+        REQUIRE(f.adapter.poll(2).status == S::QueueFault);
+        if (hook == Hook::RequestStop)
+            REQUIRE(f.lifecycle.requestStop() == LifecycleStatus::Success);
+        else
+            REQUIRE(f.lifecycle.markDeviceLost() == LifecycleStatus::Success);
+        const auto phase = hook == Hook::RequestStop ? DevicePhase::StopPending : DevicePhase::Lost;
+        f.physical.fenceResult = QueueStatus::Ok;
+        uint32_t mark = f.physical.length;
+        REQUIRE(f.adapter.poll(3).status == S::Ok && f.physical.since(mark, "F"));
+        const auto state = f.lifecycle.snapshot();
+        REQUIRE(state.phase == phase && !state.admissionOpen && state.leases == 2 && state.unknownLeases == 2);
+        REQUIRE(!state.nativeQuiescenceAcknowledged && state.generation == 1 && f.adapter.channelHeld());
+        mark = f.physical.length;
+        FenceToken refused;
+        REQUIRE(f.adapter.submit(f.request(1), 4, refused).status == S::AdmissionClosed && f.physical.since(mark, ""));
+        REQUIRE(f.finish());
+    }
+    Fixture transient;
+    REQUIRE(transient.init() && transient.adapter.attach(transient.binding).status == S::Ok);
+    uint32_t mark = transient.physical.length;
+    auto r = transient.adapter.attach(transient.binding);
+    REQUIRE(r.status == S::Busy && !r.queueCalled && transient.physical.since(mark, ""));
+    transient.physical.beforeResult = QueueStatus::Busy;
+    FenceToken unused {9, 9};
+    r = transient.adapter.submit(transient.request(0), 1, unused);
+    REQUIRE(r.status == S::Rejected && r.queue == QueueStatus::Busy && !unused.generation);
+    REQUIRE(transient.queue.state() == QueueState::Ready && transient.lifecycle.snapshot().admissionOpen);
+    REQUIRE(transient.lifecycle.snapshot().leases == 1 && !transient.lifecycle.snapshot().unknownLeases);
+    REQUIRE(!transient.holds(transient.commands[0]) && !transient.adapter.jobLeases());
+    transient.physical.beforeResult = QueueStatus::Ok;
+    REQUIRE(transient.adapter.submit(transient.request(0), 2, unused).status == S::Ok);
+    return transient.finish();
+}
+
 bool draining_stop_keeps_completion_distinct_from_release()
 {
     Fixture f;
@@ -993,6 +1112,7 @@ int main()
         {"identities and generations stay independent", independent_identities_and_generations},
         {"foreign obligations stay owned through the stop", foreign_obligations_stay_owned_through_the_stop},
         {"channel identity cannot evict released generation", channel_identity_cannot_evict_released_generation},
+        {"native fence status respects queue reset state", native_fence_status_respects_queue_reset_state},
         {"draining stop keeps completion distinct from release", draining_stop_keeps_completion_distinct_from_release}};
     unsigned failed = 0;
     for (const auto &test : tests) {

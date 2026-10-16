@@ -45,8 +45,23 @@ separately from the selected frontend. The explicit driver's
 effective target, and requested SDK are bound before and after capture and
 checked again during verification. A custom compiler is queried directly; the
 tool never replaces it with an `xcrun` selection. Ambiguous frontend reports or
-a changed target fail closed. This evidence records the driver's reported
-selection and binary bytes, rather than claiming process or hardware attestation.
+a changed target fail closed. In addition to this selection probe, separate
+`compiler_commands` records retain the normalized token list and digest for
+the exact AST and dependency requests. Each reported frontend, effective target
+and SDK must agree with the selected identity. A source observation records its
+own Objective-C++ AST request too. Frontend, temporary source, SDK, compiler
+resource and debug/coverage working directories use fixed labels, including
+joined `-fdebug-compilation-dir=...` options; remaining absolute paths use
+digests. The raw command paths are not serialized.
+[`CCC_OVERRIDE_OPTIONS`](https://github.com/llvm/llvm-project/blob/main/clang/tools/driver/driver.cpp),
+which rewrites Clang's explicit command line, and the `CPATH`, `C_INCLUDE_PATH`,
+`CPLUS_INCLUDE_PATH`, `OBJC_INCLUDE_PATH` and `OBJCPLUS_INCLUDE_PATH` overrides
+must be unset, including empty values. Compiler subprocesses inherit only
+explicit executable/toolchain selection, temporary-directory/system-root
+settings and a C locale. In particular `PWD`, SDK/deployment overrides and
+semantic driver options are not inherited. The explicitly selected compiler
+remains a trusted input: a dishonest custom driver can misreport `-###`.
+Reported argv and binary digests are not execution or hardware attestation.
 
 The extractor runs the real Clang Objective-C frontend without modules and
 reads the complete AST. Filtering only names beginning with `MTL` would miss
@@ -64,11 +79,24 @@ actual macro expansion source span and reads recognized `API_AVAILABLE`,
 unrecognized wrappers or nonnumeric versions remain unresolved. Source macro
 definitions and other preprocessing inputs are pinned by Clang's dependency
 list, in addition to all Metal header hashes, SDK settings, and compiler bytes.
-Verification reruns dependency preprocessing and compares the full current input
-set and digests, so a newly added `__has_include` support header cannot pass just
-because previously recorded bytes remain unchanged. It verifies these input
-bindings; it does not regenerate or certify every saved declaration's semantics.
-This is not an independent certification of the SDK's annotation semantics.
+Both `verify` and `observe-source` perform a fresh complete capture and require
+exact equality of declarations, classification counts, compiler commands,
+headers, SDK settings and dependency membership/bytes. A newly added
+`__has_include` support header, deleted declaration or forged count therefore
+cannot pass because old bytes remain unchanged. Source observation additionally
+rechecks SDK inputs after its translation units. Clang's elided file names are
+expanded in full document order, including inherited attributes, before any
+declaration filtering. These are reproducible source-level census checks, not
+independent certification of annotation semantics or implementation behavior.
+Both `verify` and `observe-source` reject duplicate JSON object keys at every
+nesting level, including equal-valued duplicates. An inventory must have one
+unambiguous interpretation before its input bindings are checked.
+
+The schema remains `mellowgpu.metal-api-inventory/1`: the additive provenance
+fields do not change the declaration meaning. Readers require the exact current
+generator digest and tell users to recapture older reports. They do not silently
+migrate an earlier report or accept a partial provenance object. Counts require
+integer types; boolean or floating-point zero cannot stand in for integer zero.
 
 | Classification | Interpretation |
 | --- | --- |

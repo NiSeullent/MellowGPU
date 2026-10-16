@@ -72,7 +72,7 @@
           "sha256": "b47ba580fe38885f36367e61634b2e694ceddb5fb64060e13329eb338397d576",
           "size_bytes": 5506,
           "source_uri": "https://github.com/Almosst-DEV/Cobalt64/blob/d1f7bad8408a0a2c016b067c477422975a59de44/README.md",
-          "spdx": "MIT"
+          "spdx": "NOASSERTION"
         },
         {
           "git_blob": "6b835383a605b345187e69e1bd25a29dd59d7cdb",
@@ -81,7 +81,16 @@
           "sha256": "be272ec1dc42d0bb5f7bf285884a8dadf5f9b0748787ae9f89b9e3ec7d1deb0d",
           "size_bytes": 66040,
           "source_uri": "https://github.com/Almosst-DEV/Cobalt64/blob/d1f7bad8408a0a2c016b067c477422975a59de44/src/navi48-bringup/src/Navi48NativeABI.h",
-          "spdx": "MIT"
+          "spdx": "NOASSERTION"
+        },
+        {
+          "path": "src/navi48-bringup/LICENSE",
+          "kind": "notice",
+          "git_blob": "5ecb6f8cba28687522e6364f03e5dd75733bc1bb",
+          "sha256": "af392a48bb1321a8c008b044b522a5632e30a07f75579f830ec8d64bca39411e",
+          "size_bytes": 1525,
+          "spdx": "BSD-3-Clause",
+          "source_uri": "https://raw.githubusercontent.com/Almosst-DEV/Cobalt64/d1f7bad8408a0a2c016b067c477422975a59de44/src/navi48-bringup/LICENSE"
         }
       ],
       "id": "cobalt64-reference",
@@ -263,6 +272,210 @@
       "remote": "https://github.com/NVIDIA/open-gpu-kernel-modules",
       "role": "build-dependency",
       "tracking_ref": "refs/heads/main"
+    },
+    {
+      "id": "linux-i915",
+      "role": "reference-only",
+      "remote": "https://github.com/torvalds/linux",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "tracking_ref": "refs/heads/master",
+      "profile": "reference-only",
+      "consumers": [
+        "docs/source-analysis.md",
+        "docs/specification.md",
+        "porting/gpu-families.json",
+        "porting/backend-recipes.json"
+      ],
+      "files": [
+        {
+          "path": "drivers/gpu/drm/i915/i915_driver.c",
+          "kind": "source",
+          "git_blob": "ce6d20958320c1f91a50678230eb96f88f0b357b",
+          "sha256": "ade562191b40f2329eab125ddaaba2dd0c0825965be2a095da154c62daac1ffd",
+          "size_bytes": 49942,
+          "source_uri": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_driver.c",
+          "spdx": "MIT"
+        },
+        {
+          "path": "drivers/gpu/drm/i915/i915_pci.c",
+          "kind": "source",
+          "git_blob": "2f03f95945f1b9a243a61db163576d0071d53e9c",
+          "sha256": "faf891f17e233c24c183338e798c8867a4e0f7afced17c7f342e988fbc38dbf1",
+          "size_bytes": 26723,
+          "source_uri": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/i915/i915_pci.c",
+          "spdx": "MIT",
+          "license_notice_sha256": "e5cd7a6edd099437340aac082cebc9d9ba5d98f93e72e44c449ea9b090e0c5a0"
+        },
+        {
+          "path": "include/drm/intel/pciids.h",
+          "kind": "source",
+          "git_blob": "dff389b56eb3bf0ebcf9d8a81c2e76722a0ea54f",
+          "sha256": "102d8f821c9464ad17c0160535a4e3811f49609f199f1b6d7268050d71d8e8f0",
+          "size_bytes": 31897,
+          "source_uri": "https://github.com/torvalds/linux/blob/0d9ff90a5422cc7509258aaaba1e7481df4d332a/include/drm/intel/pciids.h",
+          "spdx": "MIT",
+          "license_notice_sha256": "d2b09ad5ffb476a37edbaaec9e7d78f8df4525089a162d22a4995f420f99b07e"
+        }
+      ],
+      "patches": [],
+      "configuration": [],
+      "license_review": {
+        "status": "unreviewed",
+        "evidence_sha256": null
+      },
+      "abi": {
+        "family": "linux-i915-source-observation-only",
+        "headers": [
+          "include/drm/intel/pciids.h"
+        ],
+        "checks": []
+      }
+    },
+    {
+      "id": "linux-amdgpu",
+      "role": "reference-only",
+      "remote": "https://github.com/torvalds/linux",
+      "commit": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+      "tracking_ref": "refs/heads/master",
+      "profile": "reference-only",
+      "consumers": [
+        "docs/source-analysis.md",
+        "docs/specification.md"
+      ],
+      "files": [
+        {
+          "path": "drivers/gpu/drm/amd/amdgpu/amdgpu_device.c",
+          "kind": "source",
+          "git_blob": "104d1d2cbad9620ff6a4bc9e9ca49144b0d39d2c",
+          "sha256": "174b7d72189a24b36b252607176418f841d6eb615226692accc5ff8d7abb8a9c",
+          "size_bytes": 189759,
+          "source_uri": "https://raw.githubusercontent.com/torvalds/linux/0d9ff90a5422cc7509258aaaba1e7481df4d332a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c",
+          "spdx": "MIT"
+        }
+      ],
+      "patches": [],
+      "configuration": [],
+      "license_review": {
+        "status": "unreviewed",
+        "evidence_sha256": null
+      },
+      "abi": {
+        "family": "linux-amdgpu-source-observation-only",
+        "headers": [],
+        "checks": []
+      }
+    },
+    {
+      "id": "mesa-radv",
+      "role": "reference-only",
+      "remote": "https://gitlab.freedesktop.org/mesa/mesa",
+      "commit": "f5cb8ee032adabef599ae892ec4e42d796b84da9",
+      "tracking_ref": "refs/heads/main",
+      "profile": "reference-only",
+      "consumers": [
+        "docs/source-analysis.md",
+        "docs/specification.md"
+      ],
+      "files": [
+        {
+          "path": "src/amd/vulkan/radv_device.c",
+          "kind": "source",
+          "git_blob": "b54e2aa1f76a7366c9ffbbf84704d721754f77e1",
+          "sha256": "89237c4e02140618174f480a88f3eb25557d2ddf7c8221774e75b2cb2886b20d",
+          "size_bytes": 84379,
+          "source_uri": "https://gitlab.freedesktop.org/mesa/mesa/-/raw/f5cb8ee032adabef599ae892ec4e42d796b84da9/src/amd/vulkan/radv_device.c",
+          "spdx": "MIT"
+        }
+      ],
+      "patches": [],
+      "configuration": [],
+      "license_review": {
+        "status": "unreviewed",
+        "evidence_sha256": null
+      },
+      "abi": {
+        "family": "mesa-radv-source-observation-only",
+        "headers": [],
+        "checks": []
+      }
+    },
+    {
+      "id": "mesa-nvk",
+      "role": "reference-only",
+      "remote": "https://gitlab.freedesktop.org/mesa/mesa",
+      "commit": "f5cb8ee032adabef599ae892ec4e42d796b84da9",
+      "tracking_ref": "refs/heads/main",
+      "profile": "reference-only",
+      "consumers": [
+        "docs/source-analysis.md",
+        "docs/specification.md"
+      ],
+      "files": [
+        {
+          "path": "src/nouveau/vulkan/nvk_device.c",
+          "kind": "source",
+          "git_blob": "40decf9b119e975f7743c63cee9b2335dbd70566",
+          "sha256": "0c118e8595ab9649ab39993e065e98da9c91ed3c0e48ef594c34d98c8584a8a8",
+          "size_bytes": 16364,
+          "source_uri": "https://gitlab.freedesktop.org/mesa/mesa/-/raw/f5cb8ee032adabef599ae892ec4e42d796b84da9/src/nouveau/vulkan/nvk_device.c",
+          "spdx": "MIT"
+        }
+      ],
+      "patches": [],
+      "configuration": [],
+      "license_review": {
+        "status": "unreviewed",
+        "evidence_sha256": null
+      },
+      "abi": {
+        "family": "mesa-nvk-source-observation-only",
+        "headers": [],
+        "checks": []
+      }
+    },
+    {
+      "id": "mesa-nak",
+      "role": "reference-only",
+      "remote": "https://gitlab.freedesktop.org/mesa/mesa",
+      "commit": "f5cb8ee032adabef599ae892ec4e42d796b84da9",
+      "tracking_ref": "refs/heads/main",
+      "profile": "reference-only",
+      "consumers": [
+        "docs/source-analysis.md",
+        "docs/specification.md",
+        "porting/backend-recipes.json"
+      ],
+      "files": [
+        {
+          "path": "src/nouveau/compiler/nak/lib.rs",
+          "kind": "source",
+          "git_blob": "5f7abd1b5789dbb5f48c434216f1eb8306352c01",
+          "sha256": "e23c1e4eae5a5e12eeec6f14f5f5a90de1d942fddcd4baddbbddca6fa31684ae",
+          "size_bytes": 827,
+          "source_uri": "https://gitlab.freedesktop.org/mesa/mesa/-/raw/f5cb8ee032adabef599ae892ec4e42d796b84da9/src/nouveau/compiler/nak/lib.rs",
+          "spdx": "MIT"
+        },
+        {
+          "path": "src/nouveau/compiler/nak/api.rs",
+          "kind": "source",
+          "git_blob": "6c558fd52a1c0a838d4770448d69e2f5d9d4cc85",
+          "sha256": "54d91d372049826740a42544da100955d06f455919bd428a4259dcafae53dcf9",
+          "size_bytes": 19233,
+          "source_uri": "https://gitlab.freedesktop.org/mesa/mesa/-/raw/f5cb8ee032adabef599ae892ec4e42d796b84da9/src/nouveau/compiler/nak/api.rs",
+          "spdx": "MIT"
+        }
+      ],
+      "patches": [],
+      "configuration": [],
+      "license_review": {
+        "status": "unreviewed",
+        "evidence_sha256": null
+      },
+      "abi": {
+        "family": "mesa-nak-source-observation-only",
+        "headers": [],
+        "checks": []
+      }
     }
   ],
   "schema_version": 1,

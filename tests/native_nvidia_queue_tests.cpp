@@ -24,6 +24,8 @@ struct Mock {
     ChannelMode mode {ChannelMode::Ordinary};
     RingDomain domain {RingDomain::CoherentSystem};
     bool live {true}, stop {true}, wrongIdentity {}, incomplete {}, syncFails {};
+    MemoryOwner *faultMemory {};
+    bool dropCommandHoldBeforeReject {};
     uint32_t initialPut {}, baseline {}, completed {}, hardwareGet {}, workToken {0x12345678}, rungToken {}, puts {};
     uint64_t sealedBytes {64}, sealedFenceAddress {};
     uint32_t sealedPayload {};
@@ -96,6 +98,15 @@ QueueStatus seal(void *context, const ChannelBinding &, const MemoryView &comman
     mock.sealedFenceAddress = fenceAddress;
     mock.sealedPayload = payload;
     bytes = mock.sealedBytes;
+    // Deliberate ownership-invariant fault: simulate an errant holder dropping
+    // the queue's retain before a pre-PUT rejection. Ordinary transport errors
+    // do not cause release() to fail. The real rollback path must keep its
+    // unreturned record until authoritative recovery completes.
+    if (mock.dropCommandHoldBeforeReject) {
+        assert(mock.faultMemory);
+        assert(mock.faultMemory->release(Owner, commands.handle) == MemoryStatus::Ok);
+        return QueueStatus::Invalid;
+    }
     return mock.sealResult; // Simulation, not an engine command validator.
 }
 QueueStatus beforePut(void *context, const ChannelBinding &)
@@ -163,6 +174,7 @@ struct Fixture {
     MemoryHandle commands {}, data {};
     Fixture()
     {
+        mock.faultMemory = &memory;
         assert(memory.initialize(Device, {}, memoryBackend(mock)) == MemoryStatus::Ok);
         binding = {Device, Owner, 47, 73, 11, 0xC56F, 4, allocation(), allocation(), 16, 4};
         commands = allocation();
@@ -357,6 +369,96 @@ void unpublishedFailures()
     assert(!high.holds(unencodable) && !high.mock.puts);
     high.finish();
 }
+void tokenlessRollbackRecoveryDoesNotExhaustJobs()
+{
+    Fixture f;
+    f.mock.dropCommandHoldBeforeReject = true;
+    const DataResource data {f.data, true};
+    for (uint32_t cycle = 0; cycle < GpFifoQueue::MaxJobs + 1; ++cycle) {
+        assert(f.queue.bind(f.binding) == QueueStatus::Ok);
+        FenceToken token {77, 77};
+        const auto status = f.queue.submit(f.request(f.commands, &data, 1), 1, token);
+        if (status != QueueStatus::MemoryFailure)
+            fprintf(stderr, "tokenless rollback cycle %u: status %u, expected MemoryFailure %u\n",
+                cycle + 1, unsigned(status), unsigned(QueueStatus::MemoryFailure));
+        assert(status == QueueStatus::MemoryFailure);
+        assert(!token.generation && !token.sequence && !f.mock.puts && !f.queue.pending());
+        assert(f.queue.state() == QueueState::NeedsReset);
+        assert(!f.holds(f.commands) && !f.holds(f.data));
+        // Restore the actual retain invariant before asking recovery to release
+        // the queue's still-recorded hold. This is fault injection, not normal
+        // MemoryOwner or transport behaviour.
+        assert(f.memory.retain(Owner, f.commands) == MemoryStatus::Ok);
+        assert(f.queue.reset() == QueueStatus::Ok);
+        assert(f.queue.state() == QueueState::Detached && !f.holds(f.commands));
+        assert(!f.holds(f.binding.ring) && !f.holds(f.binding.fence));
+        ++f.binding.channelGeneration;
+    }
+    f.finish();
+}
+
+void tokenlessRecoveryNeedsCompleteNativeRelease()
+{
+    Fixture f;
+    assert(f.queue.bind(f.binding) == QueueStatus::Ok);
+    f.mock.dropCommandHoldBeforeReject = true;
+    FenceToken returned {77, 77};
+    assert(f.queue.submit(f.request(f.commands), 1, returned) == QueueStatus::MemoryFailure);
+    assert(!returned.generation && !returned.sequence && !f.mock.puts);
+    // Diagnostic knowledge only: no caller received this internal token.
+    const FenceToken internal {1, 1};
+    JobResult result;
+    assert(f.queue.query(internal, result) == QueueStatus::Ok && result.resourcesHeld);
+    f.mock.stop = false;
+    assert(f.queue.reset() == QueueStatus::QuiesceFailed);
+    assert(f.queue.query(internal, result) == QueueStatus::Ok && result.resourcesHeld);
+    f.mock.stop = true;
+    assert(f.queue.reset() == QueueStatus::MemoryFailure);
+    assert(f.queue.query(internal, result) == QueueStatus::Ok && result.resourcesHeld);
+    assert(f.memory.retain(Owner, f.commands) == MemoryStatus::Ok);
+    f.mock.releaseResult = Operation::Unknown;
+    assert(f.queue.reset() == QueueStatus::TransportFailure);
+    assert(f.queue.query(internal, result) == QueueStatus::Ok && !result.resourcesHeld &&
+        result.state == JobState::Reset);
+    assert(f.holds(f.binding.ring) == 1 && f.holds(f.binding.fence) == 1);
+    f.mock.releaseResult = Operation::Done;
+    // Even a successful native channel release is insufficient if a retained
+    // binding allocation has not yet been released.
+    assert(f.memory.release(Owner, f.binding.fence) == MemoryStatus::Ok);
+    assert(f.queue.reset() == QueueStatus::MemoryFailure);
+    assert(f.queue.query(internal, result) == QueueStatus::Ok && !result.resourcesHeld);
+    assert(f.memory.retain(Owner, f.binding.fence) == MemoryStatus::Ok);
+    assert(f.queue.reset() == QueueStatus::Ok);
+    assert(f.queue.query(internal, result) == QueueStatus::StaleToken);
+    f.finish();
+}
+
+void issuedCompletionSurvivesResetUntilAcknowledged()
+{
+    Fixture f;
+    assert(f.queue.bind(f.binding) == QueueStatus::Ok);
+    FenceToken completed;
+    assert(f.queue.submit(f.request(f.commands), 1, completed) == QueueStatus::Ok);
+    f.mock.completed = completed.sequence;
+    assert(f.queue.poll(2) == QueueStatus::Ok && !f.holds(f.commands));
+    assert(f.queue.reset() == QueueStatus::Ok);
+    JobResult result;
+    assert(f.queue.query(completed, result) == QueueStatus::Ok &&
+        result.state == JobState::Completed && !result.resourcesHeld);
+    ++f.binding.channelGeneration;
+    assert(f.queue.bind(f.binding) == QueueStatus::Ok);
+    FenceToken reset;
+    assert(f.queue.submit(f.request(f.commands), 1, reset) == QueueStatus::Ok);
+    assert(f.queue.reset() == QueueStatus::Ok);
+    assert(f.queue.query(completed, result) == QueueStatus::Ok && result.state == JobState::Completed);
+    assert(f.queue.query(reset, result) == QueueStatus::Ok && result.state == JobState::Reset);
+    assert(f.queue.retire(completed) == QueueStatus::Ok);
+    assert(f.queue.retire(reset) == QueueStatus::Ok);
+    assert(f.queue.query(completed, result) == QueueStatus::StaleToken);
+    assert(f.queue.query(reset, result) == QueueStatus::StaleToken);
+    f.finish();
+}
+
 void bindingFailures()
 {
     {
@@ -471,6 +573,9 @@ int main()
     ownershipFailures();
     uncertaintyAndReset();
     unpublishedFailures();
+    tokenlessRollbackRecoveryDoesNotExhaustJobs();
+    tokenlessRecoveryNeedsCompleteNativeRelease();
+    issuedCompletionSurvivesResetUntilAcknowledged();
     bindingFailures();
     fenceAndDeadlineFailures();
     exhaustionSynchronizationAndRebind();

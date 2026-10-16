@@ -100,12 +100,19 @@ QueueLifecycleResult QueueLifecycle::observe(QueueStatus status)
     QueueLifecycleResult result;
     result.queueCalled = true;
     result.queue = status;
+    // A transport may return Busy/ClockRegression after the queue has already
+    // entered NeedsReset. Close open admission from that authoritative state,
+    // without changing ordinary drain results after an earlier reset/stop/loss.
+    if (queue_.state() == QueueState::NeedsReset && admission() == LifecycleStatus::Success) {
+        faulted(result, status == QueueStatus::TimedOut ? Status::TimedOut : Status::QueueFault);
+        return result;
+    }
     switch (status) {
     case QueueStatus::Ok:
         result.status = Status::Ok;
         break;
     case QueueStatus::ClockRegression:
-        result.status = Status::Rejected; // Refused before any native read.
+        result.status = Status::Rejected; // The state check above distinguishes a new native transport fault.
         break;
     case QueueStatus::Busy:
         result.status = Status::Busy;

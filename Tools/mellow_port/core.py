@@ -144,6 +144,30 @@ def no_links(path):
     return path
 
 
+def paths_overlap(first, second):
+    """Compare real ancestor identities, including macOS firmlinks/case aliases.
+
+    Resolving symlinks or comparing path spellings alone cannot identify the
+    Data-volume alias. Missing output components have no identity yet; every
+    existing ancestor is still checked against each existing protected root.
+    """
+    first, second = no_links(first), no_links(second)
+    def identity(path):
+        try:
+            info = path.stat()
+        except FileNotFoundError:
+            return None
+        except OSError as error:
+            raise PortError('Cannot establish directory identity: ' + str(error)) from error
+        return info.st_dev, info.st_ino
+    def ancestors(path):
+        return {value for item in (path, *path.parents) if (value := identity(item)) is not None}
+    left, right = identity(first), identity(second)
+    return (first.is_relative_to(second) or second.is_relative_to(first) or
+            (left is not None and left in ancestors(second)) or
+            (right is not None and right in ancestors(first)))
+
+
 def source_file(root, relative):
     if "\\" in relative or PureWindowsPath(relative).drive or not re.fullmatch(r"[A-Za-z0-9_./+-]+", relative):
         raise PortError("Use a relative POSIX source path")
@@ -178,18 +202,34 @@ def lexical(text):
 
 
 def license_facts(text):
-    found = []
-    for line in text.splitlines():
-        if "SPDX-License-Identifier:" in line:
-            expression = line.split("SPDX-License-Identifier:", 1)[1].strip().removesuffix("*/").strip()
-            if expression and re.fullmatch(r"[A-Za-z0-9.+() :_-]+", expression):
+    found, malformed = [], []
+    # Only LF delimits these source records. splitlines() would silently drop
+    # an FF/U+2028 suffix from an otherwise permissive SPDX expression.
+    lines = text.split('\n')
+    for line in lines:
+        marker = re.search(r"SPDX-License-Identifier:", line, re.I)
+        if marker:
+            payload = line[marker.end():]
+            vertical_break = any(character in payload for character in '\v\f\x1c\x1d\x1e\x85\u2028\u2029')
+            expression = payload.strip().removesuffix("*/").strip()
+            if not vertical_break and marker[0] == "SPDX-License-Identifier:" and expression and re.fullmatch(r"[A-Za-z0-9.+() :_-]+", expression):
                 found.append(expression)
+            else:
+                malformed.append(payload if vertical_break else expression)
     found = sorted(set(found))
-    expression = found[0] if len(found) == 1 else None
-    notices = sorted(set(line.strip().strip("/* ").replace("*/", "* /") for line in text.splitlines() if re.search(r"\bcopyright\b", line, re.I)))
-    return {"spdx_expressions_observed": found, "single_expression": expression, "copyright_notices_observed": notices,
+    malformed = sorted(set(malformed))
+    expression = found[0] if len(found) == 1 and not malformed else None
+    notices = sorted(set(line.strip().strip("/* ").replace("*/", "* /") for line in lines if re.search(r"\bcopyright\b", line, re.I)))
+    prose = [line for line in lines if re.search(r"\b(?:licen[cs]e|copyright|permission|warranty|redistribut\w*|[AL]?GPL)\b", line, re.I)]
+    leading = re.match(r'\s*(/\*.*?\*/)', text, re.S)
+    license_lead = leading[1] if leading and re.search(r'\b(?:licen[cs]e|copyright|permission|warranty)\b', leading[1], re.I) else None
+    return {"spdx_expressions_observed": found, "malformed_spdx_markers_observed": malformed,
+            "single_expression": expression, "copyright_notices_observed": notices,
+            "license_prose_sha256": digest('\n'.join(prose).encode()) if prose else None,
+            "leading_license_comment_sha256": digest(license_lead.encode()) if license_lead else None,
             "missing_or_conflicting": expression is None,
-            "gpl_component_review_required": any("GPL" in item for item in found),
+            "gpl_component_review_required": any(re.search(r'GPL|GNU (?:Lesser |Affero )?General Public License', item, re.I)
+                                                   for item in found + malformed + prose),
             "license_compatibility_determined": False,
             "note": "SPDX text is recorded, not legal clearance; preserve upstream notices and review distribution obligations."}
 
@@ -237,7 +277,7 @@ def prepare(command, source_root, target, revision, files, output, source_url=No
     if not root.is_dir():
         raise PortError("Source root is not a directory")
     out = no_links(Path(output))
-    if out.resolve().is_relative_to(root.resolve()) or root.resolve().is_relative_to(out.resolve()):
+    if paths_overlap(out, root):
         raise PortError("Output and source trees must not overlap")
     if out.exists() and (not out.is_dir() or any(out.iterdir())):
         raise PortError("Output must be a new or empty directory; existing files are never overwritten")

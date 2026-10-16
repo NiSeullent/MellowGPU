@@ -17,7 +17,8 @@ static void poison(Output &out) {
 }
 static void empty(const Output &out) {
     check(!out.identity.vendor && !out.identity.device && !out.identity.revision &&
-          !out.identity.registry && !out.identity.epoch && !out.capabilities &&
+          !out.identity.registry && !out.identity.epoch &&
+          out.identity.architecture==KernelArchitecture::Unknown && !out.capabilities &&
           !out.object && !out.nativeInitialized);
 }
 template<class Adapter> static void exercise(uint16_t vendor) {
@@ -38,6 +39,11 @@ template<class Adapter> static void exercise(uint16_t vendor) {
     check(adapter.bindIdentity(identity)==Status::IdentityBound);
     check(adapter.bindIdentity(identity)==Status::AlreadyBound);
     bad=identity;bad.registry++;check(adapter.bindIdentity(bad)==Status::BindingConflict);
+    bad=identity;bad.epoch++;check(adapter.bindIdentity(bad)==Status::BindingConflict);
+    bad=identity;bad.device++;check(adapter.bindIdentity(bad)==Status::BindingConflict);
+    bad=identity;bad.revision++;check(adapter.bindIdentity(bad)==Status::BindingConflict);
+    bad=identity;bad.architecture=KernelArchitecture::Arm64;
+    check(adapter.bindIdentity(bad)==Status::BindingConflict);
     check(adapter.call(request,out)==Status::MetadataOnly);
     check(out.identity.vendor==vendor && out.identity.registry==identity.registry);
     check(!out.capabilities && !out.nativeInitialized && !out.object);

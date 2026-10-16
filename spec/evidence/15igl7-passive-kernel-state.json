@@ -7,6 +7,8 @@
   "query": "log show --last 2h --style json; kernel and PPS-or-NMX message predicate",
   "clock_warning": "Wall clock adjustment reported; requested time window is not an elapsed-time guarantee",
   "matching_log_entries": 13,
+  "probe_events_are_selected_subset": true,
+  "selected_probe_event_count": 4,
   "pps_entries": [],
   "current_nmxaccel_service_query_bytes": 0,
   "current_nmxgpu_service_query_bytes": 0,
@@ -32,7 +34,7 @@
       "eventMessage": "NMXAccel: NVIDIA display device 8086:3185 class 03.00 - claiming"
     }
   ],
-  "interpretation": "Old NMX probe log text is not an active GPU owner or Metal capability; NVIDIA wording does not change physical Intel PCI identity. No PPS failure reproduced by this passive query.",
+  "interpretation": "Existing NMX code emitted these selected probe events earlier in the recorded current boot. Probe log text is not an active GPU owner or Metal capability; NVIDIA wording does not change physical Intel PCI identity. Four selected probe events are retained from thirteen predicate matches. No PPS failure reproduced by this passive query.",
   "driver_loaded_by_this_query": false,
   "reboot_performed": false,
   "boot_or_security_settings_changed": false,

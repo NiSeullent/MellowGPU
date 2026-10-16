@@ -1,7 +1,7 @@
 > **Historical record — preserved unedited.** This document predates the MELLOW
 > re-architecture. It is retained because the record of what was known, and when, is itself
 > evidence. For the current concept and architecture see [CONCEPT.md](CONCEPT.md) and
-> [ARCHITECTURE.md](ARCHITECTURE.md); for what any of it is allowed to claim, see
+> [ARCHITECTURE.md](architecture.md); for what any of it is allowed to claim, see
 > [EVIDENCE-POLICY.md](EVIDENCE-POLICY.md).
 
 > Historical 0.1.1 implementation plan. Version 0.2.0 adds the Xe components described in README.md and docs/XE-*.md. The legacy probe below remains at Tools/metal-probe-legacy.swift; the new challenge probe and offline compiler are described in docs/IOACCEL-METAL.md. Hardware execution is still unverified.

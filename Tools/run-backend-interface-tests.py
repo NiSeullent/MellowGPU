@@ -4,6 +4,7 @@
 import argparse
 import hashlib
 import json
+import os
 import platform
 from pathlib import Path
 import shutil
@@ -17,6 +18,8 @@ def main():
     parser.add_argument('--cxx', default=shutil.which('clang++') or shutil.which('g++'))
     parser.add_argument('--sanitize', action='store_true')
     args = parser.parse_args()
+    if 'CCC_OVERRIDE_OPTIONS' in os.environ:
+        parser.error('CCC_OVERRIDE_OPTIONS must be unset')
     root = Path(__file__).resolve().parents[1]
     out = args.out.resolve()
     if not args.cxx or out.exists() or out == root or out in root.parents:

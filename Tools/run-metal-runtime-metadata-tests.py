@@ -24,6 +24,12 @@ def main():
     architecture = platform.machine()
     if sys.platform != 'darwin' or architecture not in ('arm64', 'x86_64'):
         parser.error('Native macOS arm64 or x86_64 runtime is required; no cross-architecture execution')
+    translation = subprocess.run(['/usr/sbin/sysctl', '-in', 'sysctl.proc_translated'],
+                                 capture_output=True, text=True, timeout=10)
+    if translation.returncode or translation.stdout.strip() not in ('', '0', '1'):
+        parser.error('Cannot establish native process execution')
+    if translation.stdout.strip() == '1':
+        parser.error('Rosetta translation is not native architecture evidence')
     if 'CCC_OVERRIDE_OPTIONS' in os.environ:
         parser.error('CCC_OVERRIDE_OPTIONS must be unset')
     if not args.cxx or out.exists() or out == root or out in root.parents:
@@ -43,6 +49,7 @@ def main():
         compile_argv += ['-fsanitize=address,undefined', '-fno-sanitize-recover=all', '-fno-omit-frame-pointer']
     report = {'schema':'mellowgpu.original-metal-metadata-fixture/1', 'passed':False,
               'source_sha256':before, 'architecture':architecture, 'sanitizers':args.sanitize,
+              'process_translation_detected':False,
               'sdk_settings_sha256':digest(sdk/'SDKSettings.plist'),
               'scope':'Actual helper bodies, original test-only classes and public Objective-C runtime; not a Metal device behavior test',
               'public_device_enumeration_called':False, 'gpu_commands_submitted':False,

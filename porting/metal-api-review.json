@@ -1,5 +1,6 @@
 {
   "authority": "No inventory/observation/report field grants runtime capability or promotes a device; porting/metal3-profile.json remains independently unqualified.",
+  "compiler_provenance_scope": "Exact compiler/frontend bytes and separately reported exact AST/dependency cc1 commands; minimal compiler environment and include/driver override rejection; selected compiler remains trusted input, no process/hardware attestation",
   "hardware_qualified": false,
   "implementation_coverage_complete": false,
   "inventories": [
@@ -12,14 +13,19 @@
       },
       "compiler_dependency_files": 30,
       "compiler_effective_target": "x86_64-apple-macosx15.8.1",
+      "compiler_frontend_command_sha256": "472c30aac5e0a9d1f84604237eda0c8a4abbaf4b42d4541431301208d9d49a50",
       "compiler_frontend_sha256": "d2e4bf622758eee1bf7267c060497fb2c41e098d37b0fca8be73898dc7e14eda",
       "compiler_invocation_sha256": "30d78f965fb5927cd4ab7bef587178d54b137930dd25fce9eaf1b833bfca6b02",
+      "compiler_request_command_sha256": {
+        "ast": "89e3144823134c5477cb9f52ad4cc872e18bbc85d7ebb9c4694bd6d969877389",
+        "dependencies": "7cff2d38d72a2762b9eaa77c555764b4a15921fcfe47d9db8eeb98e02455e93f"
+      },
       "declarations": 2604,
       "metal_headers": 60,
       "path": "porting/metal-api-sdk15.5-macos15.8.1.json",
       "sdk_dependency_files": 800,
       "sdk_older_than_target": true,
-      "sha256": "ad32e1881614b4dd506dad41000a5e94a49244d4539e32d8dee745e49ecc172d"
+      "sha256": "61d7a8eee20220a5cf94916462176501fc12e8fc90775e1255845b83f58d8a84"
     },
     {
       "classifications": {
@@ -32,14 +38,19 @@
       },
       "compiler_dependency_files": 30,
       "compiler_effective_target": "x86_64-apple-macosx15.8.1",
+      "compiler_frontend_command_sha256": "499d35325c364887e1816d6d35132a29b72131c211591cbf92062ed8aa90e7c4",
       "compiler_frontend_sha256": "d2e4bf622758eee1bf7267c060497fb2c41e098d37b0fca8be73898dc7e14eda",
       "compiler_invocation_sha256": "30d78f965fb5927cd4ab7bef587178d54b137930dd25fce9eaf1b833bfca6b02",
+      "compiler_request_command_sha256": {
+        "ast": "fe46ba0c8d5966eff58682a84586a4c63fe3fa8588ac0d7033f0874600d22111",
+        "dependencies": "3097eb25f78b7c0fed58ce863eb6865055d5d7b0b128c2355d524a2eb1b7a51a"
+      },
       "declarations": 3364,
       "metal_headers": 96,
       "path": "porting/metal-api-sdk26.5-macos15.8.1.json",
       "sdk_dependency_files": 839,
       "sdk_older_than_target": false,
-      "sha256": "c76e93ccd4cea44e493f83b0afc8cc92e9f186472e70984abb362cf0bcadb399"
+      "sha256": "d551cc13b5a85ce540362eaf070c10bd322d121b212b60271f6870f4eb82410d"
     }
   ],
   "missing_reviews": [
@@ -68,12 +79,16 @@
   "required_inventory_complete": false,
   "schema": "mellowgpu.metal-api-review/1",
   "source_observations": {
+    "compiler_frontend_command_sha256": "d7bf5d563f2c5e5836f953763682602360acc2a95b6a14f1c424e5f772a1e641",
+    "compiler_request_command_sha256": {
+      "Userspace/AppleMetal/MellowAppleMetal.mm": "9ca9fd6017192e1aa92c7131fd2b635ef6cb9d4edc59c5527e0d2d86489216df"
+    },
     "observed_facades": [
       "compute"
     ],
     "observed_method_bodies": 56,
     "path": "porting/metal-api-source-observations.json",
-    "sha256": "e68be91dc9d9c70e7f4436c55e533fcca77fcb307cbd7678443f0b8135523ba6",
+    "sha256": "50b99b173603c1e2e9f5505df7d1db79ce4aafdc90a4cb0124e3e225c447f1b1",
     "unobserved_facades": [
       "render"
     ],
@@ -85,5 +100,6 @@
     "os": "macOS",
     "programming_model": "Metal3",
     "version": "15.8.1"
-  }
+  },
+  "verification_scope": "Fresh full capture must exactly equal serialized declarations, classification counts, generator, compiler commands, SDK and dependency bytes/membership; source readers run the same verification first"
 }

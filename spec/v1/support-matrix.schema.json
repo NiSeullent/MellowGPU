@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NiSeullent/MellowGPU/spec/v1/support-matrix.schema.json",
+  "title": "MellowGPU initial v1 support-matrix",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "mellowgpu.support-matrix"
+    },
+    "qualified_profiles": {
+      "const": []
+    },
+    "development_targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "physical_model": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "cpu_vendor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "cpu_model": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "cpu_architecture": {
+            "enum": [
+              "x86_64",
+              "arm64",
+              "arm64e"
+            ]
+          },
+          "gpu_vendor": {
+            "enum": [
+              "intel",
+              "amd",
+              "nvidia"
+            ]
+          },
+          "pci_vendor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "pci_device": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "pci_revision": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "pci_subsystem": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "gpu_family": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "os_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "os_build": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "route": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "apple_gpu_family": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "status": {
+            "const": "experimental"
+          },
+          "evidence_scope": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "hardware_qualified": {
+            "const": false
+          }
+        },
+        "required": [
+          "id",
+          "physical_model",
+          "cpu_vendor",
+          "cpu_model",
+          "cpu_architecture",
+          "gpu_vendor",
+          "pci_vendor",
+          "pci_device",
+          "pci_revision",
+          "pci_subsystem",
+          "gpu_family",
+          "os_version",
+          "os_build",
+          "route",
+          "apple_gpu_family",
+          "status",
+          "evidence_scope",
+          "hardware_qualified"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true
+    },
+    "research_platforms": {
+      "const": [
+        {
+          "cpu_architecture": "arm64",
+          "status": "research-only",
+          "kernel_implementation": false,
+          "external_gpu_route": "UNKNOWN"
+        },
+        {
+          "cpu_architecture": "arm64e",
+          "status": "research-only",
+          "kernel_implementation": false,
+          "external_gpu_route": "UNKNOWN"
+        }
+      ]
+    },
+    "apple_gpu_backend_in_scope": {
+      "const": false
+    },
+    "unlisted_device_behavior": {
+      "const": "unsupported"
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "qualified_profiles",
+    "development_targets",
+    "research_platforms",
+    "apple_gpu_backend_in_scope",
+    "unlisted_device_behavior"
+  ],
+  "additionalProperties": false
+}

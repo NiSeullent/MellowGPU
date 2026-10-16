@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "mellowgpu.support-matrix",
+  "qualified_profiles": [],
+  "development_targets": [
+    {
+      "id": "15igl7-glk-24h32",
+      "physical_model": "Lenovo 15IGL7 (user identification)",
+      "cpu_vendor": "Intel",
+      "cpu_model": "Celeron N4120",
+      "cpu_architecture": "x86_64",
+      "gpu_vendor": "intel",
+      "pci_vendor": "8086",
+      "pci_device": "3185",
+      "pci_revision": "06",
+      "pci_subsystem": "17aa:3e77",
+      "gpu_family": "intel-glk",
+      "os_version": "15.8.1",
+      "os_build": "24H32",
+      "route": "i915/ANV",
+      "apple_gpu_family": "UNKNOWN",
+      "status": "experimental",
+      "evidence_scope": "Native PCI identity and runtime class metadata only; no MellowGPU GPU execution",
+      "hardware_qualified": false
+    }
+  ],
+  "research_platforms": [
+    {
+      "cpu_architecture": "arm64",
+      "status": "research-only",
+      "kernel_implementation": false,
+      "external_gpu_route": "UNKNOWN"
+    },
+    {
+      "cpu_architecture": "arm64e",
+      "status": "research-only",
+      "kernel_implementation": false,
+      "external_gpu_route": "UNKNOWN"
+    }
+  ],
+  "apple_gpu_backend_in_scope": false,
+  "unlisted_device_behavior": "unsupported"
+}

@@ -25,7 +25,7 @@
       "adapter_contract": "intel-i915",
       "implementation_status": "source-intake-only",
       "architecture_scope": "upstream-source-reference-only",
-      "architectures": ["intel-icl", "intel-tgl", "intel-rkl", "intel-adl", "intel-rpl", "intel-dg1", "intel-dg2"],
+      "architectures": ["intel-glk", "intel-icl", "intel-tgl", "intel-rkl", "intel-adl", "intel-rpl", "intel-dg1", "intel-dg2"],
       "excluded_architectures": [],
       "source_prefixes": ["drivers/gpu/drm/i915/", "include/drm/", "include/uapi/drm/", "include/linux/", "include/uapi/linux/"],
       "admission_prefixes": ["drivers/gpu/drm/i915/"],

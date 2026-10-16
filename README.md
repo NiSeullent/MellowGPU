@@ -4,7 +4,7 @@ Intel·AMD·NVIDIA를 위한 macOS GPU 드라이버 플랫폼입니다. 기존 M
 이력과 포팅 자산을 보존하면서 공통 수명 관리, 네이티브 동기화, Metal 3
 적합성, 업스트림 갱신 계약을 중심으로 구조를 개편합니다.
 
-**지원 기준은 Metal 3 전체 기능과 WindowServer·앱·게임의 실제 GPU 가속입니다.**
+**지원 기준은 적용되는 Metal 3 필수 기능 전체와 WindowServer·앱·게임의 실제 GPU 가속입니다.**
 장치 인식, 빌드, 모델 시험이나 offscreen 렌더링만 통과한 카드는 지원 목록에
 등록하지 않습니다. CPU 래스터화와 CPU 픽셀 복사는 지원 판정에 사용할 수 없습니다.
 
@@ -14,6 +14,9 @@ Intel·AMD·NVIDIA를 위한 macOS GPU 드라이버 플랫폼입니다. 기존 M
 
 ## 설계와 구현
 
+- [정식 v1 명세](docs/specification.md), [출처 분석](docs/source-analysis.md),
+  [플랫폼·실제 15IGL7](docs/platform-support.md), [검증 계획](docs/validation-plan.md).
+  [버전형 계약](spec/v1/), [의존성 잠금](dependencies.lock), [ADR](docs/adr/)을 함께 검사합니다.
 - [아키텍처·적합성 명세](docs/MELLOWGPU-SPEC.md): 공통 코어, 벤더/OS 경계,
   메모리·펜스·디스플레이·종료·절전 계약과 전체 지원 조건.
 - [구현 계획](docs/MELLOWGPU-IMPLEMENTATION.md): 병렬 구현 단위와 검증·배포 순서.
@@ -39,6 +42,14 @@ Intel·AMD·NVIDIA를 위한 macOS GPU 드라이버 플랫폼입니다. 기존 M
 NVIDIA open RM과 Nouveau/NVK의 객체·채널·펜스 ABI는 서로 바꿔 쓸 수 없습니다.
 드라이버·사용자 공간·펌웨어·패치·설정은 검증한 조합으로 함께 고정합니다.
 
+연결된 첫 장비는 15IGL7 / N4120 / `8086:3185` GLK / macOS 15.8.1 `24H32`입니다.
+GLK는 i915/ANV 조사 경로이며 기존 Xe 시험과 구분합니다. 실제 장비의
+[안전한 런타임 메타데이터](spec/evidence/15igl7-metal-runtime-metadata.json)는
+GPU 실행·Metal 등록·WindowServer 가속을 시험하지 않았습니다. 초기 세 벤더
+인터페이스는 메타데이터만 제공하고 GPU 연산은 명시적으로 거부합니다.
+AMD GFX9 패킷 단위는 원본 수치 대조와 호스트 시험을 통과했으며 PCI·링·GPU
+실행 경로와 별도입니다.
+
 ## 빌드와 시험
 
 macOS와 전체 Xcode에서 실제 x86_64 커널 제품을 빌드합니다. 스크립트는 설치나
@@ -53,6 +64,9 @@ python3 Tools/run-native-control-tests.py --sanitize --out build/native-control
 python3 Tools/run-probe-control-tests.py --sanitize --out build/control-probe
 python3 tests/metal_api_inventory_tests.py
 python3 Tools/run-platform-tests.py --sanitize --out build/platform-tests
+python3 Tools/mellowgpu-spec.py check
+python3 -m unittest discover -s tests -p specification_tests.py -v
+python3 Tools/run-backend-interface-tests.py --sanitize --out build/backend-interfaces
 python3 -m unittest discover -s tests -p 'test_mellow*.py' -v
 ```
 

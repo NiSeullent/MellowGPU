@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "mellowgpu.abi",
+  "control": {
+    "major": 1,
+    "minor": 0,
+    "request_bytes": 64,
+    "reply_bytes": 128,
+    "connect_type": 1296498944,
+    "mode": "cpu-storage-only"
+  },
+  "internal_backend": {
+    "major": 1,
+    "minor": 0,
+    "wire_compatible": false,
+    "metadata_only": true,
+    "threading": "caller-serialized-single-owner"
+  },
+  "kernel_architectures": [
+    "x86_64",
+    "arm64",
+    "arm64e"
+  ],
+  "native_kernel_architectures": [
+    "x86_64"
+  ],
+  "cpu_universal_build_is_gpu_support": false
+}

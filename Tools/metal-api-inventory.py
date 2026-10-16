@@ -23,6 +23,38 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def compiler_environment_guard():
+    # These documented driver/include inputs must not redefine the SDK census.
+    for name in ('CCC_OVERRIDE_OPTIONS', 'CPATH', 'C_INCLUDE_PATH', 'CPLUS_INCLUDE_PATH',
+                 'OBJC_INCLUDE_PATH', 'OBJCPLUS_INCLUDE_PATH'):
+        if name in os.environ:
+            raise ValueError('Compiler environment requires ' + name + ' to be unset')
+
+
+def compiler_environment():
+    compiler_environment_guard()
+    # Preserve explicit tool selection and temporary-file operation only. In
+    # particular PWD, HOME/user config, SDKROOT, RC_DEBUG_OPTIONS and date/macro
+    # overrides are not inherited by the compiler evidence subprocess.
+    result = {key: os.environ[key] for key in ('PATH', 'DEVELOPER_DIR', 'TMPDIR',
+              'TMP', 'TEMP', 'SYSTEMROOT', 'WINDIR') if key in os.environ}
+    return dict(result, LC_ALL='C', LANG='C')
+
+
+def read_inventory(path):
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError('Duplicate JSON key: ' + key)
+            result[key] = value
+        return result
+    result = json.loads(Path(path).read_text(), object_pairs_hook=unique_object)
+    if not isinstance(result, dict):
+        raise ValueError('Inventory must be one JSON object')
+    return result
+
+
 def version(value):
     if not isinstance(value, str) or not re.fullmatch(r'\d{1,3}(?:\.\d{1,3}){0,2}', value):
         raise ValueError('Expected a numeric macOS version')
@@ -46,16 +78,97 @@ def parse_ast_stream(text):
         raise ValueError('Invalid/truncated Clang AST stream') from error
     if not roots:
         raise ValueError('Empty Clang AST stream')
+    materialize_location_files(roots)
     return roots
 
 
-def clang_ast(clang, source, arguments, name_filter='MTL', language='objective-c'):
+def materialize_location_files(roots):
+    """Expand Clang's document-order file elision before filtering any nodes."""
+    last = None
+    def walk(value):
+        nonlocal last
+        if isinstance(value, list):
+            for child in value: walk(child)
+        elif isinstance(value, dict):
+            # includedFrom.file describes include ancestry, not LastLocFilename.
+            if 'offset' in value and 'col' in value:
+                if isinstance(value.get('file'), str): last = value['file']
+                elif last is not None: value['file'] = last
+            for key, child in list(value.items()):
+                if key != 'includedFrom': walk(child)
+    walk(roots)
+
+
+def command_evidence(clang, command, sdk, source):
+    """Record the reported cc1 argv for this exact request, not a generic probe."""
+    result = subprocess.run([str(clang), '-###', *command[1:]], capture_output=True,
+                            text=True, timeout=30, env=compiler_environment())
+    if result.returncode:
+        raise ValueError('Compiler command trace failed')
+    commands = []
+    for line in (result.stdout + '\n' + result.stderr).splitlines():
+        if not line.lstrip().startswith('"'): continue
+        try: tokens = shlex.split(line)
+        except ValueError as error: raise ValueError('Malformed compiler command trace') from error
+        if '-cc1' in tokens: commands.append(tokens)
+    if len(commands) != 1 or not Path(commands[0][0]).is_absolute():
+        raise ValueError('Compiler request must report exactly one absolute frontend')
+    tokens = commands[0]
+    frontend = Path(tokens[0]).resolve()
+    if not frontend.is_file(): raise ValueError('Compiler request frontend is not a regular file')
+    sdk = str(Path(sdk).resolve())
+    sources = {str(Path(source)), str(Path(source).resolve())}
+    def option(argv, name):
+        if argv.count(name) != 1 or argv.index(name) + 1 >= len(argv):
+            raise ValueError('Compiler request lacks one ' + name)
+        return argv[argv.index(name) + 1]
+    requested = re.fullmatch(r'x86_64-apple-macos(\d+(?:\.\d+){0,2})', option(command, '-target'))
+    effective = re.fullmatch(r'x86_64-apple-macosx?(\d+(?:\.\d+){0,2})', option(tokens, '-triple'))
+    if (not requested or not effective or version(requested.group(1)) != version(effective.group(1)) or
+        Path(option(tokens, '-isysroot')).resolve() != Path(sdk)):
+        raise ValueError('Compiler request effective target/SDK differs')
+    resource = None
+    if tokens.count('-resource-dir') == 1 and tokens.index('-resource-dir') + 1 < len(tokens):
+        resource = tokens[tokens.index('-resource-dir') + 1]
+    normalized = []
+    for index, token in enumerate(tokens):
+        if index == 0: token = '<FRONTEND>'
+        elif token in sources: token = '<SOURCE>'
+        elif tokens[index - 1] in ('-fdebug-compilation-dir', '-fcoverage-compilation-dir'):
+            token = '<WORKING_DIRECTORY>'
+        elif token.startswith(('-fdebug-compilation-dir=', '-fcoverage-compilation-dir=')):
+            token = token.split('=', 1)[0] + '=<WORKING_DIRECTORY>'
+        elif token == sdk or token.startswith(sdk + os.sep): token = '<SDK>' + token[len(sdk):]
+        elif resource and (token == resource or token.startswith(resource + os.sep)):
+            token = '<COMPILER_RESOURCE>' + token[len(resource):]
+        elif token.startswith('/'):
+            token = '<ABSOLUTE_PATH_SHA256:' + hashlib.sha256(token.encode()).hexdigest() + '>'
+        elif '=/' in token:
+            prefix, private_path = token.split('=', 1)
+            token = prefix + '=<ABSOLUTE_PATH_SHA256:' + hashlib.sha256(private_path.encode()).hexdigest() + '>'
+        normalized.append(token)
+    return {'frontend_sha256': sha(frontend), 'normalized_tokens': normalized,
+            'normalized_sha256': hashlib.sha256(json.dumps(normalized, separators=(',', ':')).encode()).hexdigest(),
+            'scope': 'Reported -### command for this exact request; selected compiler is trusted input, not execution attestation'}
+
+
+def record_command(evidence, key, clang, command, sdk, source):
+    if evidence is None: return
+    current = command_evidence(clang, command, sdk, source)
+    if key in evidence and evidence[key] != current:
+        raise ValueError('Compiler command changed during capture')
+    evidence[key] = current
+
+
+def clang_ast(clang, source, arguments, name_filter='MTL', language='objective-c', evidence=None, sdk=None):
+    compiler_environment_guard()
     command = [str(clang), '-x', language, '-fsyntax-only', '-fno-modules',
                '-Wno-availability', '-Xclang', '-ast-dump=json']
     if name_filter is not None:
         command += ['-Xclang', '-ast-dump-filter', '-Xclang', name_filter]
     command += [*map(str, arguments), str(source)]
-    result = subprocess.run(command, capture_output=True, text=True, timeout=180)
+    record_command(evidence, 'ast', clang, command, sdk, source)
+    result = subprocess.run(command, capture_output=True, text=True, timeout=180, env=compiler_environment())
     if result.returncode:
         raise ValueError('Clang AST extraction failed:\n' + result.stderr[-12000:])
     return parse_ast_stream(result.stdout)
@@ -63,12 +176,13 @@ def clang_ast(clang, source, arguments, name_filter='MTL', language='objective-c
 
 def compiler_identity(clang, sdk, target, language='objective-c'):
     """Bind the explicit invocation and its reported frontend, without xcrun substitution."""
+    compiler_environment_guard()
     version(target)
     invocation = Path(clang).resolve()
     invocation_before = sha(invocation)
 
     def query(argv):
-        result = subprocess.run(list(map(str, argv)), capture_output=True, text=True, timeout=30)
+        result = subprocess.run(list(map(str, argv)), capture_output=True, text=True, timeout=30, env=compiler_environment())
         if result.returncode:
             raise ValueError('Compiler identity query failed')
         return result
@@ -110,6 +224,20 @@ def compiler_identity(clang, sdk, target, language='objective-c'):
         raise ValueError('Compiler effective target differs from requested target')
     if Path(single_option('-isysroot')).resolve() != Path(sdk).resolve():
         raise ValueError('Compiler effective SDK differs from requested SDK')
+    normalized = []
+    for index, token in enumerate(command):
+        if index == 0:
+            token = '<FRONTEND>'
+        elif token == str(source):
+            token = '<PROBE_SOURCE>'
+        elif command[index - 1] in ('-fdebug-compilation-dir', '-fcoverage-compilation-dir'):
+            token = '<WORKING_DIRECTORY>'
+        elif token.startswith(('-fdebug-compilation-dir=', '-fcoverage-compilation-dir=')):
+            token = token.split('=', 1)[0] + '=<WORKING_DIRECTORY>'
+        elif token == str(Path(sdk).resolve()) or token.startswith(str(Path(sdk).resolve()) + os.sep):
+            token = '<SDK>' + token[len(str(Path(sdk).resolve())):]
+        normalized.append(token)
+    command_sha = hashlib.sha256(json.dumps(normalized, separators=(',', ':')).encode()).hexdigest()
     driver_version = query([clang, '--version']).stdout.splitlines()
     frontend_version = query([frontend, '--version']).stdout.splitlines()
     if not driver_version or not frontend_version:
@@ -119,6 +247,9 @@ def compiler_identity(clang, sdk, target, language='objective-c'):
     return {'invocation': {'name': Path(clang).name, 'sha256': invocation_before, 'version': driver_version[0]},
             'frontend': {'name': frontend.name, 'sha256': frontend_before, 'version': frontend_version[0]},
             'requested_target': 'x86_64-apple-macos' + target, 'effective_target': triple,
+            'frontend_command': {'normalized_sha256': command_sha,
+                'normalization': 'Frontend executable, temporary probe source, SDK root and debug/coverage working directories replaced with fixed labels; other tokens unchanged'},
+            'execution_environment_policy': 'minimal-v1: PATH/DEVELOPER_DIR/temp/system-root only; C locale; driver/include overrides rejected',
             'language': language, 'selection_evidence': 'driver -print-prog-name=clang and single -### -cc1 command agree',
             'scope': 'Reported compiler selection and exact binary bytes; no process/hardware attestation'}
 
@@ -141,13 +272,15 @@ def header_manifest(root):
     return result
 
 
-def dependency_manifest(clang, source, arguments, sdk):
+def dependency_manifest(clang, source, arguments, sdk, evidence=None):
     """Pin macro-only SDK support inputs as well as declarations' own headers."""
+    compiler_environment_guard()
     sdk, source = Path(sdk).resolve(), Path(source).resolve()
-    resource_result = subprocess.run([str(clang), '-print-resource-dir'], capture_output=True, text=True, check=True, timeout=15)
+    resource_result = subprocess.run([str(clang), '-print-resource-dir'], capture_output=True, text=True, check=True, timeout=15, env=compiler_environment())
     resource = Path(resource_result.stdout.strip()).resolve()
     command = [str(clang), '-x', 'objective-c', '-fno-modules', '-M', '-MT', 'inventory', *map(str, arguments), str(source)]
-    result = subprocess.run(command, capture_output=True, text=True, timeout=180)
+    record_command(evidence, 'dependencies', clang, command, sdk, source)
+    result = subprocess.run(command, capture_output=True, text=True, timeout=180, env=compiler_environment())
     if result.returncode or not result.stdout.startswith('inventory:'):
         raise ValueError('Clang dependency extraction failed')
     files = {'sdk': {}, 'compiler_resource': {}}
@@ -384,6 +517,7 @@ def inventory_report(records, target):
 def validate_inventory(report):
     if (report.get('schema') != 'mellowgpu.metal-api-inventory/1' or
         any(report.get(key) is not False for key in ('required_inventory_complete', 'implementation_coverage_complete', 'hardware_qualified')) or
+        type(report.get('verified_implementation_count')) is not int or
         report.get('verified_implementation_count') != 0):
         raise ValueError('Declaration inventory cannot promote conformance or hardware coverage')
     version(report.get('target_version'))
@@ -398,6 +532,10 @@ def validate_inventory(report):
             raise ValueError('Declaration existence is not implementation evidence')
     if not seen:
         raise ValueError('Empty declaration inventory')
+    counts = report.get('classification_counts')
+    if (not isinstance(counts, dict) or any(type(value) is not int or value < 0 for value in counts.values()) or
+        counts != dict(collections.Counter(item['target_classification'] for item in report['declarations']))):
+        raise ValueError('Declaration classification counts differ from records')
 
 
 def source_method_observations(roots, source_root, roles):
@@ -426,7 +564,7 @@ def source_method_observations(roots, source_root, roles):
 
 
 def observe_repository(repo, sdk, clang, inventory, facade='all'):
-    validate_inventory(inventory)
+    verify_inventory(inventory, sdk, clang)
     if facade not in ('all', 'compute', 'render'):
         raise ValueError('Unknown source facade')
     repo = Path(repo).resolve()
@@ -444,22 +582,30 @@ def observe_repository(repo, sdk, clang, inventory, facade='all'):
                           'Runtime/MetalObjects.hpp', 'Runtime/MetalObjects.cpp',
                           'Runtime/RenderObjects.hpp', 'Runtime/RenderObjects.cpp']
     before = {name: sha(repo / name) for name in files}
-    observed = []
+    observed, commands = [], {}
     for source, (prefix, roles) in units.items():
         if facade != 'all' and facade != ('compute' if prefix == 'MMA' else 'render'):
             continue
         arguments = ['-std=c++17', '-fobjc-arc', '-target', 'x86_64-apple-macos' + inventory['target_version'], '-isysroot', str(Path(sdk).resolve())]
-        ast = clang_ast(clang, repo / source, arguments, prefix, 'objective-c++')
+        commands[source] = {}
+        ast = clang_ast(clang, repo / source, arguments, prefix, 'objective-c++', commands[source], sdk)
         observed.extend(source_method_observations(ast, repo, roles))
     if before != {name: sha(repo / name) for name in files}:
         raise ValueError('Runtime source changed during observation')
     verify_compiler_identity(compiler_before, clang, sdk, inventory['target_version'], 'objective-c++')
+    if any(value['ast']['frontend_sha256'] != compiler_before['frontend']['sha256'] for value in commands.values()):
+        raise ValueError('Source request frontend differs from compiler identity')
+    verify_headers(inventory['sdk']['headers'], Path(sdk).resolve() / inventory['sdk']['headers_root'])
+    if sha(Path(sdk).resolve() / 'SDKSettings.plist') != inventory['sdk']['settings_sha256']:
+        raise ValueError('SDK settings changed during source observation')
+    verify_dependency_manifest(inventory['preprocessor_dependencies'], sdk, clang, inventory['target_version'])
     sdk_methods = {(r['owner'], r['name'], r.get('instance')) for r in inventory['declarations'] if r['kind'] == 'ObjCMethodDecl'}
     for item in observed:
         item['matches_direct_sdk_method_declaration'] = (item['sdk_role'], item['selector'], item['instance']) in sdk_methods
     return {'schema': 'mellowgpu.metal-source-observations/1', 'target_version': inventory['target_version'],
             'generator': {'path': 'Tools/metal-api-inventory.py', 'sha256': sha(Path(__file__))},
             'compiler': compiler_before,
+            'compiler_commands': commands,
             'observed_facades': ['compute', 'render'] if facade == 'all' else [facade],
             'unobserved_facades': [] if facade == 'all' else ['render' if facade == 'compute' else 'compute'],
             'source_files': before, 'observed_method_body_count': len(observed), 'methods': observed,
@@ -476,26 +622,42 @@ def capture(sdk, clang, target):
     settings = sdk / 'SDKSettings.plist'
     sdk_version = str(plistlib.loads(settings.read_bytes()).get('Version', ''))
     arguments = ['-target', 'x86_64-apple-macos' + target, '-isysroot', str(sdk)]
+    commands = {}
     with tempfile.TemporaryDirectory(prefix='mellow-metal-api-') as temporary:
         source = Path(temporary) / 'inventory.m'
         source.write_text('#import <Metal/Metal.h>\n')
-        dependencies_before = dependency_manifest(clang, source, arguments, sdk)
-        ast = clang_ast(clang, source, arguments, name_filter=None)
-        if dependencies_before != dependency_manifest(clang, source, arguments, sdk):
+        dependencies_before = dependency_manifest(clang, source, arguments, sdk, commands)
+        ast = clang_ast(clang, source, arguments, name_filter=None, evidence=commands, sdk=sdk)
+        if dependencies_before != dependency_manifest(clang, source, arguments, sdk, commands):
             raise ValueError('SDK/compiler dependencies changed during AST capture')
     records = extract_declarations(ast, headers, target)
     verify_headers(before, headers)
     verify_compiler_identity(compiler_before, clang, sdk, target)
+    if any(value['frontend_sha256'] != compiler_before['frontend']['sha256'] for value in commands.values()):
+        raise ValueError('Capture request frontend differs from compiler identity')
     result = inventory_report(records, target)
     result['sdk'] = {'name': sdk.name, 'version': sdk_version, 'settings_sha256': sha(settings),
                      'headers_root': 'System/Library/Frameworks/Metal.framework/Headers', 'headers': before,
                      'older_than_target': version(sdk_version) < version(target)}
     result['compiler'] = compiler_before
+    result['compiler_commands'] = commands
     result['ast_arguments'] = ['-x', 'objective-c', '-fsyntax-only', '-fno-modules',
                               '-target', 'x86_64-apple-macos' + target, '-isysroot', '<SDK>',
                               '-Xclang', '-ast-dump=json']
     result['preprocessor_dependencies'] = dependencies_before
     return result
+
+
+def verify_inventory(report, sdk, clang):
+    """Re-extract the complete source-level census, not semantic conformance."""
+    validate_inventory(report)
+    if report.get('generator') != {'path': 'Tools/metal-api-inventory.py', 'sha256': sha(Path(__file__))}:
+        raise ValueError('Inventory generator source drift; recapture with this tool')
+    current = capture(sdk, clang, report['target_version'])
+    # Canonical JSON comparison also distinguishes bool/float from integer.
+    if json.dumps(report, sort_keys=True, allow_nan=False) != json.dumps(current, sort_keys=True, allow_nan=False):
+        raise ValueError('Inventory declaration/compiler/SDK/dependency census differs from fresh capture')
+    return current
 
 
 def main():
@@ -529,24 +691,16 @@ def main():
                           'required_inventory_complete': False, 'hardware_qualified': False}))
     elif args.action == 'verify':
         import shutil
-        report = json.loads(args.inventory.read_text()); validate_inventory(report)
-        if report.get('generator') != {'path': 'Tools/metal-api-inventory.py', 'sha256': sha(Path(__file__))}:
-            raise ValueError('Inventory generator source drift')
-        if sha(args.sdk.resolve() / 'SDKSettings.plist') != report['sdk']['settings_sha256']:
-            raise ValueError('SDK settings drift')
-        verify_headers(report['sdk']['headers'], args.sdk.resolve() / 'System/Library/Frameworks/Metal.framework/Headers')
+        report = read_inventory(args.inventory); validate_inventory(report)
         clang = shutil.which(args.clang)
         if not clang: raise ValueError('Compiler not found')
-        verify_compiler_identity(report['compiler'], clang, args.sdk, report['target_version'])
-        verify_dependency_manifest(report['preprocessor_dependencies'], args.sdk, clang, report['target_version'])
-        print(json.dumps({'verified_header_bytes': True, 'hardware_qualified': False}))
+        verify_inventory(report, args.sdk, clang)
+        print(json.dumps({'verified_header_bytes': True, 'verified_declaration_census': True, 'hardware_qualified': False}))
     else:
         import shutil
         clang = shutil.which(args.clang)
         if not clang: raise ValueError('Clang not found')
-        report = json.loads(args.inventory.read_text())
-        verify_headers(report['sdk']['headers'], args.sdk.resolve() / 'System/Library/Frameworks/Metal.framework/Headers')
-        verify_compiler_identity(report['compiler'], clang, args.sdk, report['target_version'])
+        report = read_inventory(args.inventory)
         result = observe_repository(args.repo, args.sdk, clang, report, args.facade)
         result['inventory_sha256'] = sha(args.inventory)
         result['sdk_settings_sha256'] = sha(args.sdk.resolve() / 'SDKSettings.plist')

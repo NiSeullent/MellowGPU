@@ -131,6 +131,58 @@ class PortTests(unittest.TestCase):
         self.assertEqual(set(available_targets()), set(recipes))
         self.assertTrue({"xe", "amdgpu", "nvidia-open", "i915", "nouveau"} <= set(recipes))
 
+    def test_glk_reference_routes_to_i915_without_runtime_admission(self):
+        families = json.loads(FAMILIES_PATH.read_bytes())["families"]
+        recipes = json.loads(RECIPES_PATH.read_bytes())["recipes"]
+        profile = families["intel-glk"]
+        self.assertEqual(profile["source_targets"], ["i915"])
+        self.assertFalse(profile["runtime_device_admission"])
+        self.assertFalse(profile["physical_gpu_verified"])
+        self.assertIn("intel-glk", recipes["i915"]["architectures"])
+        self.assertNotIn("intel-glk", recipes["xe"]["architectures"])
+        relative = self.make_source("drivers/gpu/drm/i915/fixture.h")
+        result = self.run_port("glk-reference", target="i915", files=[relative],
+                               gpu_family="intel-glk", require_ready=True)
+        self.assertEqual(result["exit_code"], 2)
+        self.assertFalse(result["driver_ready"])
+        self.assertFalse(result["compile_performed"])
+        self.assertFalse(result["hardware_test_performed"])
+        backend = json.loads((self.root / "glk-reference/backend.json").read_bytes())
+        self.assertTrue(backend["adapter_contract"]["source_profile_compatible"])
+        self.assertFalse(backend["adapter_contract"]["runtime_device_admitted"])
+        self.assertFalse(backend["adapter_contract"]["physical_gpu_verified"])
+        self.assertEqual(backend["pci_device_ids"], [])
+        self.assertEqual(backend["implemented_entry_points"], [])
+        with self.assertRaises(PortError):
+            self.run_port("glk-xe", target="xe", gpu_family="intel-glk")
+        self.assertFalse((self.root / "glk-xe").exists())
+
+    def test_i915_and_nak_observations_do_not_admit_a_build_closure(self):
+        lock = json.loads((REPO / "porting/upstreams.lock.json").read_bytes())
+        components = {item["id"]: item for item in lock["components"]}
+        expected = {
+            "linux-i915": ("0d9ff90a5422cc7509258aaaba1e7481df4d332a", {
+                "drivers/gpu/drm/i915/i915_driver.c",
+                "drivers/gpu/drm/i915/i915_pci.c", "include/drm/intel/pciids.h"}),
+            "mesa-nak": ("f5cb8ee032adabef599ae892ec4e42d796b84da9", {
+                "src/nouveau/compiler/nak/lib.rs", "src/nouveau/compiler/nak/api.rs"}),
+        }
+        for name, (commit, paths) in expected.items():
+            with self.subTest(component=name):
+                component = components[name]
+                self.assertEqual(component["commit"], commit)
+                self.assertEqual({item["path"] for item in component["files"]}, paths)
+                self.assertEqual(component["role"], "reference-only")
+                self.assertEqual(component["profile"], "reference-only")
+                self.assertTrue(all(path.startswith(("docs/", "porting/"))
+                                    for path in component["consumers"]))
+                self.assertEqual(component["license_review"], {
+                    "status": "unreviewed", "evidence_sha256": None})
+                self.assertEqual(component["configuration"], [])
+                self.assertEqual(component["patches"], [])
+                self.assertEqual(component["abi"]["checks"], [])
+        self.assertIn("include/drm/intel/pciids.h", components["linux-i915"]["abi"]["headers"])
+
     def test_all_family_source_pairs_keep_hardware_admission_closed(self):
         profiles = json.loads(FAMILIES_PATH.read_bytes())["families"]
         source_paths = {

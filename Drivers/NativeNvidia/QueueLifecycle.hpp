@@ -70,6 +70,8 @@ public:
     QueueLifecycleResult attach(const ChannelBinding &);
     QueueLifecycleResult submit(const SubmitRequest &, uint64_t now, FenceToken &);
     // Fence-only retirement. Allowed while admission is closed, for draining.
+    // NeedsReset closes open admission even when the native status is Busy or
+    // ClockRegression. A later successful drain does not reopen admission.
     QueueLifecycleResult poll(uint64_t now);
     QueueLifecycleResult expire(uint64_t now);
     // Requests reset, stops and releases this channel through GpFifoQueue::reset(),

@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NiSeullent/MellowGPU/spec/v1/dependencies.schema.json",
+  "title": "MellowGPU initial v1 dependencies",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "mellowgpu.dependencies-index"
+    },
+    "generated_from": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "const": "porting/upstreams.lock.json"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true
+    },
+    "specifications": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "minItems": 0,
+      "maxItems": 128,
+      "uniqueItems": true
+    },
+    "tracking": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "requirements": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "minItems": 2,
+            "maxItems": 8,
+            "uniqueItems": true
+          },
+          "adapter": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "tests": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "minItems": 1,
+            "maxItems": 16,
+            "uniqueItems": true
+          },
+          "source_closure": {
+            "const": "UNKNOWN"
+          },
+          "firmware": {
+            "const": "UNKNOWN"
+          },
+          "firmware_hashes": {
+            "const": []
+          },
+          "build_admitted": {
+            "const": false
+          },
+          "support_tuples": {
+            "const": []
+          },
+          "hardware_qualified": {
+            "const": false
+          }
+        },
+        "required": [
+          "id",
+          "requirements",
+          "adapter",
+          "tests",
+          "source_closure",
+          "firmware",
+          "firmware_hashes",
+          "build_admitted",
+          "support_tuples",
+          "hardware_qualified"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true
+    },
+    "scope": {
+      "const": "Selected source observations only; no complete build or firmware closure admitted"
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "generated_from",
+    "components",
+    "specifications",
+    "tracking",
+    "scope"
+  ],
+  "additionalProperties": false
+}
