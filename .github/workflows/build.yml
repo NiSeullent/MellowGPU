@@ -27,6 +27,8 @@ jobs:
           python3 Tools/run-host-tests.py --cxx clang++ --out build/host-tests
           python3 Tools/run-native-control-tests.py --cxx clang++ --sanitize --out build/native-control-tests
           python3 Tools/run-probe-control-tests.py --cxx clang++ --sanitize --out build/control-probe-tests
+          python3 Tools/run-backend-interface-tests.py --cxx clang++ --sanitize --out build/backend-interface-tests
+          python3 Tools/run-metal-runtime-metadata-tests.py --sanitize --sdk "$(xcrun --sdk macosx --show-sdk-path)" --out build/metadata-fixture-tests
           python3 tests/metal_session_tests.py
           python3 tests/acceptance_cli_tests.py
           sh -n Tools/collect-boot-evidence.sh
@@ -71,5 +73,7 @@ jobs:
             build/mellowgpu-control
             build/native-control-tests/native-control-tests.json
             build/control-probe-tests/probe-control-tests.json
+            build/backend-interface-tests/backend-interface-tests.json
+            build/metadata-fixture-tests/metadata-fixture-result.json
             build/host-tests/host-tests.json
           if-no-files-found: error

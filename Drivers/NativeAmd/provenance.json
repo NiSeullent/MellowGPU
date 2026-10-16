@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "upstream_repository": "https://github.com/torvalds/linux",
+  "upstream_revision": "0d9ff90a5422cc7509258aaaba1e7481df4d332a",
+  "source_access": "Downloaded the pinned raw files into an uncommitted scratch directory; soc15d.h matched the provided reference copy byte for byte. No upstream file is vendored.",
+  "upstream_file_content_hashes": {
+    "drivers/gpu/drm/amd/amdgpu/soc15d.h": "f39adef602b90ac33036d15a7710e51242ec822f826e8a9823ab466a493325f1",
+    "drivers/gpu/drm/amd/amdkfd/kfd_pm4_headers_ai.h": "4f86997f9ff9ff92a7b38232bf5ff69519bfc5cebdbb28e353c89193bab9e8b2",
+    "drivers/gpu/drm/amd/include/vega10_enum.h": "cb4d03b3ee3fa28a240434f8742434facafb9b670f3dec9b49c1295a4d70a83d",
+    "drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c": "68fbc35dc164777d9c5d20f45c0b8d54651acda6bce34dd5d9daec83bc26a5f9",
+    "drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h": "d791cc949412dff2ecc906bca12467a42c2d98681a2089fdb569a45b7f27832e",
+    "drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.h": "8650a3df11e984705f9092e61bad01b71ce4c26666c82a80bb57fff71d2a24a0"
+  },
+  "hash_scope": "SHA-256 of each complete raw file at the pinned revision.",
+  "license": "MIT; original AMD notices retained in source and LICENSE.MIT. kfd_pm4_headers_ai.h is GPL-2.0 OR MIT and is used under MIT.",
+  "sources": [
+    {"path": "drivers/gpu/drm/amd/amdgpu/soc15d.h", "symbols": ["PACKET_TYPE3", "PACKET3", "PACKET3_COMPUTE", "CP_PACKET_GET_TYPE", "CP_PACKET_GET_COUNT", "CP_PACKET3_GET_OPCODE", "PACKET3_NOP", "PACKET3_RELEASE_MEM", "EVENT_TYPE", "EVENT_INDEX", "EOP_TC_WB_ACTION_EN", "EOP_TCL1_ACTION_EN", "EOP_TC_ACTION_EN", "EOP_TC_NC_ACTION_EN", "EOP_TC_MD_ACTION_EN", "EOP_EXEC", "DATA_SEL", "INT_SEL", "DST_SEL"]},
+    {"path": "drivers/gpu/drm/amd/amdkfd/kfd_pm4_headers_ai.h", "symbols": ["PM4_MES_TYPE_3_HEADER", "pm4_mec_release_mem", "mec_release_mem_event_index_enum", "mec_release_mem_dst_sel_enum", "mec_release_mem_int_sel_enum", "mec_release_mem_data_sel_enum", "CACHE_FLUSH_AND_INV_TS_EVENT"], "facts": "Count is body dwords minus one; header bits 7:0 reserved; 8-dword RELEASE_MEM layout; end_of_pipe event index 5; the MEC layout marks ordinal 2 bit 28 reserved."},
+    {"path": "drivers/gpu/drm/amd/include/vega10_enum.h", "symbols": ["VGT_EVENT_TYPE", "CACHE_FLUSH_AND_INV_TS_EVENT"]},
+    {"path": "drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c", "symbols": ["gfx_v9_0_ring_emit_fence", "gfx_v9_0_ring_emit_fence_kiq", "gfx_v9_ring_insert_nop", "gfx_v9_0_ring_funcs_gfx", "gfx_v9_0_sw_ring_funcs_gfx", "gfx_v9_0_ring_funcs_compute", "gfx_v9_0_ring_funcs_kiq"], "facts": "GFX and compute rings emit PACKET3(PACKET3_RELEASE_MEM, 6) with the TC_WB_ONLY-dependent cache actions, DATA_SEL 1/2, INT_SEL 0/2, qword/dword address alignment and a zero final dword; PACKET3(PACKET3_NOP, 0x3FFF) is the one-dword ring NOP and NOP headers are capped at count 0x3FFE; KIQ fences use WRITE_DATA."},
+    {"path": "drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h", "symbols": ["AMDGPU_FENCE_FLAG_64BIT", "AMDGPU_FENCE_FLAG_INT", "AMDGPU_FENCE_FLAG_TC_WB_ONLY", "AMDGPU_FENCE_FLAG_EXEC"]},
+    {"path": "drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.h", "symbols": ["AMDGPU_GMC_HOLE_START", "AMDGPU_GMC_HOLE_END", "AMDGPU_GMC_HOLE_MASK", "amdgpu_gmc_sign_extend"]}
+  ],
+  "adaptation": "Original portable checked C++ field packing written from the published definitions and the GFX9 fence generation path. No upstream function body was copied.",
+  "additional_software_policy": [
+    "Emit count 0x3FFF only as the plain one-dword NOP 0xFFFF1000; reject it for NOP bodies and treat it as unsupported for other opcodes and compute-bit NOPs.",
+    "Reject header bits 7:0 other than the PACKET3_COMPUTE bit.",
+    "Never mask opcode or count, so out-of-range values cannot alias another packet.",
+    "Encode only the RELEASE_MEM variants gfx_v9_0_ring_emit_fence emits; reject the compute-bit form, EOP_EXEC and other documented selectors.",
+    "Require fence addresses below the 48-bit AMDGPU_GMC_HOLE_START and reject 32-bit fences whose sequence exceeds 32 bits.",
+    "Decode only the exact encoder image and leave output unchanged on every error."
+  ],
+  "unsupported_missing_facts": [
+    "GFX10/11/12 packet formats: nvd.h and the gfx_v10/v11/v12 generators were not inspected.",
+    "PCI device or GC IP version to format mapping: amdgpu_discovery.c was not inspected.",
+    "Addresses at or above AMDGPU_GMC_HOLE_START and the 57-bit layout: whether CP RELEASE_MEM consumes the sign-extended or hole-masked form is not established.",
+    "EOP_EXEC: soc15d.h and gfx_v9_0.c use bit 28 for trailing fences while the KFD MEC layout marks it reserved.",
+    "DST_SEL TC/L2, INT_SEL 1 and 3-6, DATA_SEL 0 and 3-5, other events, STREAM cache policy and volatile/write-combine actions are not emitted by the inspected GFX9 fence path.",
+    "EOP interrupt routing, IH decoding, int_ctxid meaning and KIQ WRITE_DATA fences."
+  ],
+  "hardware_admission": false,
+  "gpu_execution_verified": false,
+  "metal_acceleration_verified": false
+}

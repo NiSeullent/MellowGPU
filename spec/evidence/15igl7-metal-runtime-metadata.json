@@ -1,0 +1,255 @@
+{
+  "classes_after_public_enumeration" : [
+
+  ],
+  "classes_before_public_enumeration" : [
+    {
+      "ancestry" : [
+        "MTLIOAccelDevice",
+        "_MTLDevice",
+        "NSObject"
+      ],
+      "found" : true,
+      "image" : {
+        "loaded_image_found" : true,
+        "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+        "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+      },
+      "methods" : [
+        {
+          "argument_types_including_self_and_cmd" : [
+            "@",
+            ":",
+            "I"
+          ],
+          "declaring_owner" : "MTLIOAccelDevice",
+          "declaring_owner_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "declaring_owner_is_metaclass" : false,
+          "encoding" : "@20@0:8I16",
+          "found" : true,
+          "implementation_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "implementation_invoked" : false,
+          "inherited" : false,
+          "method_kind" : "instance",
+          "return_type" : "@",
+          "selector" : "initWithAcceleratorPort:"
+        },
+        {
+          "found" : false,
+          "method_kind" : "class",
+          "selector" : "initWithAcceleratorPort:"
+        },
+        {
+          "argument_types_including_self_and_cmd" : [
+            "@",
+            ":"
+          ],
+          "declaring_owner" : "MTLIOAccelDevice",
+          "declaring_owner_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "declaring_owner_is_metaclass" : false,
+          "encoding" : "Q16@0:8",
+          "found" : true,
+          "implementation_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "implementation_invoked" : false,
+          "inherited" : false,
+          "method_kind" : "instance",
+          "return_type" : "Q",
+          "selector" : "registryID"
+        },
+        {
+          "found" : false,
+          "method_kind" : "class",
+          "selector" : "registryID"
+        },
+        {
+          "argument_types_including_self_and_cmd" : [
+            "@",
+            ":"
+          ],
+          "declaring_owner" : "MTLIOAccelDevice",
+          "declaring_owner_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "declaring_owner_is_metaclass" : false,
+          "encoding" : "^{__IOAccelShared=}16@0:8",
+          "found" : true,
+          "implementation_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "implementation_invoked" : false,
+          "inherited" : false,
+          "method_kind" : "instance",
+          "return_type" : "^{__IOAccelShared=}",
+          "selector" : "sharedRef"
+        },
+        {
+          "found" : false,
+          "method_kind" : "class",
+          "selector" : "sharedRef"
+        },
+        {
+          "argument_types_including_self_and_cmd" : [
+            "@",
+            ":"
+          ],
+          "declaring_owner" : "MTLIOAccelDevice",
+          "declaring_owner_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "declaring_owner_is_metaclass" : false,
+          "encoding" : "^{__IOAccelDevice=}16@0:8",
+          "found" : true,
+          "implementation_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "implementation_invoked" : false,
+          "inherited" : false,
+          "method_kind" : "instance",
+          "return_type" : "^{__IOAccelDevice=}",
+          "selector" : "deviceRef"
+        },
+        {
+          "found" : false,
+          "method_kind" : "class",
+          "selector" : "deviceRef"
+        }
+      ],
+      "requested_class" : "MTLIOAccelDevice",
+      "runtime_class" : "MTLIOAccelDevice"
+    },
+    {
+      "ancestry" : [
+        "_MTLDevice",
+        "NSObject"
+      ],
+      "found" : true,
+      "image" : {
+        "loaded_image_found" : true,
+        "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+        "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+      },
+      "methods" : [
+        {
+          "argument_types_including_self_and_cmd" : [
+            "@",
+            ":",
+            "I"
+          ],
+          "declaring_owner" : "_MTLDevice",
+          "declaring_owner_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "declaring_owner_is_metaclass" : false,
+          "encoding" : "@20@0:8I16",
+          "found" : true,
+          "implementation_image" : {
+            "loaded_image_found" : true,
+            "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+            "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+          },
+          "implementation_invoked" : false,
+          "inherited" : false,
+          "method_kind" : "instance",
+          "return_type" : "@",
+          "selector" : "initWithAcceleratorPort:"
+        },
+        {
+          "found" : false,
+          "method_kind" : "class",
+          "selector" : "initWithAcceleratorPort:"
+        },
+        {
+          "found" : false,
+          "method_kind" : "instance",
+          "selector" : "registryID"
+        },
+        {
+          "found" : false,
+          "method_kind" : "class",
+          "selector" : "registryID"
+        },
+        {
+          "found" : false,
+          "method_kind" : "instance",
+          "selector" : "sharedRef"
+        },
+        {
+          "found" : false,
+          "method_kind" : "class",
+          "selector" : "sharedRef"
+        },
+        {
+          "found" : false,
+          "method_kind" : "instance",
+          "selector" : "deviceRef"
+        },
+        {
+          "found" : false,
+          "method_kind" : "class",
+          "selector" : "deviceRef"
+        }
+      ],
+      "requested_class" : "_MTLDevice",
+      "runtime_class" : "_MTLDevice"
+    },
+    {
+      "found" : false,
+      "requested_class" : "AGXMetalDevice"
+    }
+  ],
+  "command_buffers_created" : false,
+  "darwin24_x86_64_target_abi_verified" : false,
+  "device_property_values_read" : false,
+  "gpu_commands_submitted" : false,
+  "host_machine" : "x86_64",
+  "kernel_release" : "24.6.0",
+  "os_build" : "24H32",
+  "os_product_version" : "15.8.1",
+  "private_driver_subclasses_instantiated_directly" : false,
+  "private_initializers_invoked_directly" : false,
+  "process_architecture" : "x86_64",
+  "public_device_enumeration_called" : false,
+  "public_devices" : [
+
+  ],
+  "relevant_loaded_images" : [
+    {
+      "loaded_image_found" : true,
+      "path" : "\/System\/Library\/PrivateFrameworks\/IOAccelerator.framework\/Versions\/A\/IOAccelerator",
+      "uuid" : "E2BAC781-B505-38FC-A912-FC0B204F4802"
+    },
+    {
+      "loaded_image_found" : true,
+      "path" : "\/System\/Library\/Frameworks\/Metal.framework\/Versions\/A\/Metal",
+      "uuid" : "C3EFBABE-6B06-33AB-BC45-43FE86297AA1"
+    }
+  ],
+  "schema" : "mellowgpu.metal-runtime-metadata\/1",
+  "scope" : "Public Objective-C runtime metadata and optional public enumeration on this exact host only; no direct private initializer invocation, GPU submission, or x86\/Darwin24 ABI qualification. Public enumeration may initialize Apple's existing devices internally."
+}
